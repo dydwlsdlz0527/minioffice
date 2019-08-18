@@ -1,0 +1,167 @@
+.body_side {
+  float: left;
+  width: 250px;
+  background-color: #e9ebf2;
+  min-height: 700px;
+  border-right: 2px solid #b8b9c0;
+  padding-bottom: 55px;
+}
+
+.body_side .side_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+section.side_title {
+  padding: 17px 15px;
+  font-size: 28px;
+  border-bottom: 1px solid #b8b9c0;
+  box-shadow: 0 0 2px rgba(37, 37, 37, 0.2);
+}
+
+section.function {
+  border-top: none;
+  padding: 3px 0;
+  height: 55px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #b8b9c0;
+  box-shadow: 0 0 2px rgba(37, 37, 37, 0.2);
+}
+
+section.function a {
+  width: 237px;
+  height: 47px;
+  margin: 4px;
+  border: 1px solid #b8b9c0;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn_function:hover {
+  background-color: lightgray;
+  box-shadow: 0 0 2px rgba(37, 37, 37, 0.2);
+}
+
+.function .btn_function i {
+  opacity: 0.5;
+}
+
+.function .btn_function span {
+  margin-left: 10px;
+}
+
+/* 버튼 아래 영역 */
+/*boardhome.jsp*/
+section.companySide,
+section.deptSide {
+  padding: 10px 0px;
+  border-bottom: 1px solid #b8b9c0;
+}
+
+section.companySide .company,
+section.deptSide .org {
+  padding-left: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  line-height: 22px;
+  font-size: 16px;
+  letter-spacing: -1px;
+}
+
+.company a,
+.org a {
+  margin-left: 5px;
+}
+
+li.board {
+  padding: 5px 20px;
+  font-size: 14px;
+  letter-spacing: -1px;
+}
+
+li.board:hover {
+  background-color: lightgray;
+}
+
+li.board i {
+  width: 17px;
+  opacity: 0.5;
+  text-align: center;
+}
+
+li.board a {
+  margin-left: 5px;
+}
+
+/*approvalhome.jsp*/
+section.apprSide {
+  padding: 10px 0px;
+  border-bottom: 1px solid #b8b9c0;
+}
+
+section.apprSide .approval_title {
+  padding-left: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  line-height: 22px;
+  font-size: 16px;
+  letter-spacing: -1px;
+}
+
+.approval_title a {
+  margin-left: 5px;
+}
+
+li.approval {
+  padding: 5px 20px;
+  font-size: 14px;
+  letter-spacing: -1px;
+}
+
+li.approval:hover {
+  background-color: lightgray;
+}
+
+li.approval i {
+  width: 17px;
+  opacity: 0.5;
+  text-align: center;
+}
+
+li.approval a {
+  margin-left: 5px;
+}
+
+/*punctualityhome.jsp*/
+
+
+/*adminhome.jsp*/
+nav.side_menu ul li {
+  position: relative;
+  height: 30px;
+  line-height: 30px;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+nav.side_menu ul li:hover {
+  background-color: lightgray;
+}
+
+nav.side_menu ul li i {
+  padding-left: 10px;
+  vertical-align: middle;
+  opacity: 0.5;
+} 
+
+nav.side_menu ul li a {
+  padding: 0px 10px;
+  vertical-align: middle;
+  font-weight: 400;
+}
