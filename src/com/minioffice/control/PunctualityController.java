@@ -26,10 +26,9 @@ public class PunctualityController {
 	public String start_work(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String id = (String)session.getAttribute("id");
-		String deptno = (String)session.getAttribute("deptno");
 		
 		PunctualityService service = new PunctualityService();
-		String str = service.start_work(id, deptno);
+		String str = service.start_work(id);
 		JSONParser parser = new JSONParser();
 		
 		try {

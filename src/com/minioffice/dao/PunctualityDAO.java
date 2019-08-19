@@ -10,7 +10,7 @@ import com.minioffice.exception.NotFoundException;
 
 public class PunctualityDAO {
 
-	public String start_work(String id, String deptno) throws NotFoundException {
+	public String start_work(String id) throws NotFoundException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -23,10 +23,9 @@ public class PunctualityDAO {
 			String password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			
-			String insert_start_work_SQL = "insert into punctuality values (?, ?, sysdate, null, 1, null)";
+			String insert_start_work_SQL = "insert into punctuality values (?, 0, sysdate, null, 1, null)";
 			pstmt = con.prepareStatement(insert_start_work_SQL);
 			pstmt.setString(1, id);
-			pstmt.setString(2, deptno);
 			
 			pstmt.executeUpdate(insert_start_work_SQL);
 			throw new NotFoundException("출근시간이 정상 등록되지 않았습니다.");

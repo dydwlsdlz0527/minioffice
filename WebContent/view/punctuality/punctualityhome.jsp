@@ -10,7 +10,7 @@ pageEncoding="UTF-8"%> <%response.setHeader("Cache-Control", "no-cache");%>
 	Date nowTime = new Date();
 	SimpleDateFormat sf = new SimpleDateFormat("yyyy년 MM월 dd일 (E)");
 	
-	String id = (String)session.getAttribute("savedId");
+	String id = (String)session.getAttribute("loginInfo");
 %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
@@ -82,23 +82,23 @@ ul {
 		  return zero + num;
 	}
 
-	
+$(function(){
 	$("#work_start").click(function(){
+		console.log("<%=id%>");
 		$("#work_start").prop("disabled", true);
 		$("#work_end").show();
 	});
-	
+
 	$("#work_end").click(function(){
 		$("#work_start").prop("disabled", false);
 	});
-	
+
 	$("#myButtons1").click(function(){
-        alert('AJAX로 처리하고 정상 응답이면.. hide 해 준다.');
-  		$('#myModal').modal('hide');
-    });
+	    alert('AJAX로 처리하고 정상 응답이면.. hide 해 준다.');
+			$('#myModal').modal('hide');
+	});
 	
-$(function(){
-	$("#work_start").click(function(){
+	<%-- $("#work_start").click(function(){
 		$.ajax({
 			url: '${contextPath}/punctuality',
 			type: 'post',
@@ -107,7 +107,7 @@ $(function(){
 				alert("성공");
 			}
 		});
-	});
+	}); --%>
 });
 	
 
@@ -258,8 +258,7 @@ $(function(){
       <!-- body_content는 너만의 영역. 알아서 화면 내보내기-->
       <div class="body_content">
         <!-- 아래부터 작성하면됨 -->
-      	 너가 꾸밀 영역
-      	 <div>${sessionScope.loginInfo}</div>
+      	 너가 꾸밀 영역 
       	 <div><%=id %></div>
       	<!--  -->
       </div>

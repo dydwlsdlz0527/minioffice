@@ -11,10 +11,10 @@ public class PunctualityService {
 		dao = new PunctualityDAO();
 	}
 	
-	public String start_work(String id, String deptno) {
+	public String start_work(String id) {
 		int status = -1;
 		try {
-			String p = dao.start_work(id, deptno);
+			String p = dao.start_work(id);
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 		}
