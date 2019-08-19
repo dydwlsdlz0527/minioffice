@@ -207,9 +207,7 @@ $(function() {
 	
 	$('.imgcontainer>span').click(function(){
 		$modal.css('display','none');
-	});
-	
-	
+	});	
 	
 	
 	var $idObj = $('input[name=id]'); //input객체중 name이 id인 dom트리에서 찾기

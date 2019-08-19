@@ -27,6 +27,10 @@
   padding: 10px;
 }
 
+.header_columns:nth-child(3) {
+  margin-right: 10px;
+}
+
 .header_columns .header-logo {
   font-weight: 600;
 }
@@ -42,9 +46,14 @@
 }
 
 .ctrl li {
-  padding: 5px;
+  width: 34px;
+  padding: 5px;  
+}
+
+.ctrl li a {
+  display: flex;
 }
 
 .profile_photo {
-  width: 33px;
+  width: 32px;
 }

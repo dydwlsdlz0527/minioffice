@@ -60,31 +60,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         </nav>
       </div>
       <div class="header_columns">
-        <section class="my_info">
-          <ul class="ctrl">
-            <li class="notification">
-              <a href="#" class="btn_noti"><i class="fas fa-bell"></i></a>
-            </li>
-            <li class="config">
-              <a href="#" class="btn_config"><i class="fas fa-cog"></i></a>
-            </li>
-            <li class="logout">
-              <a href="#" class="btn_logout"
-                ><i class="fas fa-power-off"></i
-              ></a>
-            </li>
-            <li class="photo">
-              <a href="#">
-                <!-- 로그인한사람의 프로필사진을 불러와야함. 미완성 -->
-                <img
-                  class="profile_photo"
-                  src="https://pbs.twimg.com/profile_images/3394470712/66b049da64127e4ad9159684fdcdf20d.jpeg"
-                />
-                <!--  -->
-              </a>
-            </li>
-          </ul>
-        </section>
+		<jsp:include page="/view/myinfo.jsp"/>
       </div>
     </header>
     <!-- header finish -->

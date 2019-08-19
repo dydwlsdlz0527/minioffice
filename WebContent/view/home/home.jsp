@@ -9,6 +9,8 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
   <meta charset="UTF-8" />
+  <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <title>home.jsp</title>
   <!-- home 화면에 필요한 icon과 스타일 불러오기 -->
   <script src="https://kit.fontawesome.com/6ea03f5ac0.js"></script>
@@ -60,35 +62,11 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         </nav>
       </div>
       <div class="header_columns">
-        <section class="my_info">
-          <ul class="ctrl">
-            <li class="notification">
-              <a href="#" class="btn_noti"><i class="fas fa-bell"></i></a>
-            </li>
-            <li class="config">
-              <a href="${contextPath}/view/admin/adminhome.jsp" class="btn_config"><i class="fas fa-cog"></i></a>
-            </li>
-            <li class="logout">
-              <a href="#" class="btn_logout"
-                ><i class="fas fa-power-off"></i
-              ></a>
-            </li>
-            <li class="photo">
-              <a href="#">
-                <!-- 로그인한사람의 프로필사진을 불러와야함. 미완성 -->
-                <img
-                  class="profile_photo"
-                  src="https://pbs.twimg.com/profile_images/3394470712/66b049da64127e4ad9159684fdcdf20d.jpeg"
-                />
-                <!--  -->
-              </a>
-            </li>
-          </ul>
-        </section>
+		<jsp:include page="/view/myinfo.jsp"/>
       </div>
     </header>
     <!-- header finish -->
-    
+    <div>${sessionScope.loginInfo}</div>
   </div>
   <!-- wrap finish -->
 </body>
