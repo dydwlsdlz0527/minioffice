@@ -1,0 +1,54 @@
+@charset "UTF-8";
+.go_skin_ehr header.content_top {
+    background-image: none;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+header.content_top h1 span.txt {
+    display: inline-block;
+    max-width: 301px;
+    min-height: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 10px;
+    letter-spacing: -1px;
+}
+
+span.txt, div.txt {
+    vertical-align: middle;
+}
+
+.go_skin_ehr h1 {
+    font-weight: normal;
+}
+
+.go_skin_ehr, .go_skin_ehr h1 {
+    font-family: "나눔고딕","Nanum Gothic","NanumGothicWebFont","Dotum","돋움","Helvetica","Apple SD Gothic Neo","sans-serif";
+}
+
+.b {
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 10px;
+    border: 1px solid #333333; 
+}
+
+div.txt {
+	text-align: center;
+}
+
+div.txt > table.b {
+	width:100%;
+}
+
+.modal-body > table > tbody > tr > td {
+	border: 1px solid;
+}
+
+
+
+
+
