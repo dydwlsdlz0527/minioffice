@@ -231,7 +231,7 @@ $(function() {
 	          data: $('form').serialize(),
 	          success: function(data){
 	        	  var jsonObj = JSON.parse(data);
-	        	  var msg = jsonObj.id + "님 로그인에 ";
+	        	  var msg = jsonObj.emp_name + "님 로그인에 ";
 	              if(jsonObj.status == 1){
 	            	  msg += "성공 하셨습니다!";
 	            	  alert(msg);
