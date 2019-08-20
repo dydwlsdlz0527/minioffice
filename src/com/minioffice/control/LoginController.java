@@ -39,7 +39,11 @@ public class LoginController {
 			Object obj = parser.parse(str);
 			JSONObject jsonObj = (JSONObject)obj;
 			if((Long)jsonObj.get("status")==1) {	//로그인성공!
-				session.setAttribute("loginInfo", id);
+				session.setAttribute("emp_id", jsonObj.get("emp_id"));
+				session.setAttribute("emp_no", jsonObj.get("emp_no"));
+				session.setAttribute("emp_name", jsonObj.get("emp_name"));
+				session.setAttribute("dept_name", jsonObj.get("dept_name"));
+				session.setAttribute("rank_name", jsonObj.get("rank_name"));
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

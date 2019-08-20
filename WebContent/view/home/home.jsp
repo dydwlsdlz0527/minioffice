@@ -66,7 +66,10 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       </div>
     </header>
     <!-- header finish -->
-    <div>${sessionScope.loginInfo}</div>
+    <div>${sessionScope.emp_id}</div>
+    <div>${sessionScope.emp_name}</div>
+    <div>${sessionScope.dept_name}</div>
+    <div>${sessionScope.rank_name}</div>
   </div>
   <!-- wrap finish -->
 </body>
