@@ -36,7 +36,8 @@ $(function() {
         <!-- 로그인한사람의 프로필사진을 불러와야함. 미완성 -->
         <img
           class="profile_photo"
-          src="${contextPath}/images/default_image.jpg"
+          src="${contextPath}/images/profile/${sessionScope.emp_no}.jpg"
+          onerror="this.src='${contextPath}/images/profile/default_image.jpg'"
         />
         <!--  -->
       </a>

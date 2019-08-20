@@ -15,6 +15,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
   <!-- home 화면에 필요한 icon과 스타일 불러오기 -->
   <script src="https://kit.fontawesome.com/6ea03f5ac0.js"></script>
   <link rel="stylesheet" href="${contextPath}/css/styles.css" />
+  <link rel="stylesheet" href="${contextPath}/css/home/home_side.css"/>
   <!-- -->
 </head>
 <body>
@@ -66,10 +67,34 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       </div>
     </header>
     <!-- header finish -->
-    <div>${sessionScope.emp_id}</div>
-    <div>${sessionScope.emp_name}</div>
-    <div>${sessionScope.dept_name}</div>
-    <div>${sessionScope.rank_name}</div>
+  </div>
+  <div class="body_wrap">
+  <div class="home_side">
+  	<div class="profile_wrap">
+  	  <div class="profile">
+  	    <div class="profile-column">
+  	      <img
+  	       src="${contextPath}/images/profile/${sessionScope.emp_no}.jpg"
+  	       onerror="this.src='${contextPath}/images/profile/default_image.jpg'">
+  	    </div>
+  	    <div class="profile-column">
+  	      <div class="profile-info">
+  	        <span class="name">${sessionScope.emp_name}</span>
+  	        <span>${sessionScope.dept_name}</span>
+  	        <span>${sessionScope.rank_name}</span>
+  	      </div>
+  	    </div>  		    	    
+  	  </div>
+  	  <div class="summary-approval">
+  	    <div class="approval-column"><span>결재할 문서</span></div>
+  	    <div class="approval-column"><span>0</span></div>
+  	  </div>
+  	  <div class="summary-calendar">
+  	    <div class="calendar-column"><span>오늘의 일정</span></div>
+  	    <div class="calendar-column"><span>0</span></div>
+  	  </div>
+  	</div>
+  </div>
   </div>
   <!-- wrap finish -->
 </body>
