@@ -98,16 +98,16 @@ $(function(){
 			$('#myModal').modal('hide');
 	});
 	
-	$("#work_start").click(function(){
+	<%-- $("#work_start").click(function(){
 		$.ajax({
 			url: '${contextPath}/punctuality',
 			type: 'post',
-			data: 'id=' + "<%=id%>",
+			data: 'id=' + <%=id%>,
 			success:function(data) {
 				alert("성공");
 			}
 		});
-	});
+	}); --%>
 });
 	
 
