@@ -17,6 +17,19 @@ uri="http://java.sun.com/jsp/jstl/core" %>
   <link rel="stylesheet" href="${contextPath}/css/styles.css" />
   <link rel="stylesheet" href="${contextPath}/css/home/home_side.css"/>
   <!-- -->
+  
+  <script>
+  $(function(){
+	 $("#orgToggle").click(function(){		
+		 if ($(".tab_wrap").css("display") == "none") {
+			 $(".tab_wrap").show();
+		} else {
+			 $(".tab_wrap").hide();
+		}
+	 });
+  });
+  </script>
+  
 </head>
 <body>
   <div class="wrap">
@@ -67,35 +80,52 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       </div>
     </header>
     <!-- header finish -->
-  </div>
-  <div class="body_wrap">
-  <div class="home_side">
-  	<div class="profile_wrap">
-  	  <div class="profile">
-  	    <div class="profile-column">
-  	      <img
-  	       src="${contextPath}/images/profile/${sessionScope.emp_no}.jpg"
-  	       onerror="this.src='${contextPath}/images/profile/default_image.jpg'">
-  	    </div>
-  	    <div class="profile-column">
-  	      <div class="profile-info">
-  	        <span class="name">${sessionScope.emp_name}</span>
-  	        <span>${sessionScope.dept_name}</span>
-  	        <span>${sessionScope.rank_name}</span>
+    <div class="body_wrap">
+      <div class="home_side">
+  	    <div class="profile_wrap">
+  	      <div class="profile">
+  	        <div class="profile-column">
+  	          <img
+  	           src="${contextPath}/images/profile/${sessionScope.emp_no}.jpg"
+  	           onerror="this.src='${contextPath}/images/profile/default_image.jpg'">
+  	        </div>
+  	        <div class="profile-column">
+    	      <div class="profile-info">
+  	            <span class="name">${sessionScope.emp_name}</span>
+  	            <span>${sessionScope.dept_name}</span>
+  	            <span>${sessionScope.rank_name}</span>
+  	          </div>
+  	        </div>  		    	    
   	      </div>
-  	    </div>  		    	    
-  	  </div>
-  	  <div class="summary-approval">
-  	    <div class="approval-column"><span>결재할 문서</span></div>
-  	    <div class="approval-column"><span>0</span></div>
-  	  </div>
-  	  <div class="summary-calendar">
-  	    <div class="calendar-column"><span>오늘의 일정</span></div>
-  	    <div class="calendar-column"><span>0</span></div>
-  	  </div>
-  	</div>
-  </div>
-  </div>
+  	      <div class="summary-approval">
+    	    <div class="approval-column"><span>결재할 문서</span></div>
+  	        <div class="approval-column"><span>0</span></div>
+  	      </div>
+  	      <div class="summary-calendar">
+  	        <div class="calendar-column"><span>오늘의 일정</span></div>
+  	        <div class="calendar-column"><span>0</span></div>
+  	      </div>
+  	    </div>
+  	    <div class="organogram">
+  	      <div class="search_wrap">
+  	        <div class="search-column">
+  	          <form name="orgSearch" onsubmit="return false;">
+  	            <input class="search" type="text" placeholder="이름/아이디/부서/직위/직책">
+  	          </form>
+  	        </div>
+  	        <div class="search-column">
+  	          <i id="orgToggle" class="fas fa-chevron-down"></i>
+  	        </div>
+  	      </div>
+  	      <div class="tab_wrap">
+    	    <div class="content_tab_wrap">
+    	      <div class="jstree">여기에 조직도 트리</div>
+  	        </div>
+  	      </div>
+  	    </div>
+      </div>
+    </div>
+  </div>  
   <!-- wrap finish -->
 </body>
 </html>

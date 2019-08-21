@@ -11,7 +11,12 @@
 	min-width: 250px;
 	min-height: 100px;
 	margin-left: 13px;
-	margin-top: 10px;
+	margin-top: 15px;
+}
+
+/* profile 영역 */
+.profile_wrap {
+	font-size: 14px;	
 	background-color: white;
 	border:2px solid #ccc;
 }
@@ -21,9 +26,6 @@
 	padding: 15px;
 }
 
-.profile_wrap {
-	font-size: 14px;
-}
 
 .profile-column img {
 	height: 80px;
@@ -68,4 +70,58 @@
 	opacity: 0.6;
 }
 
+/* organogram 영역 */
+.organogram {
+	width: 250px;
+	margin-top: 15px;
+	padding: 10px;
+	background-color: #434343;
+	border: 1px solid #444;
+	box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
+}
 
+.search_wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 30px;
+}
+
+.search {	
+	background-color: #2e2e2e;
+	border: 1px solid #4d4f50;
+	width: 170px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: white;
+	height: 24px;
+}
+
+.search-column i {
+	font-size: 24px;
+	font-weight: 600;
+	color: #B2B6C0;;
+}
+
+.search-column i:hover {
+	color: lightgrey;
+}
+
+.tab_wrap {
+	margin: 0 10px;
+	margin-top: 10px;
+	font-size: 12px;
+	display: none;
+}
+
+.content_tab_wrap {
+	height: 400px;
+	width: 100%;
+	min-height: 110px;
+	border: 1px solid #bbb;
+	border-radius: 0 0 5px 5px;
+	overflow-y: auto;
+	margin: 0;
+	background-color: #fafafa;
+}
