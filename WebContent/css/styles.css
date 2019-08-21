@@ -27,9 +27,13 @@ a {
   min-width: 1000px;
 }
 
-.body_wrap {
-  min-height: 600px;
+.body_wrap{	
+	min-width: 748px;
+	min-height: 700px;
+	background-color: #e8e8e8;
+	display: flex;
 }
+
 
 .body_content {
   min-width: 748px;
