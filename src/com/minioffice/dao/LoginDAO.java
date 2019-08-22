@@ -21,7 +21,7 @@ public class LoginDAO {
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
-				String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+				String url = "jdbc:oracle:thin:@localhost:1521:xe";
 				String user = "miniuser";
 				String password = "1234";
 				con = DriverManager.getConnection(url, user, password);

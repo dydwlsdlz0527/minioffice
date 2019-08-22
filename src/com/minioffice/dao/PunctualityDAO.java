@@ -71,7 +71,7 @@ public class PunctualityDAO {
 		ResultSet rs = null;
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String DB_URL = "jdbc:oracle:thin:@localhost:1521:jurung";
+			String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
 			String DB_USER = "miniuser";
 			String DB_PW = "1234";
 			conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
@@ -135,7 +135,7 @@ public class PunctualityDAO {
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String DB_URL = "jdbc:oracle:thin:@localhost:1521:jurung";
+			String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
 			String DB_USER = "miniuser";
 			String DB_PW = "1234";
 			conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
@@ -181,7 +181,7 @@ public class PunctualityDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 			String user = "miniuser";
 			String password = "1234";
 			con = DriverManager.getConnection(url, user, password);
@@ -219,7 +219,7 @@ public class PunctualityDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 			String user = "miniuser";
 			String password = "1234";
 			con = DriverManager.getConnection(url, user, password);
@@ -257,7 +257,7 @@ public class PunctualityDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 			String user = "miniuser";
 			String password = "1234";
 			con = DriverManager.getConnection(url, user, password);

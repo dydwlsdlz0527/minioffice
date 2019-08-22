@@ -21,7 +21,7 @@ public class BoardDAO {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "miniuser";
 		String password = "1234";
 		List<Board> list = new ArrayList<Board>();
@@ -90,7 +90,7 @@ public class BoardDAO {
 		ResultSet rs = null; // sql 구문 담김
 		PreparedStatement pstmt = null; // sql 송신
 		Connection conn = null; // 테이블을 가져올
-		String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "miniuser";
 		String password = "1234";
 
@@ -135,7 +135,7 @@ public class BoardDAO {
 		//ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "miniuser";
 		String password = "1234";
 		
@@ -178,7 +178,7 @@ public class BoardDAO {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "miniuser";
 		String password = "1234";
 		try {
@@ -241,7 +241,7 @@ public class BoardDAO {
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "miniuser";
 		String password = "1234";
 		try {
@@ -292,7 +292,7 @@ public class BoardDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<Comment> list = new ArrayList<Comment>();
-		String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "miniuser";
 		String password = "1234";
 		
@@ -352,7 +352,7 @@ public class BoardDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String url = "jdbc:oracle:thin:@localhost:1521:jurung";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "miniuser";
 		String password = "1234";
 		
