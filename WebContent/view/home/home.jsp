@@ -72,15 +72,22 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 	  for (i = 1; i < lastDate.getDate(); i++) {
 	  // 1일부터 마지막 일까지 돌림
 		cell = row.insertCell();
-	    if (today.getMonth() + 1 < date.getMonth() + 1) {
-	    	// 지난달은 모두 td_number css 입히기
-	    	cell.innerHTML = "<div class=\"td_date\">" + i + "</div>" + "<span class=\"td_number\">1</span>";
-		} else if(today.getMonth() + 1 == date.getMonth() + 1 && i < today.getDate()) {
-			// 이번달 오늘 이전 날짜는 td_number css 입히기
-	    	cell.innerHTML = "<div class=\"td_date\">" + i + "</div>" + "<span class=\"td_number\">1</span>";
+	    if (today.getFullYear() + 1 < date.getFullYear() + 1 
+	    		|| (today.getFullYear() + 1 == date.getFullYear() + 1 
+	    				&& today.getMonth() + 1 < date.getMonth() + 1)) {
+	    	// 지난해 이거나 지난달은 모두 td_number css 입히기
+	    	cell.innerHTML =
+	    		"<div class=\"td_date\">" + i + "</div>" + "<span class=\"td_number\">" + Math.floor(Math.random()*3+1) + "</span>";
+		} else if(today.getFullYear() + 1 == date.getFullYear() + 1
+				&& today.getMonth() + 1 == date.getMonth() + 1
+				&& i < today.getDate()) {
+			// 올해 이번달 오늘 이전 날짜는 td_number css 입히기
+	    	cell.innerHTML =
+	    		"<div class=\"td_date\">" + i + "</div>" + "<span class=\"td_number\">" + Math.floor(Math.random()*3+1) + "</span>";
 		} else {
 			// 오늘 이후 날짜는 td_number2 css 입히기
-			cell.innerHTML = "<div class=\"td_date\">" + i + "</div>" + "<span class=\"td_number2\">1</span>";
+			cell.innerHTML =
+				"<div class=\"td_date\">" + i + "</div>" + "<span class=\"td_number2\">" + Math.floor(Math.random()*3+1) + "</span>";
 		}
 		
 		// 셀을 1부터 마지막 day까지 HTML 문법에 넣어줌
@@ -235,6 +242,44 @@ uri="http://java.sun.com/jsp/jstl/core" %>
           	buildCalendar();
           </script>
         </div>
+        <div class="calender_header">
+          <span class="claender_title">캘린더</span>
+        </div>
+        <ul class="calender_list">
+          <li>
+            <p class="list_title">
+              <span class="list_date">8.22 목</span>
+            </p>
+            <ul class="list_item">
+	          <li>
+	            <span class="item_subject">팀장회의</span>
+	          </li>
+	          <li>
+	            <span class="item_subject">스킬업특강</span>
+	          </li>
+            </ul>
+          </li>
+          <li>
+            <p class="list_title">
+              <span class="list_date">8.23 금</span>
+            </p>
+            <ul class="list_item">
+	          <li>
+	            <span class="item_subject">팀장회의</span>
+	          </li>
+            </ul>
+          </li>
+          <li>
+            <p class="list_title">
+              <span class="list_date">8.24 토</span>
+            </p>
+            <ul class="list_item">
+              <li>
+	            <p class="list_desc">등록된 일정이 없습니다.</p>
+	          </li>
+            </ul>
+          </li>
+        </ul>
       </div>
       <!-- calendar_wrap finish -->
     </div>
