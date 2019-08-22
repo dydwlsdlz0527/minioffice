@@ -27,7 +27,7 @@ public class ScheduleDao {
 		{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String url = "jdbc:oracle:thin:@localhost:1521:jurung";
 			String user = "miniuser";
 			String password = "1234";
 			con = DriverManager.getConnection(url, user, password);
@@ -75,7 +75,7 @@ public class ScheduleDao {
 		{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String url = "jdbc:oracle:thin:@localhost:1521:jurung";
 			String user = "miniuser";
 			String password = "1234";
 			con = DriverManager.getConnection(url, user, password);
@@ -143,7 +143,7 @@ public class ScheduleDao {
 		{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String url = "jdbc:oracle:thin:@localhost:1521:jurung";
 			String user = "miniuser";
 			String password = "1234";
 			con = DriverManager.getConnection(url, user, password);
