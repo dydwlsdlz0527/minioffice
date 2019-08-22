@@ -1,3 +1,4 @@
+<%@page import="com.minioffice.vo.Punctuality"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -10,7 +11,8 @@ pageEncoding="UTF-8"%> <%response.setHeader("Cache-Control", "no-cache");%>
 	Date nowTime = new Date();
 	SimpleDateFormat sf = new SimpleDateFormat("yyyy년 MM월 dd일 (E)");
 	
-	String id = (String)session.getAttribute("loginInfo");
+	Punctuality p = new Punctuality();
+	
 %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
@@ -84,7 +86,7 @@ ul {
 
 $(function(){
 	$("#work_start").click(function(){
-		console.log("<%=id%>");
+		console.log("<%=session.getAttribute("emp_no")%>");
 		$("#work_start").prop("disabled", true);
 		$("#work_end").show();
 	});
@@ -98,16 +100,67 @@ $(function(){
 			$('#myModal').modal('hide');
 	});
 	
-	<%-- $("#work_start").click(function(){
+	$("#work_start").click(function(){
 		$.ajax({
-			url: '${contextPath}/punctuality',
+			url: '${contextPath}/work_start',
 			type: 'post',
-			data: 'id=' + <%=id%>,
+			data: 'emp_no=' + <%=session.getAttribute("emp_no")%>,
 			success:function(data) {
-				alert("성공");
+				var jsonObj = JSON.parse(data);
+				var msg = jsonObj.emp_no + "번 출근";
+				if(jsonObj.status == 1) {
+					msg += "성공";
+					alert(msg);
+				} else {
+					msg += "실패";
+					alert(msg);
+				}
 			}
 		});
-	}); --%>
+		return false;
+	});
+	
+	$("#work_end").click(function(){
+		$.ajax({
+			url: '${contextPath}/work_end',
+			type: 'post',
+			data: 'emp_no=' + <%=session.getAttribute("emp_no")%>,
+			success:function(data) {
+				var jsonObj = JSON.parse(data);
+				var msg = jsonObj.emp_no + "번 퇴근";
+				if(jsonObj.status == 1) {
+					msg += "성공";
+					alert(msg);
+				} else {
+					msg += "실패";
+					alert(msg);
+				}
+			}
+		});
+		return false;
+	});
+	
+	$("#work_type_save").click(function(){
+		$.ajax({
+			url: '${contextPath}/work_type',
+			type: 'post',
+			data: 'emp_no=' + <%=session.getAttribute("emp_no")%> + 
+					'&work_type=' + $("select[name=work_type]").val() + 
+					'&work_content=' + $("textarea[name=work_content]").val(),
+			success: function(data){
+				var jsonObj = JSON.parse(data);
+				var msg = jsonObj.emp_no + "번 상태등록";
+				if(jsonObj.status == 1) {
+					msg += "성공";
+					alert(msg);
+					$("#myModal").modal("hide");
+				} else {
+					msg += "실패";
+					alert(msg);
+				}
+			}
+		});
+	});
 });
 	
 
@@ -200,7 +253,8 @@ $(function(){
 			         			<td>상태</td>
 			         			<td>
 			         				<select name="work_type">
-					         			<option value="1">정상</option>
+					         			<option value="0">출근</option>
+					         			<option value="1">퇴근</option>
 					         			<option value="2">외근</option>
 					         			<option value="3">출장</option>
 					         			<option value="4">휴가</option>
@@ -235,7 +289,30 @@ $(function(){
       <div class="body_content">
         <!-- 아래부터 작성하면됨 -->
       	 너가 꾸밀 영역 
-      	 <div><%=id %></div>
+      	 <div><%=session.getAttribute("emp_no") %></div>
+      	 <div>
+      	 	<table>
+      	 		<colgroup>
+      	 		<col width="30%">
+      	 		<col width="30%">
+      	 		<col width="30%">
+      	 		<col width="30%">
+      	 		</colgroup>
+      	 		<tr>
+      	 			<th>일자</th>
+      	 			<th>날짜</th>
+      	 			<th>타입</th>
+      	 			<th>내용</th>
+      	 		</tr>
+      	 		<tr>
+      	 			<td>19/08/21</td>
+      	 			<td>08:50</td>
+      	 			<td>출근</td>
+      	 			<td>정상</td>
+      	 		</tr>
+      	 	</table>
+      	 </div>
+      	 <%-- <div>${sessionScope.emp_no}</div> --%>
       	<!--  -->
       </div>
     </div>

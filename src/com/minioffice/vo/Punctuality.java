@@ -5,23 +5,18 @@ import java.util.Date;
 public class Punctuality {
 
 	private Employee emp;
-	private Department dept;
-	private Date work_start;
-	private Date work_end;
-	private char work_type;
+	private Date work_date;
+	private String work_type;
 	private String work_content;
 	
 	public Punctuality() {
 		super();
 	}
-	
-	public Punctuality(Employee emp, Department dept, Date work_start, Date work_end, char work_type,
-			String work_content) {
+
+	public Punctuality(Employee emp, Date work_date, String work_type, String work_content) {
 		super();
 		this.emp = emp;
-		this.dept = dept;
-		this.work_start = work_start;
-		this.work_end = work_end;
+		this.work_date = work_date;
 		this.work_type = work_type;
 		this.work_content = work_content;
 	}
@@ -34,35 +29,19 @@ public class Punctuality {
 		this.emp = emp;
 	}
 
-	public Department getDept() {
-		return dept;
+	public Date getWork_date() {
+		return work_date;
 	}
 
-	public void setDept(Department dept) {
-		this.dept = dept;
+	public void setWork_date(Date work_date) {
+		this.work_date = work_date;
 	}
 
-	public Date getWork_start() {
-		return work_start;
-	}
-
-	public void setWork_start(Date work_start) {
-		this.work_start = work_start;
-	}
-
-	public Date getWork_end() {
-		return work_end;
-	}
-
-	public void setWork_end(Date work_end) {
-		this.work_end = work_end;
-	}
-
-	public char getWork_type() {
+	public String getWork_type() {
 		return work_type;
 	}
 
-	public void setWork_type(char work_type) {
+	public void setWork_type(String work_type) {
 		this.work_type = work_type;
 	}
 
@@ -73,7 +52,6 @@ public class Punctuality {
 	public void setWork_content(String work_content) {
 		this.work_content = work_content;
 	}
-	
 	
 	
 	
