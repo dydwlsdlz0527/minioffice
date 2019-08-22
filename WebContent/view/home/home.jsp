@@ -16,9 +16,58 @@ uri="http://java.sun.com/jsp/jstl/core" %>
   <script src="https://kit.fontawesome.com/6ea03f5ac0.js"></script>
   <link rel="stylesheet" href="${contextPath}/css/styles.css" />
   <link rel="stylesheet" href="${contextPath}/css/home/home_side.css"/>
+  <link rel="stylesheet" href="${contextPath}/css/home/calendar_wrap.css"/>
   <!-- -->
   
   <script>
+  var today = new Date(); //오늘 날짜. 내 컴퓨터 로컬 기준
+  var date = new Date(); //today의 Date를 세어주는 역할
+  function prevCalendar() {
+	  today = new Date(today.getFullYear(), today.getMonth()-1, today.getDate());
+	  buildCalendar();
+  }
+  
+  function nextCalendar() {
+	  today = new Date(today.getFullYear(), today.getMonth()+1, today.getDate());
+	  buildCalendar();
+  }
+  
+  function buildCalendar() {
+	  var doMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+	  var lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+	  var tbCalendar = document.getElementById("calendar");
+	  var tbCalenderYM = document.getElementById("tbCalendarYM");
+	  tbCalendarYM.innerHTML = today.getFullYear() + ". " + (today.getMonth() + 1);
+	  while (tbCalendar.rows.length > 2) {
+		tbCalendar.deleteRow($(this).parents("calendar").rows.length - 1);
+	  }
+	  var row = null;
+	  row = tbCalendar.insertRow();
+	  var cnt = 0;
+	  for (i = 0; i < doMonth.getDay(); i++) {
+		cell = row.insertCell();
+		cnt = cnt + 1;
+	  }
+	  
+	  for (i = 1; i < lastDate.getDate(); i++) {
+		cell = row.insertCell();
+		cell.innerHTML = i;
+		cnt = cnt + 1;
+		if (cnt % 7 == 1) {
+			cell.innerHTML = "<font color = #F79DC2>" + i; 
+		}
+		if (cnt % 7 == 0) {
+			cell.innerHTML = "<font color = #4373CE>" + i;
+			row = calendar.insertRow();
+		}
+		if (today.getFullYear() == date.getFullYear()
+				&& today.getMonth() == date.getMonth()
+				&& i == date.getDate()) {
+			cell.bgColor = "#B7B7B7";
+		}
+	}
+  }
+  
   $(function(){
 	 $("#orgToggle").click(function(){		
 		 if ($(".tab_wrap").css("display") == "none") {
@@ -28,6 +77,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 		}
 	 });
   });
+  
   </script>
   
 </head>
@@ -80,7 +130,9 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       </div>
     </header>
     <!-- header finish -->
+    <!-- body_wrap -->
     <div class="body_wrap">
+      <!-- home_side -->
       <div class="home_side">
   	    <div class="profile_wrap">
   	      <div class="profile">
@@ -124,7 +176,34 @@ uri="http://java.sun.com/jsp/jstl/core" %>
   	      </div>
   	    </div>
       </div>
+      <!-- home_side finish -->
+      <!-- calendar_wrap -->
+      <div class="calendar_wrap">
+        <div class="layer_calendar">
+          <table id="calendar">
+            <tr>
+              <td><i onclick="prevCalendar()" class="fas fa-chevron-left"></i></td>
+              <td align="center" id="tbCalendarYM" colspan="5"></td>
+              <td><i onclick="nextCalendar()" class="fas fa-chevron-right"></i></td>
+            </tr>
+            <tr>
+              <td><font color = "#F79DC2">일</font></td>
+              <td>월</td>
+              <td>화</td>
+              <td>수</td>
+              <td>목</td>
+              <td>금</td>
+              <td><font color = "#4373CE">토</font></td>
+            </tr>
+          </table>
+          <script type="text/javascript">
+          	buildCalendar();
+          </script>
+        </div>
+      </div>
+      <!-- calendar_wrap finish -->
     </div>
+    <!-- body_wrap finish -->
   </div>  
   <!-- wrap finish -->
 </body>
