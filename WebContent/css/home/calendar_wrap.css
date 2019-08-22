@@ -15,15 +15,36 @@
 td {
 	width: 100px;
 	text-align: left;
-	padding: 4px 0px 15px 4px;
-	display: table-cell;
-	vertical-align: inherit;	
+	padding: 4px 0px 10px 4px;
+	font-weight: 600;
+	font-size: 14px;
 }
 
-tr:nth-child(1) td{
+tr:nth-child(1) td {
 	text-align: center;
 	vertical-align: middle;
 	padding: 20px 4px;
 	font-weight: 600;
 	font-size: 18px;
+}
+
+.td_number {
+	position: relative;
+	right: -15px;
+	font-size: 10px;
+	padding: 0px 7px;
+	border-radius: 10px;
+	background-color: #1DA3AA;
+	color: white;
+	opacity: 0.4;
+}
+
+.td_number2 {
+	position: relative;
+	right: -15px;
+	font-size: 10px;
+	padding: 0px 7px;
+	border-radius: 10px;
+	background-color: #1DA3AA;
+	color: white;
 }
