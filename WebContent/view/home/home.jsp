@@ -22,50 +22,92 @@ uri="http://java.sun.com/jsp/jstl/core" %>
   <script>
   var today = new Date(); //오늘 날짜. 내 컴퓨터 로컬 기준
   var date = new Date(); //today의 Date를 세어주는 역할
-  function prevCalendar() {
+  function prevCalendar() { //이전 달
+	  // 이전 달을 today에 값을 저장하고 달력에 today를 넣어줌.
+	  // getMonth()는 현재 달을 받아 오므로 이전달을 출력하려면 -1을 해줘야함
 	  today = new Date(today.getFullYear(), today.getMonth()-1, today.getDate());
-	  buildCalendar();
+	  buildCalendar(); //달력 cell을 만들어 출력
   }
   
-  function nextCalendar() {
+  function nextCalendar() { //다음 달
 	  today = new Date(today.getFullYear(), today.getMonth()+1, today.getDate());
 	  buildCalendar();
   }
   
-  function buildCalendar() {
+  function buildCalendar() { //현재 달 달력 만들기
 	  var doMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  	  // 이번 달의 첫째 날
+  	  // new를 쓰는 이유: new를 쓰면 이번달의 로컬 월을 정확하게 받아온다.
+  	  // new를 쓰지 않으면 getMonth()는 0~11을 반환하기 때문에 +1을 해줘야한다.
 	  var lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  	  // 이번 달의 마지막 날
+  	  // day에 0을 줬기 때문에 다음달 시작일(1일)을 가져오는 대신 전달 마지막일을 가져오게 된다.
 	  var tbCalendar = document.getElementById("calendar");
+  	  // 날짜를 찍을 테이블 변수 만듬, 일까지 다 찍힌다.
 	  var tbCalenderYM = document.getElementById("tbCalendarYM");
-	  tbCalendarYM.innerHTML = today.getFullYear() + ". " + (today.getMonth() + 1);
+  	  // 테이블에 정확한 날짜 찍는 변수
+	  tbCalendarYM.innerHTML = today.getFullYear() + ". " + ("0" + (today.getMonth() + 1)).slice(-2);
+  	  // innerHTML에 년.월 표시. slice(-2)는 end에서부터 2자리를 짤라서 표시.
+  	  
+  	  /* while은 이번달이 끝나면 다음달로 넘겨주는 역할 */
 	  while (tbCalendar.rows.length > 2) {
-		tbCalendar.deleteRow($(this).parents("calendar").rows.length - 1);
+	  // 열을 지워줌
+	  // 기본 2열은 이미 정해져 있다.(년.월과 일~토요일부분)
+		tbCalendar.deleteRow(tbCalendar.rows.length - 1);
+	    //테이블의 tr갯수 만큼의 열 묶음을 한 칸씩 지워준다.
 	  }
 	  var row = null;
 	  row = tbCalendar.insertRow();
-	  var cnt = 0;
+	  // 테이블에 새로운 열 삽입
+	  var cnt = 0; // cnt, 셀의 갯수를 세어주는 역할
+	  // 1일이 시작되는 칸을 맞추어 줌
 	  for (i = 0; i < doMonth.getDay(); i++) {
-		cell = row.insertCell();
-		cnt = cnt + 1;
+	  /* 이번달의 요일만큼 돌림 */
+	  // doMonth.getDay() -> 이번달 첫날의 요일
+		cell = row.insertCell(); // 열 한칸한칸 계속 만들어주는 역할
+		cnt = cnt + 1; // 열의 갯수를 계속 다음으로 위치하게 해주는 역할
 	  }
 	  
+	  /* 달력 출력 */
 	  for (i = 1; i < lastDate.getDate(); i++) {
+	  // 1일부터 마지막 일까지 돌림
 		cell = row.insertCell();
-		cell.innerHTML = i;
+	    if (today.getFullYear() + 1 < date.getFullYear() + 1 
+	    		|| (today.getFullYear() + 1 == date.getFullYear() + 1 
+	    				&& today.getMonth() + 1 < date.getMonth() + 1)) {
+	    	// 지난해 이거나 지난달은 모두 td_number css 입히기
+	    	cell.innerHTML =
+	    		"<div class=\"td_date\">" + i + "</div>" + "<span class=\"td_number\">" + Math.floor(Math.random()*3+1) + "</span>";
+		} else if(today.getFullYear() + 1 == date.getFullYear() + 1
+				&& today.getMonth() + 1 == date.getMonth() + 1
+				&& i < today.getDate()) {
+			// 올해 이번달 오늘 이전 날짜는 td_number css 입히기
+	    	cell.innerHTML =
+	    		"<div class=\"td_date\">" + i + "</div>" + "<span class=\"td_number\">" + Math.floor(Math.random()*3+1) + "</span>";
+		} else {
+			// 오늘 이후 날짜는 td_number2 css 입히기
+			cell.innerHTML =
+				"<div class=\"td_date\">" + i + "</div>" + "<span class=\"td_number2\">" + Math.floor(Math.random()*3+1) + "</span>";
+		}
+		
+		// 셀을 1부터 마지막 day까지 HTML 문법에 넣어줌
 		cnt = cnt + 1;
-		if (cnt % 7 == 1) {
+		if (cnt % 7 == 1) { /* 일요일 계산 */
 			cell.innerHTML = "<font color = #F79DC2>" + i; 
 		}
-		if (cnt % 7 == 0) {
+		if (cnt % 7 == 0) { /* 토요일 계산 */
 			cell.innerHTML = "<font color = #4373CE>" + i;
 			row = calendar.insertRow();
+			// 토요일 다음에 올 셀을 추가
 		}
+		/* 오늘의 날짜에 색 칠하기 */
 		if (today.getFullYear() == date.getFullYear()
 				&& today.getMonth() == date.getMonth()
 				&& i == date.getDate()) {
-			cell.bgColor = "#B7B7B7";
+			// 달력에 있는 년,달과 내 컴퓨터의 로컬 년,달이 같고, 일이 오늘의 일과 같으면
+			cell.bgColor = "#B7B7B7"; // 셀의 배경색 칠함
 		}
-	}
+	  }
   }
   
   $(function(){
@@ -200,6 +242,44 @@ uri="http://java.sun.com/jsp/jstl/core" %>
           	buildCalendar();
           </script>
         </div>
+        <div class="calender_header">
+          <span class="claender_title">캘린더</span>
+        </div>
+        <ul class="calender_list">
+          <li>
+            <p class="list_title">
+              <span class="list_date">8.22 목</span>
+            </p>
+            <ul class="list_item">
+	          <li>
+	            <span class="item_subject">팀장회의</span>
+	          </li>
+	          <li>
+	            <span class="item_subject">스킬업특강</span>
+	          </li>
+            </ul>
+          </li>
+          <li>
+            <p class="list_title">
+              <span class="list_date">8.23 금</span>
+            </p>
+            <ul class="list_item">
+	          <li>
+	            <span class="item_subject">팀장회의</span>
+	          </li>
+            </ul>
+          </li>
+          <li>
+            <p class="list_title">
+              <span class="list_date">8.24 토</span>
+            </p>
+            <ul class="list_item">
+              <li>
+	            <p class="list_desc">등록된 일정이 없습니다.</p>
+	          </li>
+            </ul>
+          </li>
+        </ul>
       </div>
       <!-- calendar_wrap finish -->
     </div>

@@ -48,6 +48,24 @@ ul {
 	font-size: 24px;
 	margin:0;
 }
+
+div.pageGroup{ /*페이지 그룹 */
+    text-align: center !important;
+}
+div.pageGroup>ul{ 
+    text-align: center !important;
+    display:inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 2px;
+}
+div.pageGroup>ul>li{
+    display: inline;
+}
+
+.body_content {
+	text-align: center;
+}
 </style> 
 <script>
   function printClock() {
@@ -95,10 +113,6 @@ $(function(){
 		$("#work_start").prop("disabled", false);
 	});
 
-	$("#myButtons1").click(function(){
-	    alert('AJAX로 처리하고 정상 응답이면.. hide 해 준다.');
-			$('#myModal').modal('hide');
-	});
 	
 	$("#work_start").click(function(){
 		$.ajax({
@@ -160,8 +174,47 @@ $(function(){
 				}
 			}
 		});
+		return false;
 	});
+	
+	var $aArr = $("body > div > header > div:nth-child(2) > nav > ul > li.menu-item.active > a > span");	
+    $aArr.click(function(){
+    	$.ajax({
+    		url: "${contextPath}/work_list",
+    		data:'emp_no='+<%=session.getAttribute("emp_no")%>,
+    		success:function(data){
+    			/* var jsonObjArr = JSON.parse(data);
+				var trs = "<colgroup><col width='30%'><col width='30%'><col width='30%'><col width='30%'></colgroup>";
+			    trs += "<tr><th>날짜</th><th>시간</th><th>근무시간</th><th>내용</th></tr>";				
+				for(var i=0; i<jsonObjArr.length; i++){
+					console.log(jsonObjArr[i]);
+					var jsonObj = jsonObjArr[i];//객체{}
+				    trs += "<tr style='border:1px solid;'>"+
+		 				       "<td>"+jsonObj.work_date+"</td>"+
+				               "<td>"+jsonObj.work_time+"</td>"+
+				               "<td></td>"+
+				               "<td>"+jsonObj.work_content+"</td>"+
+			               "</tr>";				    
+				} */
+				//$("#punc>table").html(trs);	
+				$("#punc>table").append(data);
+				//alert(data);
+    		}    		
+    	});//end ajax  
+    	return false;
+    });//end click
 });
+
+
+function popupOpen(){
+
+	var popUrl = "${contextPath}/view/punctuality/detail.jsp";	//팝업창에 출력될 페이지 URL
+
+	var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
+
+	window.open(popUrl,"",popOption);
+
+}
 	
 
 </script>
@@ -288,30 +341,40 @@ $(function(){
       <!-- body_content는 너만의 영역. 알아서 화면 내보내기-->
       <div class="body_content">
         <!-- 아래부터 작성하면됨 -->
-      	 너가 꾸밀 영역 
-      	 <div><%=session.getAttribute("emp_no") %></div>
-      	 <div>
-      	 	<table>
+      	 <h1>근태 현황</h1>
+      	 <div id="punc">
+      	 	<table style="border:1px solid;width:100%;">
       	 		<colgroup>
-      	 		<col width="30%">
-      	 		<col width="30%">
-      	 		<col width="30%">
-      	 		<col width="30%">
+      	 		<col width="20%">
+      	 		<col width="20%">
+      	 		<col width="20%">
+      	 		<col width="20%">
+      	 		<col width="50%">
       	 		</colgroup>
       	 		<tr>
-      	 			<th>일자</th>
-      	 			<th>날짜</th>
-      	 			<th>타입</th>
+      	 		    <th>날짜</th>
+      	 			<th>출근시간</th>
+      	 			<th>퇴근시간</th>
+      	 			<th>근무시간</th>
       	 			<th>내용</th>
       	 		</tr>
       	 		<tr>
-      	 			<td>19/08/21</td>
-      	 			<td>08:50</td>
-      	 			<td>출근</td>
-      	 			<td>정상</td>
+      	 			<td></td>
+      	 			<td></td>
+      	 			<td></td>
+      	 			<td></td>
+      	 			<td></td>      	 			
       	 		</tr>
       	 	</table>
       	 </div>
+      	 <%--<div class="pageGroup">
+      	 	<ul>
+      	 		<li><span>1</span></li>
+      	 		<li><span>2</span></li>
+      	 		<li><span>3</span></li>
+      	 		<li><span>4</span></li>
+      	 	</ul>
+      	 </div> --%>
       	 <%-- <div>${sessionScope.emp_no}</div> --%>
       	<!--  -->
       </div>

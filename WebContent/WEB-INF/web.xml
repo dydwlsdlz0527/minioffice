@@ -19,5 +19,6 @@
     <url-pattern>*.html</url-pattern>
     <url-pattern>*.js</url-pattern>
     <url-pattern>*.ico</url-pattern>
+    <url-pattern>*.gif</url-pattern>
   </servlet-mapping>
 </web-app>
