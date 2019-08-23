@@ -62,6 +62,11 @@ tr:nth-child(1) td {
 	align-items: center;
 }
 
+ul.calender_list {
+	max-height: 360px;
+	overflow: auto;
+}
+
 ul.calender_list>li {
 	border-top: 1px solid #ccc;
 	background-color: white;

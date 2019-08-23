@@ -118,11 +118,12 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 		  data: 'emp_no=' + ${sessionScope.emp_no},
 		  success: function (data) {
 			  var jsonObjArr = JSON.parse(data);
-			  //console.log(jsonObjArr);	
-			  var date = "";
-			  var preStart = "";
+			  // console.log(jsonObjArr);	
+			  var date = ""; // 날짜, 요일 넣기 위한 변수
+			  var preStart = ""; // 날짜 비교를 하기 위해서 만든 변수 
 			  var week = ['일', '월', '화', '수', '목', '금', '토'];
 			  
+			  // ul.calender_list날짜, 요일 부분 미리 만들기
 			  for (var i = 0; i < jsonObjArr.length; i++) {
 				var jsonObj = jsonObjArr[i];
 				var dayOfWeek = week[new Date(jsonObj.fullDate).getDay()];

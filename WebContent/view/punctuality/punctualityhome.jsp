@@ -72,6 +72,11 @@ div.pageGroup>ul>li{
     justify-content: flex-start;
     align-items: center;
 }
+
+.side_title h1{
+	font-size: inherit;
+	margin: 0; 
+}
 </style> 
 <script>
   function printClock() {

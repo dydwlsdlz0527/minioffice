@@ -557,11 +557,12 @@ public class ScheduleDao {
 			String password = "1234";
 			con = DriverManager.getConnection(url, user, password);
 			String select3daysSQL = "SELECT *\r\n" + 
-					"FROM personal_schedule\r\n" + 
-					"WHERE emp_no = ?\r\n" + 
+					"FROM personal_schedule \r\n" + 
+					"WHERE emp_no = ? \r\n" + 
 					"AND schedule_start >= TO_DATE(SYSDATE, 'YY/MM/DD')\r\n" + 
 					"AND schedule_start <= TO_DATE(SYSDATE+3, 'YY/MM/DD')\r\n" + 
-					"AND schedule_type = '1'";
+					"AND schedule_type = '1'\r\n" + 
+					"ORDER BY schedule_start";
 			pstmt = con.prepareStatement(select3daysSQL);
 			pstmt.setString(1, empno);
 			rs  = pstmt.executeQuery();
