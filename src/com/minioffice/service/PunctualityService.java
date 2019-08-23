@@ -34,7 +34,7 @@ public class PunctualityService {
 		jsonObj.put("emp_no", p.getEmp().getEmp_no());
 		
 		String str = jsonObj.toString();
-		System.out.println(str);
+		//System.out.println(str);
 		return str;
 	}
 	
@@ -52,7 +52,7 @@ public class PunctualityService {
 		jsonObj.put("emp_no", p.getEmp().getEmp_no());
 		
 		String str = jsonObj.toString();
-		System.out.println(str);
+		//System.out.println(str);
 		return str;
 	}
 	
@@ -72,7 +72,7 @@ public class PunctualityService {
 		jsonObj.put("work_content", p.getWork_content());
 		
 		String str = jsonObj.toString();
-		System.out.println(str);
+		//System.out.println(str);
 		return str;
 	}
 	
@@ -123,7 +123,7 @@ public class PunctualityService {
 			String new_work_content = p.getWork_content();
 			
 			if(i != 0 && !new_work_date.equals(work_date)) { //날이 바뀔 경우	
-				System.out.println("in if i=" + i + "new_work_date=" + new_work_date + ", work_date=" + work_date);
+				//System.out.println("in if i=" + i + "new_work_date=" + new_work_date + ", work_date=" + work_date);
 				boolean flag = true; //출퇴근여부
 				Map<String, String> map = new HashMap<>();
 				map.put("work_date", work_date); //날짜
@@ -230,7 +230,7 @@ public class PunctualityService {
 		//------------------------------
 		
 		
-		System.out.println(result);
+		//System.out.println(result);
 		return result;
 	}
 }

@@ -204,13 +204,13 @@ $(function(){
 
 function popupOpen(obj, content){
 	//var con = document.querySelector(".con");
-	console.log($(obj).next("div"));
+	//console.log($(obj).next("div"));
 	if($(obj).next("div").length == 1){
-		alert("1");
+		//alert("1");
 		popupClose($(obj).next("div"));
 	}else{
 		$("<div class='con' onclick='popupClose(this)'; >"+content+"</div>").appendTo($(obj).parent());
-		alert("2");
+		//alert("2");
 		
 	}
 	
@@ -220,7 +220,7 @@ function popupOpen(obj, content){
 };	
 
 function popupClose(obj){
-	alert("popupClose...");
+	//alert("popupClose...");
 	$(obj).remove();
 	return false;
 };
