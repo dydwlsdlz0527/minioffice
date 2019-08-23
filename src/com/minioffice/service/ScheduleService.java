@@ -47,12 +47,12 @@ public class ScheduleService {
 
 	}
 
-	public String scheduleshow()
+	public String scheduleshow(String emp_no)
 	{
 		JSONArray jsonArr = new JSONArray();
 		try
 		{
-			List<Map<String, String>> list = dao.show();
+			List<Map<String, String>> list = dao.show(emp_no);
 
 			for (Map<String, String> map : list)
 			{

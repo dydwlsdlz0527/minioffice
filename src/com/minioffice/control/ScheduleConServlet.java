@@ -35,14 +35,13 @@ public class ScheduleConServlet extends HttpServlet {
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
 		String schedule_subject= request.getParameter("schedule_subject"); 
 		String schedule_start= request.getParameter("schedule_start"); 
 		String schedule_end= request.getParameter("schedule_end");
 		String schedule_content= request.getParameter("schedule_content");
 		String schedule_place=request.getParameter("schedule_place");
 		String schedule_type = request.getParameter("schedule_type");
-		
+		String emp_no = request.getParameter("emp_no");
 		
 		System.out.println("=== schedule con Post ===");
 		System.out.println(schedule_subject);
@@ -51,6 +50,7 @@ public class ScheduleConServlet extends HttpServlet {
 		System.out.println(schedule_end);
 		System.out.println(schedule_content);
 		System.out.println(schedule_type);
+		System.out.println(emp_no);
 		
 		
 		PSchedule s = new PSchedule();
@@ -61,7 +61,9 @@ public class ScheduleConServlet extends HttpServlet {
 		s.setSchedule_content(schedule_content);
 		s.setSchedule_place(schedule_place);
 		s.setSchedule_type(schedule_type);
+		s.setEmp_no(emp_no);
 		
+		System.out.println(s.getEmp_no());
 		System.out.println(s.getSchedule_subject());
 		System.out.println(s.getSchedule_start());
 		System.out.println(s.getSchedule_end());
@@ -71,6 +73,7 @@ public class ScheduleConServlet extends HttpServlet {
 		
 		
 		String result = service.scheduleinsert(s);
+		
 		request.setAttribute("result", result);
 		System.out.println("scs - result : " + result);
 		

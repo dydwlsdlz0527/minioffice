@@ -17,6 +17,7 @@ import org.json.simple.JSONObject;
 import com.minioffice.dao.ScheduleDao;
 import com.minioffice.exception.AddException;
 import com.minioffice.exception.NotFoundException;
+import com.minioffice.vo.PSchedule;
 
 /**
  * Servlet implementation class ScheduleServiceServlet
@@ -25,12 +26,14 @@ public class ScheduleServiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    
 	private ScheduleDao dao;
+	private PSchedule s;
    
 	static private ScheduleServiceServlet scheduleservlet = new ScheduleServiceServlet();
     
 	private ScheduleServiceServlet() {
     	super();
         dao = new ScheduleDao();
+        
     }
     static public ScheduleServiceServlet getInstance() {
     	return scheduleservlet;
@@ -42,10 +45,11 @@ public class ScheduleServiceServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//response.setContentType("application/json;charset=utf-8");
 		// TODO Auto-generated method stub
-		System.out.println("---------- serviceServlet get ----------");
-		String result = scheduleshow();
 		//PrintWriter out = response.getWriter();
 		//out.print(result);
+		
+		System.out.println("---------- serviceServlet get ----------");
+		String result = scheduleshow();
 		
 		System.out.println("sss result : " + result);
 		request.setAttribute("result", result);
@@ -63,6 +67,8 @@ public class ScheduleServiceServlet extends HttpServlet {
 		System.out.println("---------- serviceServlet post ----------");
 		String schedule_no = request.getParameter("schedule_no");
 		
+		System.out.println("dd" + schedule_no);
+		
 		String result= scheduleDelete(schedule_no);
 		System.out.println("db 삭제 성공");
 		
@@ -76,6 +82,60 @@ public class ScheduleServiceServlet extends HttpServlet {
 		rd.forward(request, response);
 		
 	}
+	
+	public void getEmpSchedule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//response.setContentType("application/json;charset=utf-8");
+		// TODO Auto-generated method stub
+		//PrintWriter out = response.getWriter();
+		//out.print(result);
+		
+		System.out.println("---------- serviceServlet getEmpSchedule ----------");
+		
+		String emp_no = request.getParameter("emp_no");
+		System.out.println("get_emp_no" + emp_no);
+		String result = scheduleshow(emp_no);
+		
+		System.out.println("sss result : " + result);
+		request.setAttribute("result", result);
+		RequestDispatcher rd = request.getRequestDispatcher("/scheduleserviceresult.jsp");
+		rd.forward(request, response);
+	}
+	
+	public void Deptscheduleshow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//response.setContentType("application/json;charset=utf-8");
+		// TODO Auto-generated method stub
+		//PrintWriter out = response.getWriter();
+		//out.print(result);
+		
+		System.out.println("---------- serviceServlet Deptscheduleshow ----------");
+		
+
+		String result = Deptscheduleshow();
+		
+		System.out.println("sss result : " + result);
+		request.setAttribute("result", result);
+		RequestDispatcher rd = request.getRequestDispatcher("/scheduleserviceresult.jsp");
+		rd.forward(request, response);
+	}
+	
+	public void Comscheduleshow(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//response.setContentType("application/json;charset=utf-8");
+		// TODO Auto-generated method stub
+		//PrintWriter out = response.getWriter();
+		//out.print(result);
+		
+		System.out.println("---------- serviceServlet Comscheduleshow ----------");
+		
+
+		String result = Comscheduleshow();
+		
+		System.out.println("sss result : " + result);
+		request.setAttribute("result", result);
+		RequestDispatcher rd = request.getRequestDispatcher("/scheduleserviceresult.jsp");
+		rd.forward(request, response);
+	}
+	
+	
 	
 	public String scheduleDelete(String schedule_no)
 	{
@@ -104,7 +164,6 @@ public class ScheduleServiceServlet extends HttpServlet {
 		return str;
 
 	}
-
 	
 	public String scheduleshow()
 	{
@@ -132,6 +191,97 @@ public class ScheduleServiceServlet extends HttpServlet {
 		System.out.println("sss toJSONString : " + jsonArr.toJSONString());
 		System.out.println("sss toString  	 : " + jsonArr.toString());
 		
+		return jsonArr.toString();
+
+	}
+	
+	public String Comscheduleshow()
+	{
+		JSONArray jsonArr = new JSONArray();
+		try
+		{
+			List<Map<String, String>> list = dao.Comshow();
+
+			for (Map<String, String> map : list)
+			{
+				String id = map.get("id");
+				String title = map.get("title");
+				String start = map.get("start");
+				String end = map.get("end");
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.putAll(map);
+				jsonArr.add(jsonObj);
+			}
+		} catch (NotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		System.out.println("sss toJSONString : " + jsonArr);
+		System.out.println("sss toJSONString : " + jsonArr.toJSONString());
+		System.out.println("sss toString  	 : " + jsonArr.toString());
+		
+		return jsonArr.toString();
+
+	}
+	
+	
+	public String Deptscheduleshow()
+	{
+		JSONArray jsonArr = new JSONArray();
+		try
+		{
+			List<Map<String, String>> list = dao.Deptshow();
+
+			for (Map<String, String> map : list)
+			{
+				String id = map.get("id");
+				String title = map.get("title");
+				String start = map.get("start");
+				String end = map.get("end");
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.putAll(map);
+				jsonArr.add(jsonObj);
+			}
+		} catch (NotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		System.out.println("sss toJSONString : " + jsonArr);
+		System.out.println("sss toJSONString : " + jsonArr.toJSONString());
+		System.out.println("sss toString  	 : " + jsonArr.toString());
+		
+		return jsonArr.toString();
+
+	}
+
+	
+	public String scheduleshow(String emp_no)
+	{
+		JSONArray jsonArr = new JSONArray();
+		try
+		{
+			List<Map<String, String>> list = dao.show(emp_no);
+
+			for (Map<String, String> map : list)
+			{
+				String id = map.get("id");
+				String title = map.get("title");
+				String start = map.get("start");
+				String end = map.get("end");
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.putAll(map);
+				jsonArr.add(jsonObj);
+			}
+		} catch (NotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		System.out.println("sss toJSONString : " + jsonArr);
+		System.out.println("sss toJSONString : " + jsonArr.toJSONString());
+		System.out.println("sss toString  	 : " + jsonArr.toString());
 		
 		return jsonArr.toString();
 
