@@ -118,7 +118,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 		  data: 'emp_no=' + ${sessionScope.emp_no},
 		  success: function (data) {
 			  var jsonObjArr = JSON.parse(data);
-			  console.log(jsonObjArr);	
+			  //console.log(jsonObjArr);	
 			  var date = "";
 			  var preStart = "";
 			  var week = ['일', '월', '화', '수', '목', '금', '토'];
@@ -295,6 +295,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
           <span class="claender_title">캘린더</span>
         </div>
         <ul class="calender_list">
+          <!-- 오늘의 일정 구조 예제. 화면 불러오면서 새로 고쳐짐 -->
           <li>
             <p class="list_title">
               <span class="list_date">8.22 목</span>
@@ -328,6 +329,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 	          </li>
             </ul>
           </li>
+          <!-- 예제 끝 -->
         </ul>
       </div>
       <!-- calendar_wrap finish -->

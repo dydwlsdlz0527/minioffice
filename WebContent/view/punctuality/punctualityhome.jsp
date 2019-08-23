@@ -66,6 +66,12 @@ div.pageGroup>ul>li{
 .body_content {
 	text-align: center;
 }
+
+.body_side .side_title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
 </style> 
 <script>
   function printClock() {
@@ -83,9 +89,9 @@ div.pageGroup>ul>li{
 	    	currentHours = addZeros(currentHours - 12,2);
 	    }
 
-	    if(currentSeconds >= 50){// 50초 이상일 때 색을 변환해 준다.
+	    /* if(currentSeconds >= 50){// 50초 이상일 때 색을 변환해 준다.
 	       currentSeconds = '<span style="color:#de1951;">'+currentSeconds+'</span>'
-	    }
+	    } */
 	    clock.innerHTML = currentHours+":"+currentMinute+":"+currentSeconds +" <span style='font-size:30px;'>"+ amPm+"</span>"; //날짜를 출력해 줌
 	    
 	    setTimeout("printClock()",1000);         // 1초마다 printClock() 함수 호출
@@ -168,6 +174,7 @@ $(function(){
 					msg += "성공";
 					alert(msg);
 					$("#myModal").modal("hide");
+					location.reload();
 				} else {
 					msg += "실패";
 					alert(msg);
@@ -183,39 +190,41 @@ $(function(){
     		url: "${contextPath}/work_list",
     		data:'emp_no='+<%=session.getAttribute("emp_no")%>,
     		success:function(data){
-    			/* var jsonObjArr = JSON.parse(data);
-				var trs = "<colgroup><col width='30%'><col width='30%'><col width='30%'><col width='30%'></colgroup>";
-			    trs += "<tr><th>날짜</th><th>시간</th><th>근무시간</th><th>내용</th></tr>";				
-				for(var i=0; i<jsonObjArr.length; i++){
-					console.log(jsonObjArr[i]);
-					var jsonObj = jsonObjArr[i];//객체{}
-				    trs += "<tr style='border:1px solid;'>"+
-		 				       "<td>"+jsonObj.work_date+"</td>"+
-				               "<td>"+jsonObj.work_time+"</td>"+
-				               "<td></td>"+
-				               "<td>"+jsonObj.work_content+"</td>"+
-			               "</tr>";				    
-				} */
-				//$("#punc>table").html(trs);	
+				$("#punc>table>tr:not(:first-child)").remove();
 				$("#punc>table").append(data);
+				//
 				//alert(data);
     		}    		
     	});//end ajax  
     	return false;
     });//end click
+    
+    $("body > div > header > div:nth-child(2) > nav > ul > li.menu-item.active > a > span").trigger("click");
 });
 
-
-function popupOpen(){
-
-	var popUrl = "${contextPath}/view/punctuality/detail.jsp";	//팝업창에 출력될 페이지 URL
-
-	var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
-
-	window.open(popUrl,"",popOption);
-
-}
+function popupOpen(obj, content){
+	//var con = document.querySelector(".con");
+	//console.log($(obj).next("div"));
+	if($(obj).next("div").length == 1){
+		//alert("1");
+		popupClose($(obj).next("div"));
+	}else{
+		$("<div class='con' onclick='popupClose(this)'; >"+content+"</div>").appendTo($(obj).parent());
+		//alert("2");
+		
+	}
 	
+	//$("<button class='con' onclick='popupClose(con);'>닫기</button>").appendTo($(obj).parent());
+	//alert($(obj).parent().html());
+	return false;
+};	
+
+function popupClose(obj){
+	//alert("popupClose...");
+	$(obj).remove();
+	return false;
+};
+
 
 </script>
 </head>
@@ -343,14 +352,15 @@ function popupOpen(){
         <!-- 아래부터 작성하면됨 -->
       	 <h1>근태 현황</h1>
       	 <div id="punc">
-      	 	<table style="border:1px solid;width:100%;">
+      	 	<table  class="table">
       	 		<colgroup>
       	 		<col width="20%">
-      	 		<col width="20%">
-      	 		<col width="20%">
-      	 		<col width="20%">
-      	 		<col width="50%">
+      	 		<col width="15%">
+      	 		<col width="15%">
+      	 		<col width="15%">
+      	 		<col width="70%">
       	 		</colgroup>
+      	 		<thead>
       	 		<tr>
       	 		    <th>날짜</th>
       	 			<th>출근시간</th>
@@ -358,13 +368,10 @@ function popupOpen(){
       	 			<th>근무시간</th>
       	 			<th>내용</th>
       	 		</tr>
-      	 		<tr>
-      	 			<td></td>
-      	 			<td></td>
-      	 			<td></td>
-      	 			<td></td>
-      	 			<td></td>      	 			
-      	 		</tr>
+      	 		</thead>
+      	 		<tbody>
+      	 		
+      	 		</tbody>
       	 	</table>
       	 </div>
       	 <%--<div class="pageGroup">

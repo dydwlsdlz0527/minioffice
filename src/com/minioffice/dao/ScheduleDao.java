@@ -86,7 +86,7 @@ public class ScheduleDao {
 			System.out.println("insertSQL : " + insertSQL);
 			
 			//pstmt.setString(2, s.getSchedule_emp_no());
-			pstmt.setString(1, "200402");
+			pstmt.setString(1, s.getEmp_no());
 			pstmt.setString(2, s.getSchedule_start());
 			pstmt.setString(3, s.getSchedule_end());
 			pstmt.setString(4, s.getSchedule_content());
@@ -131,7 +131,6 @@ public class ScheduleDao {
 		}
 
 	}
-
 	public List<Map<String,String>> show() throws NotFoundException			
 	{
 		List<Map<String,String>> list = new ArrayList<>();
@@ -150,8 +149,304 @@ public class ScheduleDao {
 			
 			String selectIdSQL = "SELECT * FROM PERSONAL_SCHEDULE";
 			pstmt = con.prepareStatement(selectIdSQL);
+			rs = pstmt.executeQuery();
 			
-			//pstmt.setString(1, id);
+			while(rs.next())
+			{
+				HashMap<String,String> map = new HashMap<>();
+				String schedule_no = Integer.toString(rs.getInt("schedule_no"));
+				String schedule_subject = rs.getString("schedule_subject");
+				String schedule_start = rs.getString("schedule_start");
+				String schedule_end = rs.getString("schedule_end");
+				String schedule_type = rs.getString("schedule_type");
+				String schedule_content = rs.getString("schedule_content");
+				String schedule_place = rs.getString("schedule_place");
+				String emp_no = rs.getString("emp_no");
+				
+				map.put("id", schedule_type);
+				map.put("title",schedule_no +" - "+schedule_subject+" - "+ schedule_place +" - "+schedule_content );
+				map.put("start", schedule_start);
+				map.put("end", schedule_end);
+				map.put("content", schedule_content);
+				map.put("emp_no", emp_no);
+				//map.put("groupId", schedule_type);	
+				
+				switch(schedule_type)
+				{
+				case "1": break;
+				case "2":
+					map.put("color", "green");
+					break;
+				case "3":
+					map.put("color", "yellow");
+					break;
+					
+				}
+				
+				
+				list.add(map);
+				
+				System.out.println("------------show-----------------");
+				System.out.println(rs.getString("schedule_no"));
+				System.out.println(rs.getString("schedule_subject"));
+				System.out.println(rs.getString("schedule_start"));
+				System.out.println(rs.getString("schedule_end"));
+			}
+			if(list.size() == 0) {
+				throw new NotFoundException("검색결과가 없습니다.");
+			}
+		} catch (Exception e)
+		{
+			throw new NotFoundException(e.getMessage());
+		} finally
+		{
+			if (rs != null)
+				try
+				{
+					rs.close();
+				} catch (SQLException e)
+				{
+				}
+			if (pstmt != null)
+				try
+				{
+					pstmt.close();
+				} catch (SQLException e)
+				{
+				}
+			if (con != null)
+				try
+				{
+					con.close();
+				} catch (SQLException e)
+				{
+				}
+			
+		}
+		
+		System.out.println("list : " + list);
+		return list;
+		
+	}
+	public List<Map<String,String>> Comshow() throws NotFoundException			
+	{
+		List<Map<String,String>> list = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String user = "miniuser";
+			String password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			
+			String selectIdSQL = "SELECT * FROM PERSONAL_SCHEDULE where schedule_type = 3";
+			pstmt = con.prepareStatement(selectIdSQL);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next())
+			{
+				HashMap<String,String> map = new HashMap<>();
+				String schedule_no = Integer.toString(rs.getInt("schedule_no"));
+				String schedule_subject = rs.getString("schedule_subject");
+				String schedule_start = rs.getString("schedule_start");
+				String schedule_end = rs.getString("schedule_end");
+				String schedule_type = rs.getString("schedule_type");
+				String schedule_content = rs.getString("schedule_content");
+				String schedule_place = rs.getString("schedule_place");
+				String emp_no = rs.getString("emp_no");
+				
+				map.put("id", schedule_type);
+				map.put("title",schedule_no +" - "+schedule_subject+" - "+ schedule_place +" - "+schedule_content );
+				map.put("start", schedule_start);
+				map.put("end", schedule_end);
+				map.put("content", schedule_content);
+				map.put("emp_no", emp_no);
+				//map.put("groupId", schedule_type);	
+				
+				switch(schedule_type)
+				{
+				case "1": break;
+				case "2":
+					map.put("color", "green");
+					break;
+				case "3":
+					map.put("color", "yellow");
+					break;
+					
+				}
+				
+				
+				list.add(map);
+				
+				System.out.println("------------show-----------------");
+				System.out.println(rs.getString("schedule_no"));
+				System.out.println(rs.getString("schedule_subject"));
+				System.out.println(rs.getString("schedule_start"));
+				System.out.println(rs.getString("schedule_end"));
+			}
+			if(list.size() == 0) {
+				throw new NotFoundException("검색결과가 없습니다.");
+			}
+		} catch (Exception e)
+		{
+			throw new NotFoundException(e.getMessage());
+		} finally
+		{
+			if (rs != null)
+				try
+				{
+					rs.close();
+				} catch (SQLException e)
+				{
+				}
+			if (pstmt != null)
+				try
+				{
+					pstmt.close();
+				} catch (SQLException e)
+				{
+				}
+			if (con != null)
+				try
+				{
+					con.close();
+				} catch (SQLException e)
+				{
+				}
+			
+		}
+		
+		System.out.println("list : " + list);
+		return list;
+		
+	}
+	
+	public List<Map<String,String>> Deptshow() throws NotFoundException			
+	{
+		List<Map<String,String>> list = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String user = "miniuser";
+			String password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			
+			String selectIdSQL = "SELECT * FROM PERSONAL_SCHEDULE where schedule_type = 2";
+			pstmt = con.prepareStatement(selectIdSQL);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next())
+			{
+				HashMap<String,String> map = new HashMap<>();
+				String schedule_no = Integer.toString(rs.getInt("schedule_no"));
+				String schedule_subject = rs.getString("schedule_subject");
+				String schedule_start = rs.getString("schedule_start");
+				String schedule_end = rs.getString("schedule_end");
+				String schedule_type = rs.getString("schedule_type");
+				String schedule_content = rs.getString("schedule_content");
+				String schedule_place = rs.getString("schedule_place");
+				String emp_no = rs.getString("emp_no");
+				
+				map.put("id", schedule_type);
+				map.put("title",schedule_no +" - "+schedule_subject+" - "+ schedule_place +" - "+schedule_content );
+				map.put("start", schedule_start);
+				map.put("end", schedule_end);
+				map.put("content", schedule_content);
+				map.put("emp_no", emp_no);
+				//map.put("groupId", schedule_type);	
+				
+				switch(schedule_type)
+				{
+				case "1": break;
+				case "2":
+					map.put("color", "green");
+					break;
+				case "3":
+					map.put("color", "yellow");
+					break;
+					
+				}
+				
+				
+				list.add(map);
+				
+				System.out.println("------------show-----------------");
+				System.out.println(rs.getString("schedule_no"));
+				System.out.println(rs.getString("schedule_subject"));
+				System.out.println(rs.getString("schedule_start"));
+				System.out.println(rs.getString("schedule_end"));
+			}
+			if(list.size() == 0) {
+				throw new NotFoundException("검색결과가 없습니다.");
+			}
+		} catch (Exception e)
+		{
+			throw new NotFoundException(e.getMessage());
+		} finally
+		{
+			if (rs != null)
+				try
+				{
+					rs.close();
+				} catch (SQLException e)
+				{
+				}
+			if (pstmt != null)
+				try
+				{
+					pstmt.close();
+				} catch (SQLException e)
+				{
+				}
+			if (con != null)
+				try
+				{
+					con.close();
+				} catch (SQLException e)
+				{
+				}
+			
+		}
+		
+		System.out.println("list : " + list);
+		return list;
+		
+	}
+	
+	
+	
+
+	public List<Map<String,String>> show(String emp_nno) throws NotFoundException			
+	{
+		List<Map<String,String>> list = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String user = "miniuser";
+			String password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			
+			String selectIdSQL = "SELECT * FROM PERSONAL_SCHEDULE where emp_no = ?";
+			pstmt = con.prepareStatement(selectIdSQL);
+			
+			pstmt.setString(1, emp_nno);
 
 			rs = pstmt.executeQuery();
 			
@@ -165,13 +460,15 @@ public class ScheduleDao {
 				String schedule_type = rs.getString("schedule_type");
 				String schedule_content = rs.getString("schedule_content");
 				String schedule_place = rs.getString("schedule_place");
+				String emp_no = rs.getString("emp_no");
 				
-				map.put("id", schedule_no);
-				map.put("title", schedule_subject+" - "+ schedule_place +" - "+schedule_content );
+				map.put("id", schedule_type);
+				map.put("title",schedule_no +" - "+schedule_subject+" - "+ schedule_place +" - "+schedule_content );
 				map.put("start", schedule_start);
 				map.put("end", schedule_end);
 				map.put("content", schedule_content);
-				map.put("groupId", schedule_type);	
+				map.put("emp_no", emp_no);
+				//map.put("groupId", schedule_type);	
 				
 				switch(schedule_type)
 				{

@@ -34,7 +34,7 @@ public class PunctualityService {
 		jsonObj.put("emp_no", p.getEmp().getEmp_no());
 		
 		String str = jsonObj.toString();
-		System.out.println(str);
+		//System.out.println(str);
 		return str;
 	}
 	
@@ -52,7 +52,7 @@ public class PunctualityService {
 		jsonObj.put("emp_no", p.getEmp().getEmp_no());
 		
 		String str = jsonObj.toString();
-		System.out.println(str);
+		//System.out.println(str);
 		return str;
 	}
 	
@@ -72,7 +72,7 @@ public class PunctualityService {
 		jsonObj.put("work_content", p.getWork_content());
 		
 		String str = jsonObj.toString();
-		System.out.println(str);
+		//System.out.println(str);
 		return str;
 	}
 	
@@ -123,24 +123,21 @@ public class PunctualityService {
 			String new_work_content = p.getWork_content();
 			
 			if(i != 0 && !new_work_date.equals(work_date)) { //날이 바뀔 경우	
-				System.out.println("in if i=" + i + "new_work_date=" + new_work_date + ", work_date=" + work_date);
+				//System.out.println("in if i=" + i + "new_work_date=" + new_work_date + ", work_date=" + work_date);
 				boolean flag = true; //출퇴근여부
 				Map<String, String> map = new HashMap<>();
 				map.put("work_date", work_date); //날짜
 				if(timeArr[0] == null) {
 					map.put("work_time0", "");
 					flag = false;
-					
 				}else {
 					map.put("work_time0", sdf1.format(timeArr[0])); //출근시간
-					
 				}
 				if(timeArr[1]== null) {
 					map.put("work_time1","");
 					flag = false;
 				}else {
 					map.put("work_time1", sdf1.format(timeArr[1])); //퇴근시간
-					
 				}
 				if(flag == true) {
 					long time = (timeArr[1].getTime() -timeArr[0].getTime())/1000; //총근무시간
@@ -167,6 +164,8 @@ public class PunctualityService {
 				
 				work_content = "";//상세정보
 				
+				timeArr[0] = null;
+				timeArr[1] = null;
 			}
 
 			work_date = new_work_date; //날짜
@@ -184,7 +183,7 @@ public class PunctualityService {
 				}else if(new_work_type.equals("4")) {
 					type = "휴가";
 				}
-				work_content += type + "(" + sdf1.format(p.getWork_date()) +")-" + p.getWork_content() + ",";
+				work_content += type + "(" + sdf1.format(p.getWork_date()) +")-" + p.getWork_content() + ", ";
 			}
 			i++;
 		}
@@ -231,7 +230,7 @@ public class PunctualityService {
 		//------------------------------
 		
 		
-		System.out.println(result);
+		//System.out.println(result);
 		return result;
 	}
 }
