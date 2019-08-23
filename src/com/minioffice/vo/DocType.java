@@ -5,16 +5,27 @@ public class DocType {
 	private int doctype_no;
 	private String doc_subject;
 	private PDocType pdoctype;
+	private String doc_del;
 	
 	public DocType() {
 		super();
 	}
 
-	public DocType(int doctype_no, String doc_subject, PDocType pdoctype) {
+	public DocType(int doctype_no, String doc_subject, PDocType pdoctype, String doc_del) {
 		super();
 		this.doctype_no = doctype_no;
 		this.doc_subject = doc_subject;
 		this.pdoctype = pdoctype;
+		this.doc_del = doc_del;
+	}
+	
+
+	public String getDoc_del() {
+		return doc_del;
+	}
+
+	public void setDoc_del(String doc_del) {
+		this.doc_del = doc_del;
 	}
 
 	public int getDoctype_no() {
