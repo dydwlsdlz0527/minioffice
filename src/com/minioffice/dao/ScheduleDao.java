@@ -246,5 +246,67 @@ public class ScheduleDao {
 //		
 //	}
 	
+	//home.jsp 화면을 위한 일정 리스트 뽑기
+	public ArrayList<HashMap<String,String>> selectByEmpno(String empno) throws NotFoundException {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String user = "miniuser";
+			String password = "1234";
+			con = DriverManager.getConnection(url, user, password);
+			String select3daysSQL = "SELECT *\r\n" + 
+					"FROM personal_schedule\r\n" + 
+					"WHERE emp_no = ?\r\n" + 
+					"AND schedule_start >= TO_DATE(SYSDATE, 'YY/MM/DD')\r\n" + 
+					"AND schedule_start <= TO_DATE(SYSDATE+3, 'YY/MM/DD')\r\n" + 
+					"AND schedule_type = '1'";
+			pstmt = con.prepareStatement(select3daysSQL);
+			pstmt.setString(1, empno);
+			rs  = pstmt.executeQuery();
+			
+			ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+			
+			while(rs.next()) { 
+				HashMap<String,String> map = new HashMap<String, String>();
+				String schedule_subject = rs.getString("schedule_subject");
+				String schedule_start = rs.getString("schedule_start");
+				
+				map.put("schedule_subject", schedule_subject);
+				map.put("schedule_start", schedule_start);
+				
+				list.add(map);
+			}			
+			return list;	
+		} catch (Exception e) {
+			throw new NotFoundException(e.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}	
+	}
 
 }

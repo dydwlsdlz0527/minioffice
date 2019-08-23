@@ -111,13 +111,62 @@ uri="http://java.sun.com/jsp/jstl/core" %>
   }
   
   $(function(){
+	  
+	 $.ajax({
+		  url: "${contextPath}/schedulelist",
+		  type: 'post',
+		  data: 'emp_no=' + ${sessionScope.emp_no},
+		  success: function (data) {
+			  var jsonObjArr = JSON.parse(data);
+			  console.log(jsonObjArr);	
+			  var date = "";
+			  var preStart = "";
+			  var week = ['일', '월', '화', '수', '목', '금', '토'];
+			  
+			  for (var i = 0; i < jsonObjArr.length; i++) {
+				var jsonObj = jsonObjArr[i];
+				var dayOfWeek = week[new Date(jsonObj.fullDate).getDay()];
+				if (preStart != jsonObj.start) {
+					date += "<li><p class=\"list_title\"><span class=\"list_date\">" + jsonObj.start
+					+ "</span> " + dayOfWeek + "</p>" + "<ul class=\"list_item\"></ul></li>";				
+				}
+				preStart = jsonObj.start;			
+			  }
+			  $(".calender_list").html(date);
+			  
+			  var cnt = 1;
+			  var subject = "";
+			  var today_scheduleCnt = 0;
+			  for (var i = 0; i < jsonObjArr.length; i++) {
+				  var jsonObj = jsonObjArr[i];
+				  if ($(".calender_list>li:nth-child("+cnt+") .list_date").html() == jsonObj.start) {
+					  subject += "<li><span class=\"item_subject\">" + jsonObj.subject + "</span></li>";
+					  today_scheduleCnt += 1;
+				  } else {
+					  $(".calender_list>li:nth-child("+cnt+") .list_item").html(subject);
+					  cnt += 1;
+					  if (cnt == 2) {
+						  $(".today_scheduleCnt").html(today_scheduleCnt);
+					  }
+					  subject = "";
+					  subject += "<li><span class=\"item_subject\">" + jsonObj.subject + "</span></li>";
+				  }
+				  
+				  if (jsonObjArr.length - 1 == i) {
+					  $(".calender_list>li:nth-child("+cnt+") .list_item").html(subject);					
+				  }
+			  }			  
+		  }
+	 });
+	  
 	 $("#orgToggle").click(function(){		
 		 if ($(".tab_wrap").css("display") == "none") {
 			 $(".tab_wrap").show();
 		} else {
 			 $(".tab_wrap").hide();
 		}
-	 });
+	 }); 
+	 
   });
   
   </script>
@@ -197,7 +246,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
   	      </div>
   	      <div class="summary-calendar">
   	        <div class="calendar-column"><span>오늘의 일정</span></div>
-  	        <div class="calendar-column"><span>0</span></div>
+  	        <div class="calendar-column"><span class="today_scheduleCnt">0</span></div>
   	      </div>
   	    </div>
   	    <div class="organogram">

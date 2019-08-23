@@ -2,13 +2,26 @@ package com.minioffice.control;
 
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.json.simple.parser.JSONParser;
+
+import com.minioffice.exception.NotFoundException;
 import com.minioffice.service.ScheduleService;
 import com.minioffice.vo.PSchedule;
 
@@ -101,9 +114,7 @@ public class ScheduleConServlet extends HttpServlet {
 //		String path = "/result.jsp";
 //		System.out.println("scs - path : " + path);
 //		RequestDispatcher rd = request.getRequestDispatcher(path);			
-//		rd.forward(request, response);
-		
-		
-	}
+//		rd.forward(request, response);		
+	}	
 
 }

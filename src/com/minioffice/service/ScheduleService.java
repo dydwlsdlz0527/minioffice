@@ -1,5 +1,7 @@
 package com.minioffice.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,5 +88,29 @@ public class ScheduleService {
 //		s.scheduleshow();
 //		
 //	}
+	
+	//home.jsp 화면을 위한 일정 리스트 뽑기
+	public String scheduleList(String emp_no) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String,String>>();
+		JSONArray jsonArr = new JSONArray();
+		
+		try {
+			list = dao.selectByEmpno(emp_no);
+
+			for (int i = 0; i < list.size(); i++) {
+				map = list.get(i);
+				JSONObject json = new JSONObject();
+				json.put("subject", map.get("schedule_subject"));
+				json.put("start", (map.get("schedule_start")).substring(6,10));
+				json.put("fullDate", (map.get("schedule_start")).substring(0,10));
+				jsonArr.add(json);
+			}
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return jsonArr.toString();
+	}
 
 }
