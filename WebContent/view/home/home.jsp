@@ -123,40 +123,48 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 			  var preStart = ""; // 날짜 비교를 하기 위해서 만든 변수 
 			  var week = ['일', '월', '화', '수', '목', '금', '토'];
 			  
-			  // ul.calender_list날짜, 요일 부분 미리 만들기
+			  // ul.calendar_list날짜, 요일 부분 미리 만들기
 			  for (var i = 0; i < jsonObjArr.length; i++) {
-				var jsonObj = jsonObjArr[i];
-				var dayOfWeek = week[new Date(jsonObj.fullDate).getDay()];
-				if (preStart != jsonObj.start) {
+				var jsonObj = jsonObjArr[i]; // 컨트롤러에서 받은 jsonArr 꺼내기
+				var dayOfWeek = week[new Date(jsonObj.fullDate).getDay()]; // 날짜에 해당하는 요일 받기
+				if (preStart != jsonObj.start) {  // 이전날짜가 현재 받은 날짜와 같지 않으면 calender_list 안에 날짜와, 요일 만들기
 					date += "<li><p class=\"list_title\"><span class=\"list_date\">" + jsonObj.start
 					+ "</span> " + dayOfWeek + "</p>" + "<ul class=\"list_item\"></ul></li>";				
 				}
-				preStart = jsonObj.start;			
+				preStart = jsonObj.start; // 이전날짜 기억하기 			
 			  }
-			  $(".calender_list").html(date);
+			  $(".calender_list").html(date); // jsonArr로 받은 모든날짜와 요일을 넣어준다
 			  
-			  var cnt = 1;
-			  var subject = "";
-			  var today_scheduleCnt = 0;
+			  var cnt = 1; // 가져온 일정의 날짜가 바뀌는걸 감지하기 위한 카운트
+			  var subject = ""; // calender_list안에 넣을 문장
+			  var today_scheduleCnt = 0; // 오늘의 일정에 넣어줄 숫자를 카운트
 			  for (var i = 0; i < jsonObjArr.length; i++) {
 				  var jsonObj = jsonObjArr[i];
 				  if ($(".calender_list>li:nth-child("+cnt+") .list_date").html() == jsonObj.start) {
 					  subject += "<li><span class=\"item_subject\">" + jsonObj.subject + "</span></li>";
-					  today_scheduleCnt += 1;
+					  today_scheduleCnt += 1; // 오늘의 일정을 카운트 해준다
 				  } else {
 					  $(".calender_list>li:nth-child("+cnt+") .list_item").html(subject);
-					  cnt += 1;
+					  cnt += 1; // 다른날로 넘어가도록 카운트를 올려준다
 					  if (cnt == 2) {
-						  $(".today_scheduleCnt").html(today_scheduleCnt);
+						  // cnt가 2가되서 오늘에서 다른날로 넘어갈때 오늘의 일정 카운트를 넣어준다
+						  $(".today_scheduleCnt").html(today_scheduleCnt); 
 					  }
-					  subject = "";
+					  subject = ""; // 다른날에 들어갈 문장을 위해 초기화
 					  subject += "<li><span class=\"item_subject\">" + jsonObj.subject + "</span></li>";
 				  }
 				  
 				  if (jsonObjArr.length - 1 == i) {
+					  // 마지막 반복문이 끝나기전에 최종적으로 문장을 넣어준다
 					  $(".calender_list>li:nth-child("+cnt+") .list_item").html(subject);					
 				  }
-			  }			  
+			  }
+			  
+			  if (cnt == 1) {
+				  // 반복문이 끝나고나서 오늘 이외의 일정이 없었을땐 카운트된 스케줄이 들어가지 않는다
+				  // 따라서 여기서 넣어준다
+				  $(".today_scheduleCnt").html(today_scheduleCnt);
+			  }
 		  }
 	 });
 	  
