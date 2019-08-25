@@ -83,6 +83,7 @@ public class DocBoardDao {
 			    doc.setDocapprno(rs.getString(7));
 				list.add(doc);
 			}
+			
 			return list;
 		}catch (SQLException e) {
 			e.getStackTrace();
@@ -90,6 +91,39 @@ public class DocBoardDao {
 		} finally {
 			MyConnection.close(rs, pstmt, conn);
 		}
+	}
+
+	public Document SelectDoc(String docno) {
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		Document doc = new Document();
+		Employee emp = new Employee();
+		Department dept = new Department();
+		DocType doctp = new DocType();
+//		try {
+//			conn = MyConnection.getConnection();
+//			String query = "SELECT *\r\n" + 
+//					"FROM DOCUMENTS DOC, EMPLOYEE EMP, DEPARTMENT DEPT, EMP_RANK RK\r\n" + 
+//					"WHERE DOC.DOC_NO = ?\r\n" + 
+//					"AND DOC.EMP_NO = EMP.EMP_NO\r\n" + 
+//					"AND EMP.DEPT_NO = DEPT.DEPT_NO\r\n" + 
+//					"AND EMP.RANK_NO = RK.RANK_NO";
+//			pstmt = conn.prepareStatement(query);
+//			pstmt.setString(1, docno);
+//			rs = pstmt.executeQuery();
+//			while(rs.next()) {
+//				doc.setDoc_no(rs.getString(1));
+//				emp.setEmp_no(rs.getString(2));
+//				
+//			}
+//		}catch (SQLException e) {
+//			e.getStackTrace();
+//			throw new NotFoundException(e.getMessage());
+//		} finally {
+//			MyConnection.close(rs, pstmt, conn);
+//		}
+		return null;
 	}
 	
 //	public Document documentDetail(String empno) throws NotFoundException {

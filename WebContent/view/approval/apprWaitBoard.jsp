@@ -4,7 +4,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
+<c:set var="userno" value="${sessionScope.emp_no}"/>
 <style>
 header.content_top {
 	min-height: 39px;
@@ -152,6 +152,62 @@ ul.pagination-sm a {
     vertical-align: top;
 }
 </style>
+<script>
+	
+	var $pagination = $("ul.pagination-sm>li");
+	$pagination.click(function(){
+		var pageNum = $(this).html();
+		var pageNum = ${pb.getStartPage()-1}
+		$.ajax({
+			url : '${contextPath}/approvalWaitBoard',
+			data : 'currentPage='+ pageNum + "&empno="+'${userno}',
+			success : function(data){
+				$(".body_content").empty();
+				$(".body_content").html(data);
+			}
+		});
+	});
+
+	var $prevBt = $("#prev");
+	$prevBt.click(function(){
+		var pageNum = ${pb.getStartPage()-1}
+		$.ajax({
+			url : '${contextPath}/approvalWaitBoard',
+			data : 'currentPage='+ pageNum + "&empno="+'${userno}',
+			success : function(data){
+				$(".body_content").empty();
+				$(".body_content").html(data);
+			}
+		});
+	});
+	
+	var $nextBt = $("#next");
+	$nextBt.click(function(){
+		var pageNum = ${pb.getEndPage()+1}
+		$.ajax({
+			url : '${contextPath}/approvalWaitBoard',
+			data : 'currentPage='+ pageNum + "&empno="+'${userno}',
+			success : function(data){
+				$(".body_content").empty();
+				$(".body_content").html(data);
+			}
+		});
+	}); 
+	
+	var $DocdetailTr = $(".DocdetailTr");
+	$DocdetailTr.click(function(){
+		var docno = $(this).children(1).children(1).val();
+		$.ajax({
+			url : '${contextPath}/appWaitBoardDetail',
+			data : 'docno='+docno+"&empno="+'${userno}',
+			success : function(data){
+				$(".body_content").empty();
+				$(".body_content").html(data);
+			}
+		});
+	});
+
+</script>
 <header class="content_top">
 	<h2 style="font-size: x-large;">결재 대기 문서</h2>
 	<section class="combine_search">
@@ -231,8 +287,8 @@ ul.pagination-sm a {
 						<c:set var="endPage" value="${pb.endPage}"/>
 						<c:set var="cntPageGroup" value="${pb.cntPageGroup}"/>
 						<c:forEach var="b" items="${pb.list}">
-						<tr>
-							<td><input type="checkbox"></td>
+						<tr class = "DocdetailTr">
+							<td><input type="checkbox" name="dno" value="${b.getDocno()}"></td>
 							<td>${b.getDocdate()}</td>
 							<td>${b.getDoctypename()}</td>
 							<td></td>
@@ -247,7 +303,7 @@ ul.pagination-sm a {
 						<ul class="pagination-sm">
 							<%-- <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a></li> --%>
 							<c:if test="${currentPage>cntPageGroup}">
-								<li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
+								<li class="page-item"><a class="page-link" id="prev" href="javascript:void(0);"><i class="fas fa-angle-left"></i></a></li>
 							</c:if>
 							<c:forEach begin="${startPage}" end="${endPage}" varStatus="status">
 								<%-- <c:choose>
@@ -258,10 +314,10 @@ ul.pagination-sm a {
 											[<span class="underline">${status.current}</span>]&nbsp;&nbsp;
 										</c:otherwise>
 								</c:choose> --%>
-								<li class="page-item"><a class="page-link" href="#">${status.current}</a></li>
+								<li class="page-item"><a class="page-link" href="javascript:void(0);">${status.current}</a></li>
 							</c:forEach>
 							<c:if test="${endPage!=maxPage}">
-								<li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+								<li class="page-item"><a class="page-link" id="next" href="javascript:void(0);"><i class="fas fa-angle-right"></i></a></li>
 							</c:if>
 							<!-- <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a></li> -->
 						</ul>

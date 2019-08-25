@@ -5,6 +5,7 @@ import java.util.List;
 import com.minioffice.dao.DocBoardDao;
 import com.minioffice.exception.NotFoundException;
 import com.minioffice.vo.DocBean;
+import com.minioffice.vo.Document;
 import com.minioffice.vo.appBoardPageBean;
 
 public class DocBoardService {
@@ -43,5 +44,10 @@ public class DocBoardService {
 			return null;
 		}
 		
+	}
+
+	public Document boarddocdetail(String docno, String empno) {
+		Document doc = dao.SelectDoc(docno);
+		return null;
 	}
 }

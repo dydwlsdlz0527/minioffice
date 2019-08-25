@@ -259,7 +259,16 @@ div.sign_type_new {
     margin-right: -1px;
     font-size: 12px;
 }
-
+.doccontents{
+	margin: 1%;
+    border: 1px solid black;
+    width: 50%;
+    padding: 10px;
+}
+.tool_bar{
+	padding-bottom: 5px;
+    border-bottom: 1px solid;
+}
 }
 </style>
 <script>
@@ -300,7 +309,7 @@ div.sign_type_new {
 					+"&applist="+applicantArr,
 			success : function(data){
 				if(data.state==1){
-					alert('결재 성공');
+					alert('기안서 제출 성공');
 					triggerfn();
 				}else{
 					alert('실패');
@@ -310,6 +319,7 @@ div.sign_type_new {
 	});
 </script>
 <c:set var="doc" value="${requestScope.doc}"></c:set>
+<div class="doccontents">
 <header style="margin: 10px;">
 	<h1 style="font-size: x-large;"><strong>${doc.getDoc_subject()}</strong></h1>
 </header>
@@ -460,7 +470,7 @@ div.sign_type_new {
 			</div>
 		</section>
 	</div>
-
+</div>
 <%-- Doc Modal --%>
 <div class="Modal fade" tabindex="-1" data-target=".body_content" role="dialog" id="docModal" data-backdrop="false"></div>
 	

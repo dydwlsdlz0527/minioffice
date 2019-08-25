@@ -46,7 +46,6 @@ public class DispatcherServlet extends HttpServlet {
 			Object obj = getInstanceMethod.invoke(null, null);
 			Method method = clazz.getMethod(methodName, HttpServletRequest.class, 
 					HttpServletResponse.class);	// �޼��� �̸��� �ش��ϴ� �޼��� ã��
-			System.out.println(method.toString());
 			path=(String)method.invoke(obj, request, response); //�޼��� ȣ��
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
