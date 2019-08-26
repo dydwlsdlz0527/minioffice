@@ -1,5 +1,7 @@
 package com.minioffice.service;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +11,6 @@ import org.json.simple.JSONObject;
 import com.minioffice.dao.DocumentDAO;
 import com.minioffice.exception.NotFoundException;
 import com.minioffice.vo.DocType;
-import com.minioffice.vo.Document;
 
 public class DocService {
 	
@@ -67,6 +68,7 @@ public class DocService {
 			String[] applicantArr) {
 		String str = "";
 		try {
+			Path path = Paths.get("/docfile/"+docno+".txt");
 			dao.InsertDoc(doctypeno, docno, docempno, docempdept, docsubject, doccontent);
 			int size = applicantArr.length;
 			for(int i=0;i<size;i++) {

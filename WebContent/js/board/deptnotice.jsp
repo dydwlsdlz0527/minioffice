@@ -10,17 +10,21 @@
 th{
   border-spacing: 0px;
   border-collapse: separate;
-  border : 1px solid;
+  padding-top : 5px;
+  padding-bottom: 5px;
 
 }
 .boardlist:hover{
-background-color: red;
+background-color: #d1ffea;
 }
 
 td{
   border-spacing: 0px;
   border-collapse: separate;
-  border : 1px solid;
+  border-bottom : 1px solid;
+  border-color: #d7d7d7;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .underline{
@@ -82,7 +86,7 @@ $(function(){
 		$.ajax({
 			url:'${pageContext.request.contextPath}/boarddetail',
 			method:'GET',
-			data:'no='+$(this).children().html(),
+			data:'no='+$(this).children().html()+'&bord=2',
 			success: function(data){
 				$(".body_content").empty();
 				$(".body_content").html(data);
@@ -106,11 +110,11 @@ $(function(){
     </tr>
     <c:forEach var = "b" items="${requestScope.pb.list}">
       <tr class="boardlist">		
-        <td style="width:50px">${b.board_no }</td>
-        <td style="width:300px">${b.board_subject }</td>
-        <td style="width:100px">${b.emp.emp_name }</td>
-        <td style="width:100px">${b.board_date }</td>
-        <td style="width:50px">${b.board_cnt }</td>
+        <td>${b.dept_board_no }</td>
+        <td>${b.dept_board_subject }</td>
+        <td>${b.emp.emp_name }</td>
+        <td>${b.dept_board_date }</td>
+        <td>${b.dept_board_cnt }</td>
       </tr>
     </c:forEach>
   </table>

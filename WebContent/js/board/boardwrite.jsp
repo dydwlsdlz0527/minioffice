@@ -2,13 +2,20 @@
     pageEncoding="UTF-8"%>
 <style>
 .board{
-background-color: #e9ebf2;
+
 width : 100%;
+}
+.board_color{
+background-color: #f3f3f3;
+}
+.board_subject{
+padding-bottom: 20px;
 }
 .board_head{
 display:flex;
-margin-left: 30px;
+padding-left: 30px;
 padding-top: 20px;
+padding-bottom: 20px;
 }
 
 .inline{
@@ -22,7 +29,6 @@ margin-right: auto;
 
 .board_head_type{
 position: relative;
-margin-left:800px;
 }
 
 .board_subject_style{
@@ -44,6 +50,10 @@ margin-left:773px;
 width:1100px;
 }
 </style>
+<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="jquery.form.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
 <script>
 
 $(function(){
@@ -67,52 +77,60 @@ $(function(){
 		break;
 		
 		case 'B' :
-		$sub.append('<option value="c" name="boardType">부서 공지</option>');
-		$sub.append('<option value="d" name="boardType">부서게시판</option>');
+		$sub.append('<option value="a" name="boardType">부서 공지</option>');
+		$sub.append('<option value="b" name="boardType">부서게시판</option>');
 		break;
 		
 		
 		}
 	});
 	//게시판 등록
-	var $writeButtonObj = $("#writeButton");
+	/* var $writeButtonObj = $("#writeButton");*/
 	var $boardDataObj = $("#boardData");
-	$writeButtonObj.click(function(elClickedObj){
+	 $("#writeButton").click(function(elClickedObj){
 		 oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
-
+		 //var form = $('form')[0];
+		//var formData = new FormData(form);
 		 // 에디터의 내용에 대한 값 검증은 이곳에서
 		 // document.getElementById("ir1").value를 이용해서 처리한다.
 
-		 try {
-		     elClickedObj.form.submit();
-		 } catch(e) {}
-		    $.ajax({
+/* 		    $.ajax({
 			  url:'${contextPath}/miniOffice/boardwrite',
-			  method:'GET',
-			  data:$boardDataObj.serialize() +"&type="+$("#board_head_type_sub option:selected").val(),
+			  processData : false,
+			  contentType: false,
+			  method:'POST',
+			  data:formData,
 			  success:function(data){
-				  
 					$(".body_content").empty();
 					$(".body_content").html(data);
 
 			}
-		});
+		}); */
+	    try {
+			     elClickedObj.form.submit();
+			 } catch(e) {}
+			    $.ajax({
+				  url:'${contextPath}/miniOffice/boardwrite',
+				  method:'GET',
+				  data : $boardDataObj.serialize() +"&type="+$("#board_head_type_sub option:selected").val(),
+				  success:function(data){
+						$(".body_content").empty();
+						$(".body_content").html(data);
+
+				}
+			}); 
+
 		return false;
-	});
+	});  
+
+
 });		
 
 </script>
 
-<form id="boardData" enctype="multipart/form-data" >
+<form id="boardData">
 <div class = "board">
-  <div class="board_head">	<!-- 사진, 게시판 유형 -->
-	<div class = "board_head_profile inline"><!-- 프로필 -->
-	  <img src="${pageContext.request.contextPath }/images/profile/${sessionScope.emp_no}.jpg" style="width:80px; height:80px"><br>
-	  <span>${sessionScope.emp_name }</span>
-	  <input type="hidden" name="emp_no" value="${sessionScope.emp_no }">
-	  <span style="color:silver;">${sessionScope.rank_name }</span>
-	</div>
-
+  <div class="board_head board_color">	<!-- 사진, 게시판 유형 -->
 	<div class = "board_head_type">
 	  <select id="board_head_type_main">
 	    <option value='0'>게시판선택</option>
@@ -125,17 +143,17 @@ $(function(){
 	  </select>
 	</div>
   </div>
-  <hr>
   <div class="board_center">
+    <div class="board_subject board_color">
 	<span class="board_subject_style">제목</span>
 	<input type="text" class="subject" placeholder="제목을 입력하세요" name="boardSubject">
 	<br>
+	<br>
 	<span class="board_attach_style">첨부파일</span>
-	<input type="file">
+	<input type="file" name="file">
 	<button class="post" id="writeButton">게시하기</button>
-	<br><br>
-	
-      <textarea name="boardContent" id="ir1" rows="30" cols="170" placeholder="입력해주세요" ></textarea>
+	</div>
+      <textarea name="boardContent" id="ir1" rows="30" cols="175" placeholder="입력해주세요" ></textarea>
       <script type="text/javascript">
         var oEditors = [];
         nhn.husky.EZCreator.createInIFrame({

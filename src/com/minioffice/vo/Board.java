@@ -85,8 +85,5 @@ public class Board {
 	public void setBoard_type(char board_type) {
 		this.board_type = board_type;
 	}
-	
-	
-	
-	
+
 }

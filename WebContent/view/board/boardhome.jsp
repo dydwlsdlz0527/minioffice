@@ -26,7 +26,7 @@ border-bottom-style: solid;
 border-bottom-width: 1px;
 border-color: #b8b9c0;
 padding: 17px 15px;
-font-size: 28px;
+font-size: 20px;
 border-bottom: 1px solid #b8b9c0;
 box-shadow: 0 0 2px rgba(37, 37, 37, 0.2);
 }
@@ -61,7 +61,7 @@ margin-left: auto;
 margin-right: auto;
 margin-top : 10px;
 margin-bottom : 10px;
-border-radius: 40px 40px 40px 40px / 40px 40px 40px 40px; 
+border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px; 
 }
 .board_info_ul{
 padding-top: 23px;
@@ -71,9 +71,13 @@ padding-left: 30px;
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
 </script>
+
 <script type="text/javascript" src="${contextPath }/js/board/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 <script>
 	$(function(){
+		
+		$(".board_info").hide();
+		
 		var $write_bt = $("#bt")
 		$write_bt.click(function(){
 		
@@ -125,9 +129,9 @@ padding-left: 30px;
 		var $deptnotice = $("#deptnotice");
 		$deptnotice.click(function(){
 			$.ajax({
-				url:'${contextPath}/board',
+				url:'${contextPath}/deptboard',
 				method:'GET',
-				data:'type=c&currentPage=1',
+				data:'type=a&currentPage=1',
 				success:function(data){
 					$(".body_content").empty();
 					$(".body_content").html(data);
@@ -141,9 +145,9 @@ padding-left: 30px;
 		var $deptboard = $("#deptboard");
 		$deptboard.click(function(){
 			$.ajax({
-				url:'${contextPath}/board',
+				url:'${contextPath}/deptboard',
 				method:'GET',
-				data:'type=d&currentPage=1',
+				data:'type=b&currentPage=1',
 				success:function(data){
 					$(".body_content").empty();
 					$(".body_content").html(data);
@@ -201,31 +205,7 @@ padding-left: 30px;
         </nav>
       </div>
       <div class="header_columns">
-        <section class="my_info">
-          <ul class="ctrl">
-            <li class="notification">
-              <a href="#" class="btn_noti"><i class="fas fa-bell"></i></a>
-            </li>
-            <li class="config">
-              <a href="#" class="btn_config"><i class="fas fa-cog"></i></a>
-            </li>
-            <li class="logout">
-              <a href="#" class="btn_logout"
-                ><i class="fas fa-power-off"></i
-              ></a>
-            </li>
-            <li class="photo">
-              <a href="#">
-                <!-- 로그인한사람의 프로필사진을 불러와야함. 미완성 -->
-                <img
-                  class="profile_photo"
-                  src="https://pbs.twimg.com/profile_images/3394470712/66b049da64127e4ad9159684fdcdf20d.jpeg"
-                />
-                <!--  -->
-              </a>
-            </li>
-          </ul>
-        </section>
+		<jsp:include page="/view/myinfo.jsp"/>
       </div>
     </header>
     <!-- header finish -->
@@ -279,7 +259,7 @@ padding-left: 30px;
       </div>
       <!--left body_side finish-->
       <!-- body_content는 너만의 영역. 알아서 화면 내보내기-->
-      <div style="width:100%">
+      <div style="width:100%; background-color: white">
         <div class="body_head">
           <div class="body_head-column">
           	<span>게시판 홈</span>

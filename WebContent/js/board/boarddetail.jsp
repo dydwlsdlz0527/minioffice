@@ -10,7 +10,7 @@ border-style:solid;
 }
 .board_name{
 display: inline;
-margin-left: 800px;
+margin-left: 1000px;
 }
 .comment_profile2{
     width: 90px;
@@ -24,6 +24,10 @@ margin-left: 800px;
 .comment_window{
 	position: relative;
     display: inline-block;
+}
+.board_link_font{
+font-size: 20px;
+font-weight: bold;
 }
 </style>
 <script>
@@ -64,13 +68,12 @@ margin-left: 800px;
   <c:set var="d" value="${requestScope.Boarddetail }"></c:set>
     <div><!-- 상단 버튼 div -->
       <button>새글쓰기</button>
-      <button>답글쓰기</button>
       <div class="board_name">
-        <a class="board_link" href="#"></a>
+        <a class="board_link board_link_font" href="#"></a>
         <span>></span>
-        <span>${d.board_no }</span>
+        <span class="board_link_font">${d.board_no }</span>
         <input type="hidden" name="type" value="${d.board_type }">
-        <input type="text" name="no" value="${d.board_no }">
+        <input type="hidden" name="no" value="${d.board_no }">
         <input type="hidden" name="comment_token" value="1">
       </div>
     </div>

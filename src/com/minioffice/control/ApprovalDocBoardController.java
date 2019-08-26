@@ -1,6 +1,7 @@
 package com.minioffice.control;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.minioffice.exception.NotFoundException;
 import com.minioffice.service.DocBoardService;
 import com.minioffice.vo.DocBean;
+import com.minioffice.vo.DocDetail;
 import com.minioffice.vo.Document;
 import com.minioffice.vo.appBoardPageBean;
 
@@ -45,7 +47,9 @@ public class ApprovalDocBoardController {
 		String docno = request.getParameter("docno");
 		String empno = request.getParameter("empno");
 		Document doc = docboardservice.boarddocdetail(docno, empno);
-		return "/view/approval/apprWaitBoard.jsp";
+		List<DocDetail> dd = docboardservice.boarddocdetailList(docno);
+		request.setAttribute("doc", doc);
+		return "/view/approval/approvalDocDetail.jsp";
 	}
 
 }
