@@ -118,15 +118,15 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 			select : function(arg) { // 범위 선택
 				console.log('select callback', arg.startStr, arg.endStr,
 						arg.resource ? arg.resource.id : '(no resource)');
-			alert(arg.startStr);
+			//alert(arg.startStr);
 			
 			var endStr = arg.endStr.split('-');
-			alert(endStr[2]-01);
-			alert(arg.endStr);
+			//alert(endStr[2]-01);
+			//alert(arg.endStr);
 			
 			
 			var str = endStr[0]+'-'+endStr[1]+'-'+endStr[2];
-			alert(str);
+			//alert(str);
 			
 				addSchedule2(arg.startStr, arg.endStr); // 일정 추가
 				
@@ -218,7 +218,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 				
 				if($(this).prop("checked"))
 					{
-						alert("num1 : " + num +" // checked : " + $(this).prop("checked"));
+						//alert("num1 : " + num +" // checked : " + $(this).prop("checked"));
 						calendar.addEventSource( '${contextPath}/scheduleservicegetEmpSchedule' );
 						
 					}
@@ -239,7 +239,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 				if($(this).prop("checked"))
 					{
 						calendar.addEventSource( '${contextPath}/scheduleserviceDept' );
-						alert("num2 : " + num +" // checked : " + $(this).prop("checked"));
+						//alert("num2 : " + num +" // checked : " + $(this).prop("checked"));
 					}
 				else
 					{
@@ -253,7 +253,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 				if($(this).prop("checked"))
 					{
 						calendar.addEventSource( '${contextPath}/scheduleserviceCom' );
-						alert("num3 : " + num +" // checked : " + $(this).prop("checked"));
+						//alert("num3 : " + num +" // checked : " + $(this).prop("checked"));
 					}
 				else
 					{
@@ -343,7 +343,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 		
 		var schedule_no = $('#schedule_no').val();
 		
-		alert("삭제?");
+		//alert("삭제?");
 		
 		$.ajax({
 			
@@ -589,9 +589,10 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 	    <input type="checkbox" id="c2" name="cc" value ="2"/>
 	    <label for="c2"><span></span>부서일정</label>
 	     <p>
+	    <!-- 
 	    <input type="checkbox" id="c3" name="cc" value ="1"/>
 	    <label for="c3"><span></span>개인일정</label>
-        
+         -->
         </div>
         </section>
         <!--  -->
@@ -604,10 +605,11 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       	
       	
      <div style="max-width: 900px; margin: 0 auto;">
+		<!-- 
 		<div style="float: left; padding-left: 5px">
 			<button id = "test" class ="fc-button-primary" >전체</button>
 		</div>
-		
+		 -->
 		 <!--
 		<div style="float: left; padding-left: 5px">
 			<button class ="fc-button-primary" onclick="javascript:showtable(2)" >부서</button>
