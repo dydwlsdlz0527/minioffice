@@ -136,6 +136,7 @@ $(function(){
 				if(jsonObj.status == 1) {
 					msg += "성공";
 					alert(msg);
+					window.location.reload();
 				} else {
 					msg += "실패";
 					alert(msg);
@@ -156,6 +157,7 @@ $(function(){
 				if(jsonObj.status == 1) {
 					msg += "성공";
 					alert(msg);
+					window.location.reload();
 				} else {
 					msg += "실패";
 					alert(msg);
@@ -179,7 +181,7 @@ $(function(){
 					msg += "성공";
 					alert(msg);
 					$("#myModal").modal("hide");
-					location.reload();
+					window.location.reload();
 				} else {
 					msg += "실패";
 					alert(msg);
