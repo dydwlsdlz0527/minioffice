@@ -5,7 +5,7 @@
 <%response.setHeader("Pragma", "No-cache");%>
 <%response.setDateHeader("Expires", 1L);%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -272,7 +272,7 @@ $(function() {
 	<form class="modal-content animate" action="/action_page.php">
 		<div class="imgcontainer">
 			<span class="close" title="Close Modal">&times;</span>
-			<img src="" alt="Avatar" class="avatar">
+			<img src="${contextPath}/images/login/mainImg.png" alt="Avatar" class="avatar">
 		</div>
 		<div class="container">
 			<label for="uname"><b>아이디</b></label>
