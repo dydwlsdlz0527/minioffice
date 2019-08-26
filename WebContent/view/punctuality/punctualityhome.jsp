@@ -135,11 +135,11 @@ $(function(){
 				var msg = jsonObj.emp_no + "번 출근";
 				if(jsonObj.status == 1) {
 					msg += "성공";
-					alert(msg);
+					//alert(msg);
 					window.location.reload();
 				} else {
 					msg += "실패";
-					alert(msg);
+					//alert(msg);
 				}
 			}
 		});
@@ -156,11 +156,11 @@ $(function(){
 				var msg = jsonObj.emp_no + "번 퇴근";
 				if(jsonObj.status == 1) {
 					msg += "성공";
-					alert(msg);
+					//alert(msg);
 					window.location.reload();
 				} else {
 					msg += "실패";
-					alert(msg);
+					//alert(msg);
 				}
 			}
 		});
@@ -179,12 +179,12 @@ $(function(){
 				var msg = jsonObj.emp_no + "번 상태등록";
 				if(jsonObj.status == 1) {
 					msg += "성공";
-					alert(msg);
+					//alert(msg);
 					$("#myModal").modal("hide");
 					window.location.reload();
 				} else {
 					msg += "실패";
-					alert(msg);
+					//alert(msg);
 				}
 			}
 		});
