@@ -262,7 +262,7 @@ div.sign_type_new {
 .doccontents{
 	margin: 1%;
     border: 1px solid black;
-    width: 82%;
+    width: 823px;
     padding: 10px;
 }
 .tool_bar{
