@@ -296,17 +296,17 @@ div.sign_type_new {
 			return;
 		}
 		var docempno = $("#left_table tr:nth-child(1) span:nth-child(1)").html();
-		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", smartEditor);
+		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);
 		$.ajaxSettings.traditional = true;
-		createFile();
+		var smcontent = $("#smartEditor").val();
 		$.ajax({
 			url : '${contextPath}/documentComplete',
-			method : 'get',
+			method : 'post',
 			data : 'docempno='+docempno+'&docempdept='+$("#left_table tr:nth-child(2) span").html()
 					+'&docno='+$("#left_table tr:last span:last").html()
 					+'&doctypeno='+$("#left_table tr:last span:nth-child(1)").html()
 					+'&docsubject='+$("#ctttdsubject").val()
-					+"&docpath="+docpath
+					+"&doccontent="+smcontent
 					+"&applist="+applicantArr,
 			success : function(data){
 				if(data.state==1){
@@ -318,14 +318,6 @@ div.sign_type_new {
 			}
 		});
 	});
-	var txt = $("#smartEditor").val();
-	var fileObject = new ActiveXObject("Scripting.FileSystemObject");
-	function createFile(){
-		docpath = "C:\\docFile\\"+$("#left_table tr:last span:last").html()+".txt";
-		fWrite = fileObject.CreateTextFile(docpath,true);
-		fWrite.write(txt);
-		fWrite.close();
-	}
 </script>
 <c:set var="doc" value="${requestScope.doc}"></c:set>
 <div class="doccontents">
@@ -438,9 +430,6 @@ div.sign_type_new {
 										bUseToolbar : true,
 										bUseVerticalResizer : true,
 										bUseModeChanger : true,
-									},
-									fOnAppLoad : function(){
-										oEditors.getById["smartEditor"].exec("PASTE_HTML",[""]);
 									},
 									fCreator: "createSEditor2"
 								});

@@ -70,38 +70,42 @@ public class DocService {
 		return str;
 	}
 
-	public String docComplete(String doctypeno, String docno, String docempno, String docempdept, String docsubject, String docpath,
+	public String docComplete(String doctypeno, String docno, String docempno, String docempdept, String docsubject, String doccontent,
 			String[] applicantArr) {
 		String str = "";
 		try {
-			/*
-			 * String pathtxt = "C:/docfile/"+docno+".txt"; Path path = Paths.get(pathtxt);
-			 * Files.createDirectories(path.getParent());
-			 * 
-			 * FileChannel fileChannel = FileChannel.open(path,
-			 * StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
-			 * 
-			 * String docdata = docpath; Charset charset = Charset.defaultCharset();
-			 * ByteBuffer byteBuffer = charset.encode(docdata);
-			 */
-			dao.InsertDoc(doctypeno, docno, docempno, docempdept, docsubject, docpath);
-			int size = applicantArr.length;
-			for(int i=0;i<size;i++) {
+			
+			 String pathtxt = "C:/docfile/"+docno+".txt";
+			 Path path = Paths.get(pathtxt);
+			 Files.createDirectories(path.getParent());
+			 
+			 FileChannel fileChannel = FileChannel.open(path,
+			 StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+			  
+			 Charset charset = Charset.defaultCharset();
+			 ByteBuffer byteBuffer = charset.encode(doccontent);
+			 fileChannel.write(byteBuffer);
+			 dao.InsertDoc(doctypeno, docno, docempno, docempdept, docsubject, pathtxt);
+			 int size = applicantArr.length;
+			 for(int i=0;i<size;i++) {
 				System.out.println(applicantArr[i]);
 				dao.InsertDocDetail(docno,applicantArr[i],i+1,size);
-			}
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("state", 1);
-			str = jsonObject.toString();
-			/* fileChannel.close(); */
-			return str;
+			 }
+			 JSONObject jsonObject = new JSONObject();
+			 jsonObject.put("state", 1);
+			 str = jsonObject.toString();
+			 fileChannel.close();
 		}catch (NotFoundException e) {
 			e.printStackTrace();
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("state", -1);
 			str = jsonObject.toString();
 			return str;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return str;
 		
 	}
 }
