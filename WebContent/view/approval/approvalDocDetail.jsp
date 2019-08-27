@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix ="fn" uri = "http://java.sun.com/jsp/jstl/functions"%>
 <style>
 #left_table tr>td:nth-child(1){
 	background: rgb(221, 221, 221);
@@ -165,7 +167,8 @@ button{
     border-bottom: 1px solid black;
 }
 .sign_date_wrap{
-
+	text-align: center;
+    margin-top: 6px;
 }
 #setd{
 	background: rgb(255, 255, 255);
@@ -277,7 +280,7 @@ div.sign_type_new {
 <c:set var="doc" value="${requestScope.doc}"></c:set>
 <div class="doccontents">
 <header style="margin: 10px;">
-	<h1 style="font-size: x-large;"><strong>${doc.getDoc_subject()}</strong></h1>
+	<h1 style="font-size: x-large;"><strong>${doc.getDoctype().getDoc_subject()}</strong></h1>
 </header>
 <div>
 	<div class="tool_bar">
@@ -295,7 +298,7 @@ div.sign_type_new {
 							<col width="490">
 						</colgroup>
 						<tr>
-							<td colspan="2" id="doctitle">${doc.getDoc_subject()}</td>
+							<td colspan="2" id="doctitle">${doc.getDoctype().getDoc_subject()}</td>
 						</tr>
 						<tr>
 							<td class="table1_td">
@@ -314,7 +317,8 @@ div.sign_type_new {
 									</tr>
 									<tr>
 										<td>기안일</td>
-										<td><span>${doc.getDoc_startdate()}</span></td>
+										<fmt:parseDate value="${doc.getDoc_startdate()}" var="dateFmt" pattern="yyyyMMdd"></fmt:parseDate>
+										<td><span></span><fmt:formatDate value="${dateFmt}" pattern="yyyy년 MM월dd일 E요일"></fmt:formatDate></td>
 									</tr>
 									<tr>
 										<td>문서번호<span style="display:none;">${doc.getDoctype().getDoctype_no()}</span></td>
@@ -331,13 +335,13 @@ div.sign_type_new {
 									</div>
 									<div class="sign_member_wrap">
 										<div class="sign_rank_wrap">
-											<span class="sign_rank">${doc.getEmp().getRank().getRank_name()}</span>
+											<span class="sign_rank"><span>${doc.getEmp().getEmp_name()}</span>&nbsp;<span>${doc.getEmp().getRank().getRank_name()}</span></span>
 										</div>
 										<div class="sign_name_wrap">
-											<span class="sign_name">${doc.getEmp().getEmp_name()}</span>
+											<span class="sign_name"><img src="${contextPath}/images/approval/appOk.png"></span>
 										</div>
 										<div class="sign_date_wrap">
-											<span class="sign_date"></span>
+											<span class="sign_date"><fmt:formatDate value="${dateFmt}" pattern="yy/MM/dd"></fmt:formatDate></span>
 										</div>
 									</div>
 								</div>
@@ -353,7 +357,7 @@ div.sign_type_new {
 						</colgroup>
 						<tr>
 							<td class="cttsub">협조부서</td>
-							<td class="ctttd"><input type="text" style="width : 80%;"></td>
+							<td class="ctttd"></td>
 						</tr>
 						<tr>
 							<td class="cttsub">합의</td>
@@ -368,7 +372,7 @@ div.sign_type_new {
 						</tr>
 						<tr>
 							<td class="cttsub">제목</td>
-							<td class="ctttd" colspan="3"><input id="ctttdsubject"type="text" placeholder="필수값 입니다." name="tddoctitle" style="width : 80%;"required></td>
+							<td class="ctttd" colspan="3"><span>${doc.getDoc_subject()}</span></td>
 						</tr>
 						<tr>
 							<td colspan="4" id="setd">

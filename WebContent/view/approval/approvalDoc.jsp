@@ -299,6 +299,7 @@ div.sign_type_new {
 		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);
 		$.ajaxSettings.traditional = true;
 		var smcontent = $("#smartEditor").val();
+		alert(smcontent)
 		$.ajax({
 			url : '${contextPath}/documentComplete',
 			method : 'post',
@@ -306,7 +307,7 @@ div.sign_type_new {
 					+'&docno='+$("#left_table tr:last span:last").html()
 					+'&doctypeno='+$("#left_table tr:last span:nth-child(1)").html()
 					+'&docsubject='+$("#ctttdsubject").val()
-					+"&doccontent="+smcontent
+					+"&doccontent="+encodeURIComponent(smcontent)
 					+"&applist="+applicantArr,
 			success : function(data){
 				if(data.state==1){

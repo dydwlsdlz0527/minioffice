@@ -50,19 +50,22 @@ public class DocBoardService {
 	public Document boarddocdetail(String docno, String empno) {
 		try {
 			Document doc = dao.SelectDocAppr(docno);
+			return doc;
 		} catch (NotFoundException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	public List<DocDetail> boarddocdetailList(String docno) {
 		try {
-			List<DocDetail> dd = dao.SelectDocApprList(docno);
+			List<DocDetail> list = dao.SelectDocApprList(docno);
+			return list;
 		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return null;
+		
 	}
 }

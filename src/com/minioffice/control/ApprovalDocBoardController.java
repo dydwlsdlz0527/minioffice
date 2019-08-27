@@ -47,8 +47,10 @@ public class ApprovalDocBoardController {
 		String docno = request.getParameter("docno");
 		String empno = request.getParameter("empno");
 		Document doc = docboardservice.boarddocdetail(docno, empno);
+		System.out.println(doc.getDoc_subject());
 		List<DocDetail> dd = docboardservice.boarddocdetailList(docno);
 		request.setAttribute("doc", doc);
+		request.setAttribute("dd", dd);
 		return "/view/approval/approvalDocDetail.jsp";
 	}
 

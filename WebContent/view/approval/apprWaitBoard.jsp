@@ -153,7 +153,6 @@ ul.pagination-sm a {
 }
 </style>
 <script>
-	
 	var $pagination = $("ul.pagination-sm>li");
 	$pagination.click(function(){
 		var pageNum = $(this).html();
@@ -270,34 +269,38 @@ ul.pagination-sm a {
 								<span class="title_sort">기안자</span>
 							</th>
 						</tr>
-						<c:if test="${requestScope.status!=1}">
-						<tr>
-						<td colspan="7">
-							<p class="data_null">
-								<span><i class="far fa-save fa-3x"></i></span>
-								<span class="txt">결재할 문서가 없습니다.</span>
-							</p>
-						</td>
-						</tr>
-						</c:if>
+						
 						<c:set var="pb" value="${requestScope.pb}"></c:set>
 						<c:set var="currentPage" value="${pb.currentPage}"></c:set>
 						<c:set var="maxPage" value="${pb.maxPage}"/>
 						<c:set var="startPage" value="${pb.startPage}"/>
 						<c:set var="endPage" value="${pb.endPage}"/>
 						<c:set var="cntPageGroup" value="${pb.cntPageGroup}"/>
-						<c:forEach var="b" items="${pb.list}">
-						<tr class = "DocdetailTr">
-							<td><input type="checkbox" name="dno" value="${b.getDocno()}"></td>
-							<td>${b.getDocdate()}</td>
-							<td>${b.getDoctypename()}</td>
-							<td></td>
-							<td>${b.getDoctitle()}</td>
-							<td></td>
-							<td>${b.getDocappr()}</td>
-						</tr>
-						</c:forEach>
-						
+						<c:choose>
+							<c:when test="${empty pb.list}">
+								<tr>
+								<td colspan="7">
+									<p class="data_null">
+										<span><i class="far fa-save fa-3x"></i></span>
+										<span class="txt">결재할 문서가 없습니다.</span>
+									</p>
+								</td>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<c:forEach var="b" items="${pb.list}">
+								<tr class = "DocdetailTr">
+									<td><input type="checkbox" name="dno" value="${b.getDocno()}"></td>
+									<td>${b.getDocdate()}</td>
+									<td>${b.getDoctypename()}</td>
+									<td></td>
+									<td>${b.getDoctitle()}</td>
+									<td></td>
+									<td>${b.getDocappr()}</td>
+								</tr>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
 					</table>
 						<div class="text-center">
 						<ul class="pagination-sm">
@@ -306,14 +309,6 @@ ul.pagination-sm a {
 								<li class="page-item"><a class="page-link" id="prev" href="javascript:void(0);"><i class="fas fa-angle-left"></i></a></li>
 							</c:if>
 							<c:forEach begin="${startPage}" end="${endPage}" varStatus="status">
-								<%-- <c:choose>
-									<c:when test="${status.current==currentPage}">
-											[<span>${status.current}</span>]&nbsp;&nbsp;
-										</c:when>
-										<c:otherwise>
-											[<span class="underline">${status.current}</span>]&nbsp;&nbsp;
-										</c:otherwise>
-								</c:choose> --%>
 								<li class="page-item"><a class="page-link" href="javascript:void(0);">${status.current}</a></li>
 							</c:forEach>
 							<c:if test="${endPage!=maxPage}">

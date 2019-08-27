@@ -13,6 +13,7 @@ import com.minioffice.sql.MyConnection;
 import com.minioffice.vo.Department;
 import com.minioffice.vo.DocBean;
 import com.minioffice.vo.DocDetail;
+import com.minioffice.vo.DocType;
 import com.minioffice.vo.Document;
 import com.minioffice.vo.Employee;
 import com.minioffice.vo.Rank;
@@ -101,27 +102,32 @@ public class DocBoardDao {
 		Employee emp = new Employee();
 		Department dept = new Department();
 		Rank rank = new Rank();
+		DocType dt = new DocType();
 		try {
 			conn = MyConnection.getConnection();
-			String query = "SELECT EMP.EMP_NAME, RK.RANK_NAME, DEPT.DEPT_NAME, TO_CHAR(DOC.DOC_STARTDATE,'DL'), DOC.DOC_NO, DOC.COPER_DEPT, DOC.DOC_SUBJECT, DOC.DOC_CONTENT\r\n" + 
-					"FROM DOCUMENTS DOC, EMPLOYEE EMP, DEPARTMENT DEPT, EMP_RANK RK\r\n" + 
+			String query = "SELECT EMP.EMP_NAME, RK.RANK_NAME, DEPT.DEPT_NAME, TO_CHAR(DOC.DOC_STARTDATE,'yyyyMMdd') DOC_STARTDATE, DOC.DOC_NO, DOC.COPER_DEPT, DOC.DOC_SUBJECT, DOC.DOC_CONTENT, DT.DOCTYPE_SUBJECT\r\n" + 
+					"FROM DOCUMENTS DOC, EMPLOYEE EMP, DEPARTMENT DEPT, EMP_RANK RK, DOC_TYPE DT\r\n" + 
 					"WHERE DOC.DOC_NO = ?\r\n" + 
 					"AND DOC.EMP_NO = EMP.EMP_NO\r\n" + 
 					"AND EMP.DEPT_NO = DEPT.DEPT_NO\r\n" + 
-					"AND EMP.RANK_NO = RK.RANK_NO";
+					"AND EMP.RANK_NO = RK.RANK_NO\r\n" +
+					"AND DT.DOCTYPE_NO = DOC.DOCTYPE_NO";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, docno);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				emp.setEmp_name(rs.getString(1)); //사원 이름
-				rank.setRank_name(rs.getString(2)); //사원 등급 이름
-				dept.setDept_name(rs.getString(3)); //부서 이름
-				doc.setDoc_startdate(rs.getString(4)); //기안일
-				doc.setDoc_no(rs.getString(1));	//문서 번호
-				doc.setDoc_subject(rs.getString(6)); //문서 제목
-				doc.setDoc_content(rs.getString(7)); //문서 내용
+				emp.setEmp_name(rs.getString("EMP_NAME")); //사원 이름
+				rank.setRank_name(rs.getString("RANK_NAME")); //사원 등급 이름
+				dept.setDept_name(rs.getString("DEPT_NAME")); //부서 이름
+				doc.setDoc_startdate(rs.getString("DOC_STARTDATE")); //기안일
+				doc.setDoc_no(rs.getString("DOC_NO"));	//문서 번호
+				doc.setDoc_subject(rs.getString("DOC_SUBJECT")); //문서 제목
+				doc.setDoc_content(rs.getString("DOC_CONTENT")); //문서 내용
+				dt.setDoc_subject(rs.getString("DOCTYPE_SUBJECT"));
 				emp.setRank(rank);
+				doc.setEmp(emp);
 				doc.setDept(dept);
+				doc.setDoctype(dt);
 			}
 			return doc;
 		}catch (SQLException e) {
@@ -139,12 +145,25 @@ public class DocBoardDao {
 		PreparedStatement pstmt = null;
 		try {
 			conn = MyConnection.getConnection();
-			String query = "";
+			String query = "SELECT *\r\n" + 
+					"FROM DOC_DETAIL\r\n" + 
+					"WHERE DOC_NO = ?";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, docno);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				
+				DocDetail dd = new DocDetail();
+				Employee emp = new Employee();
+				dd.setDoc_no(rs.getString("DOC_NO"));
+				emp.setEmp_no(rs.getString("EMP_NO"));
+				dd.setApproval_step(rs.getString("APPROVAL_STEP").charAt(0));
+				dd.setApproval_totalstep(rs.getString("APPROVAL_TOTALSTEP").charAt(0));
+				dd.setApproval_coment(rs.getString("APPROVAL_COMENT"));
+				dd.setApproval_result(rs.getString("APPROVAL_RESULT").charAt(0));
+				dd.setApproval_date(rs.getString("APPROVAL_DATE"));
+				dd.setDoc_rcvdate(rs.getString("DOC_RCVDATE"));
+				dd.setEmp(emp);
+				list.add(dd);
 			}
 			return list;
 		}catch (SQLException e) {
