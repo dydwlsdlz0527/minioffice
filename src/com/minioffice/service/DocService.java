@@ -1,7 +1,13 @@
 package com.minioffice.service;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Map;
 
@@ -64,12 +70,21 @@ public class DocService {
 		return str;
 	}
 
-	public String docComplete(String doctypeno, String docno, String docempno, String docempdept, String docsubject, String doccontent,
+	public String docComplete(String doctypeno, String docno, String docempno, String docempdept, String docsubject, String docpath,
 			String[] applicantArr) {
 		String str = "";
 		try {
-			Path path = Paths.get("/docfile/"+docno+".txt");
-			dao.InsertDoc(doctypeno, docno, docempno, docempdept, docsubject, doccontent);
+			/*
+			 * String pathtxt = "C:/docfile/"+docno+".txt"; Path path = Paths.get(pathtxt);
+			 * Files.createDirectories(path.getParent());
+			 * 
+			 * FileChannel fileChannel = FileChannel.open(path,
+			 * StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+			 * 
+			 * String docdata = docpath; Charset charset = Charset.defaultCharset();
+			 * ByteBuffer byteBuffer = charset.encode(docdata);
+			 */
+			dao.InsertDoc(doctypeno, docno, docempno, docempdept, docsubject, docpath);
 			int size = applicantArr.length;
 			for(int i=0;i<size;i++) {
 				System.out.println(applicantArr[i]);
@@ -78,6 +93,7 @@ public class DocService {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("state", 1);
 			str = jsonObject.toString();
+			/* fileChannel.close(); */
 			return str;
 		}catch (NotFoundException e) {
 			e.printStackTrace();
@@ -86,5 +102,6 @@ public class DocService {
 			str = jsonObject.toString();
 			return str;
 		}
+		
 	}
 }

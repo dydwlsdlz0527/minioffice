@@ -272,60 +272,7 @@ div.sign_type_new {
 }
 </style>
 <script>
-	applicantArr = new Array();
 	
-	var triggerfn = function(){
-		var $asideArr1 = $("#collapseArea>ul.approval_list a");
-		for(var i=0;i<$asideArr1.length;i++){
-			var aObj = $asideArr1[i];
-			console.log($(aObj).html());
-			if($(aObj).html()=='결재 대기 문서'){
-				$(aObj).trigger('click');
-				break;
-			}
-		}
-	}
-	$("#appr_info").click(function(){
-		applicantArr.splice(0);
-		appr_cnt = 0;
-		$("#apprInfoModal").html();
-	});
-	$("#approvalplz").click(function(){
-		if(applicantArr.length==0){
-			alert("결재자를 선택해주세요.");
-			return;
-		}
-		var docempno = $("#left_table tr:nth-child(1) span:nth-child(1)").html();
-		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", smartEditor);
-		$.ajaxSettings.traditional = true;
-		createFile();
-		$.ajax({
-			url : '${contextPath}/documentComplete',
-			method : 'get',
-			data : 'docempno='+docempno+'&docempdept='+$("#left_table tr:nth-child(2) span").html()
-					+'&docno='+$("#left_table tr:last span:last").html()
-					+'&doctypeno='+$("#left_table tr:last span:nth-child(1)").html()
-					+'&docsubject='+$("#ctttdsubject").val()
-					+"&docpath="+docpath
-					+"&applist="+applicantArr,
-			success : function(data){
-				if(data.state==1){
-					alert('기안서 제출 성공');
-					triggerfn();
-				}else{
-					alert('실패');
-				}
-			}
-		});
-	});
-	var txt = $("#smartEditor").val();
-	var fileObject = new ActiveXObject("Scripting.FileSystemObject");
-	function createFile(){
-		docpath = "C:\\docFile\\"+$("#left_table tr:last span:last").html()+".txt";
-		fWrite = fileObject.CreateTextFile(docpath,true);
-		fWrite.write(txt);
-		fWrite.close();
-	}
 </script>
 <c:set var="doc" value="${requestScope.doc}"></c:set>
 <div class="doccontents">
@@ -334,10 +281,8 @@ div.sign_type_new {
 </header>
 <div>
 	<div class="tool_bar">
-		<button class="btn btn-primary btn-sm" id="approvalplz">결재요청</button>
-		<button class="btn btn-success btn-sm">임시저장</button>
-		<button class="btn btn-danger btn-sm">취소</button>
-		<button id="appr_info" class="btn btn-info btn-sm" data-toggle="modal" data-target="#apprInfoModal">결재정보</button>
+		<button class="btn btn-success btn-sm">결재하기</button>
+		<button class="btn btn-danger btn-sm">반려하기</button>		
 	</div>
 	<div class="wrap_container">
 		<%-- 기안 문서 --%>
@@ -428,23 +373,7 @@ div.sign_type_new {
 						<tr>
 							<td colspan="4" id="setd">
 								<textarea name="smartEditor" id="smartEditor" rows="20" cols="109"></textarea>
-								<script type="text/javascript">
-								var oEditors=[];
-								nhn.husky.EZCreator.createInIFrame({		
-									oAppRef: oEditors,
-									elPlaceHolder : "smartEditor",
-									sSkinURI : "${contextPath}/demo/SmartEditor2Skin.html",
-									htParams : {
-										bUseToolbar : true,
-										bUseVerticalResizer : true,
-										bUseModeChanger : true,
-									},
-									fOnAppLoad : function(){
-										oEditors.getById["smartEditor"].exec("PASTE_HTML",[""]);
-									},
-									fCreator: "createSEditor2"
-								});
-								</script>
+								
 							</td>
 						</tr>
 					</table>
@@ -482,5 +411,3 @@ div.sign_type_new {
 <div class="Modal fade" tabindex="-1" data-target=".body_content" role="dialog" id="docModal" data-backdrop="false"></div>
 	
 </div>
-
-<%@include file="apprInfo.jsp" %>

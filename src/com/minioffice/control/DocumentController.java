@@ -58,7 +58,8 @@ public class DocumentController {
 		String docempno = request.getParameter("docempno");
 		String docempdept = request.getParameter("docempdept");
 		String docsubject = request.getParameter("docsubject");
-		String doccontent = request.getParameter("doccontent");
+		String docpath = request.getParameter("docpath");
+		System.out.println(docpath);
 		String[] applicantArr = request.getParameterValues("applist");
 		String str2 = Arrays.toString(applicantArr);
 		String str3 = str2.substring(1, str2.length()-1);
@@ -67,7 +68,7 @@ public class DocumentController {
 		for(int i=0;i<array.length;i++) {
 			array[i] = st.nextToken();
 		}
-		String str = docservice.docComplete(doctypeno, docno, docempno,docempdept,docsubject,doccontent,array);
+		String str = docservice.docComplete(doctypeno, docno, docempno,docempdept,docsubject,docpath,array);
 		request.setAttribute("result", str);
 		//System.out.println(docno+"||"+docempno+"||"+docempdept+"||"+docsubject+"||"+doccontent+"||"+applicantArr[0]);
 		return "/jsonresult";
