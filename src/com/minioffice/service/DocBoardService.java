@@ -1,5 +1,9 @@
 package com.minioffice.service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 import com.minioffice.dao.DocBoardDao;
@@ -44,17 +48,43 @@ public class DocBoardService {
 			e.printStackTrace();
 			return null;
 		}
-		
 	}
 
-	public Document boarddocdetail(String docno, String empno) {
+	public Document boarddocdetail(String docno) {
 		try {
 			Document doc = dao.SelectDocAppr(docno);
+			String filePath = doc.getDoc_content();
+//			Path path = Paths.get(filePath);
+//			FileChannel fileChannel = FileChannel.open(path, StandardOpenOption.READ);
+//			ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+//			Charset charset = Charset.defaultCharset();
+//			String data = "";
+//			int byteCount;
+//			while(true) {
+//				byteCount = fileChannel.read(byteBuffer);
+//				if(byteCount==-1) break;
+//				byteBuffer.flip();
+//				data += charset.decode(byteBuffer).toString();
+//				byteBuffer.clear();
+//			}
+//			fileChannel.close();
+//			doc.setDoc_content(data);
+			File file = new File(filePath);
+			FileReader filereader = new FileReader(file);
+			BufferedReader bufReader = new BufferedReader(filereader);
+			String line = "";
+			String data = "";
+			while((line=bufReader.readLine())!=null) {
+				data += line;
+			}
+			doc.setDoc_content(data);
 			return doc;
 		} catch (NotFoundException e) {
 			e.printStackTrace();
-			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 
 	public List<DocDetail> boarddocdetailList(String docno) {

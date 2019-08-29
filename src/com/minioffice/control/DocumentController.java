@@ -58,7 +58,7 @@ public class DocumentController {
 		String docempno = request.getParameter("docempno");
 		String docempdept = request.getParameter("docempdept");
 		String docsubject = request.getParameter("docsubject");
-		String doccontent = request.getParameter("doccontent");
+		String doccontent = request.getParameter("doccontent").replace("\"", "\'");
 		String[] applicantArr = request.getParameterValues("applist");
 		String str2 = Arrays.toString(applicantArr);
 		String str3 = str2.substring(1, str2.length()-1);

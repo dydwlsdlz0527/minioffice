@@ -145,15 +145,18 @@ public class DocBoardDao {
 		PreparedStatement pstmt = null;
 		try {
 			conn = MyConnection.getConnection();
-			String query = "SELECT *\r\n" + 
-					"FROM DOC_DETAIL\r\n" + 
-					"WHERE DOC_NO = ?";
+			String query = "SELECT DT.DOC_NO, DT.EMP_NO, DT.APPROVAL_STEP, DT.APPROVAL_TOTALSTEP, DT.APPROVAL_COMENT, DT.APPROVAL_RESULT, DT.APPROVAL_DATE, DT.DOC_RCVDATE, EMP.EMP_NAME, RK.RANK_NO, RK.RANK_NAME\r\n" + 
+					"FROM DOC_DETAIL DT, EMPLOYEE EMP, EMP_RANK RK\r\n" + 
+					"WHERE DT.DOC_NO=?\r\n" + 
+					"AND DT.EMP_NO = EMP.EMP_NO\r\n" + 
+					"AND EMP.RANK_NO = RK.RANK_NO";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, docno);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				DocDetail dd = new DocDetail();
 				Employee emp = new Employee();
+				Rank rk = new Rank();
 				dd.setDoc_no(rs.getString("DOC_NO"));
 				emp.setEmp_no(rs.getString("EMP_NO"));
 				dd.setApproval_step(rs.getString("APPROVAL_STEP").charAt(0));
@@ -162,6 +165,10 @@ public class DocBoardDao {
 				dd.setApproval_result(rs.getString("APPROVAL_RESULT").charAt(0));
 				dd.setApproval_date(rs.getString("APPROVAL_DATE"));
 				dd.setDoc_rcvdate(rs.getString("DOC_RCVDATE"));
+				emp.setEmp_name(rs.getString("EMP_NAME"));
+				rk.setRank_no(rs.getString("RANK_NO").charAt(0));
+				rk.setRank_name(rs.getString("RANK_NAME"));
+				emp.setRank(rk);
 				dd.setEmp(emp);
 				list.add(dd);
 			}

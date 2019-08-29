@@ -46,8 +46,7 @@ public class ApprovalDocBoardController {
 	public String boardDocDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NotFoundException{
 		String docno = request.getParameter("docno");
 		String empno = request.getParameter("empno");
-		Document doc = docboardservice.boarddocdetail(docno, empno);
-		System.out.println(doc.getDoc_subject());
+		Document doc = docboardservice.boarddocdetail(docno);
 		List<DocDetail> dd = docboardservice.boarddocdetailList(docno);
 		request.setAttribute("doc", doc);
 		request.setAttribute("dd", dd);

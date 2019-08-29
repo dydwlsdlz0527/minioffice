@@ -272,10 +272,11 @@ div.sign_type_new {
 	padding-bottom: 5px;
     border-bottom: 1px solid;
 }
+
 }
 </style>
 <script>
-	
+	$("#docContents").append("${doc.getDoc_content()}");
 </script>
 <c:set var="doc" value="${requestScope.doc}"></c:set>
 <div class="doccontents">
@@ -327,6 +328,44 @@ div.sign_type_new {
 								</table>
 							</td>
 							<td class="table1_td" id="apprmember">
+								<c:set var="aplist" value="${requestScope.dd}"></c:set>
+								<c:if test="${!empty aplist}">
+									<c:forEach var="ap" items="${aplist}">
+										<div class="sign_type1_inline">
+										<div class="sign_tit_wrap">
+											<span class="sign_tit"><strong>승인</strong></span>
+										</div>
+										<div class="sign_member_wrap">
+											<div class="sign_rank_wrap">
+												<span class="sign_rankno" style="display:none;">${ap.getEmp().getRank().getRank_no()}</span>
+												<span class="sign_empno" style="display:none;">${ap.getEmp().getEmp_no()}</span>
+												<span class="sign_name">${ap.getEmp().getEmp_name()}</span>
+												<span class="sign_rank">${ap.getEmp().getRank().getRank_name()}</span>
+											</div>
+											<div class="sign_name_wrap">
+												<span class="sign_appstep" style="display:none;">${ap.getApproval_step()}</span>
+												<c:choose>
+													<c:when test="${ap.getApproval_result() eq '0'.charAt(0)}">
+														
+													</c:when>
+													<c:when test="${ap.getApproval_result()=='1'.charAt(0)}">
+														<img src="${contextPath}/images/approval/appOk.png" title="승인">
+													</c:when>
+													<c:when test="${ap.getApproval_result()=='2'.charAt(0)}">
+														<img src="${contextPath}/images/approval/appWait.png" title="대기">
+													</c:when>
+													<c:otherwise>
+														<img src="${contextPath}/images/approval/appNo.png" title="반려">
+													</c:otherwise>
+												</c:choose>
+											</div>
+											<div class="sign_date_wrap">
+												<span class="sign_date">${ap.getApproval_date()}</span>
+											</div>
+										</div>
+										</div>
+									</c:forEach>
+								</c:if>
 								<div class="sign_type1_inline" id="applicantmember">
 									<div class="sign_tit_wrap">
 										<span class="sign_tit">
@@ -376,8 +415,8 @@ div.sign_type_new {
 						</tr>
 						<tr>
 							<td colspan="4" id="setd">
-								<textarea name="smartEditor" id="smartEditor" rows="20" cols="109"></textarea>
-								
+								<div id="docContents"></div>
+
 							</td>
 						</tr>
 					</table>
