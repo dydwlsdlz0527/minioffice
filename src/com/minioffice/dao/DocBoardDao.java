@@ -162,7 +162,7 @@ public class DocBoardDao {
 				dd.setApproval_step(rs.getString("APPROVAL_STEP").charAt(0));
 				dd.setApproval_totalstep(rs.getString("APPROVAL_TOTALSTEP").charAt(0));
 				dd.setApproval_coment(rs.getString("APPROVAL_COMENT"));
-				dd.setApproval_result(rs.getString("APPROVAL_RESULT").charAt(0));
+				dd.setApproval_result(rs.getString("APPROVAL_RESULT"));
 				dd.setApproval_date(rs.getString("APPROVAL_DATE"));
 				dd.setDoc_rcvdate(rs.getString("DOC_RCVDATE"));
 				emp.setEmp_name(rs.getString("EMP_NAME"));

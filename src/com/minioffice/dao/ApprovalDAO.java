@@ -224,4 +224,27 @@ public class ApprovalDAO {
 			MyConnection.close(rs, pstmt, conn);
 		}
 	}
+
+	public void UpdateApprResult(String docno, String apprno, String appresult, String apprcoment) throws NotFoundException{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = MyConnection.getConnection();
+			String selectSQL = "UPDATE DOC_DETAIL\r\n" + 
+					"SET APPROVAL_RESULT = ? , APPROVAL_COMENT = ?, APPROVAL_DATE = TO_DATE(SYSDATE,'yy/MM/dd')\r\n" + 
+					"WHERE DOC_NO = ? AND EMP_NO = ?";
+			pstmt = conn.prepareStatement(selectSQL);
+			pstmt.setString(1, appresult);
+			pstmt.setString(2, apprcoment);
+			pstmt.setString(3, docno);
+			pstmt.setString(4, apprno);
+			pstmt.executeUpdate();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new NotFoundException("결재 오류!");
+		} finally {
+			MyConnection.close(pstmt, conn);
+		}
+		
+	}
 }

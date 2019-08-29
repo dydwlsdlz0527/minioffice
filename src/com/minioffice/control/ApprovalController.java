@@ -57,5 +57,15 @@ public class ApprovalController {
 		request.setAttribute("result", str);
 		return "/jsonresult";
 	}
-
+	
+	public String docApprResult (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		String docno = request.getParameter("docno");
+		String apprno = request.getParameter("apprno");
+		String appresult = request.getParameter("appresult");
+		String apprcoment = request.getParameter("apprcoment");
+		String str = approvalservice.docapprresult(docno,apprno,appresult,apprcoment);
+		System.out.println("str="+str);
+		request.setAttribute("result", str);
+		return "/jsonresult";
+	}
 }
