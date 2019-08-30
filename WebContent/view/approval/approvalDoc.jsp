@@ -278,7 +278,6 @@ div.sign_type_new {
 		var $asideArr1 = $("#collapseArea>ul.approval_list a");
 		for(var i=0;i<$asideArr1.length;i++){
 			var aObj = $asideArr1[i];
-			console.log($(aObj).html());
 			if($(aObj).html()=='결재 대기 문서'){
 				$(aObj).trigger('click');
 				break;
@@ -299,7 +298,6 @@ div.sign_type_new {
 		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);
 		$.ajaxSettings.traditional = true;
 		var smcontent = $("#smartEditor").val();
-		alert(smcontent);
 		$.ajax({
 			url : '${contextPath}/documentComplete',
 			method : 'post',

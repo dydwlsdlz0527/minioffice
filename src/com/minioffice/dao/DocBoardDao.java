@@ -57,16 +57,16 @@ public class DocBoardDao {
 		try {
 			conn = MyConnection.getConnection();
 			String query = "SELECT FD.*\r\n" + 
-					"FROM (SELECT rownum rn,  D.DOC_STARTDATE, DT.DOCTYPE_SUBJECT, D.DOC_SUBJECT,  EMP.EMP_NAME, D.DOC_NO, EMP.EMP_NO\r\n" + 
+					"FROM (SELECT rownum rn,  D.DOC_STARTDATE, DT.DOCTYPE_SUBJECT, D.DOC_SUBJECT,  EMP.EMP_NAME, D.DOC_NO, EMP.EMP_NO \r\n" + 
 					"FROM DOCUMENTS D,(SELECT DISTINCT DD2.EMP_NO, DD2.DOC_NO, DD2.APPROVAL_STEP, DD2.APPROVAL_TOTALSTEP\r\n" + 
-					"FROM DOC_DETAIL DD1,(SELECT EMP_NO, DOC_NO, APPROVAL_STEP, APPROVAL_TOTALSTEP\r\n" + 
-					"FROM DOC_DETAIL\r\n" + 
+					"FROM DOC_DETAIL DD1,(SELECT EMP_NO, DOC_NO, APPROVAL_STEP, APPROVAL_TOTALSTEP, APPROVAL_RESULT\r\n" + 
+					"FROM DOC_DETAIL \r\n" + 
 					"WHERE EMP_NO = ?) DD2\r\n" + 
-					"WHERE DD1.DOC_NO = DD2.DOC_NO\r\n" + 
+					"WHERE DD1.DOC_NO = DD2.DOC_NO \r\n" + 
 					"AND (((DD2.APPROVAL_STEP-1)= DD1.APPROVAL_STEP AND DD1.APPROVAL_RESULT='1')\r\n" + 
-					"OR DD2.APPROVAL_STEP='1'))DD, DOC_TYPE DT, EMPLOYEE EMP\r\n" + 
-					"WHERE D.DOC_NO = DD.DOC_NO\r\n" + 
-					"AND DT.DOCTYPE_NO = D.DOCTYPE_NO\r\n" + 
+					"OR DD2.APPROVAL_STEP='1') AND DD2.APPROVAL_RESULT='0')DD, DOC_TYPE DT, EMPLOYEE EMP \r\n" + 
+					"WHERE D.DOC_NO = DD.DOC_NO \r\n" + 
+					"AND DT.DOCTYPE_NO = D.DOCTYPE_NO \r\n" + 
 					"AND EMP.EMP_NO = D.EMP_NO) FD\r\n" + 
 					"WHERE FD.RN BETWEEN ? AND ?";
 			pstmt = conn.prepareStatement(query);
@@ -145,7 +145,7 @@ public class DocBoardDao {
 		PreparedStatement pstmt = null;
 		try {
 			conn = MyConnection.getConnection();
-			String query = "SELECT DT.DOC_NO, DT.EMP_NO, DT.APPROVAL_STEP, DT.APPROVAL_TOTALSTEP, DT.APPROVAL_COMENT, DT.APPROVAL_RESULT, DT.APPROVAL_DATE, DT.DOC_RCVDATE, EMP.EMP_NAME, RK.RANK_NO, RK.RANK_NAME\r\n" + 
+			String query = "SELECT DT.DOC_NO, DT.EMP_NO, DT.APPROVAL_STEP, DT.APPROVAL_TOTALSTEP, DT.APPROVAL_COMENT, DT.APPROVAL_RESULT, TO_CHAR(DT.APPROVAL_DATE,'yy/MM/dd') APPROVAL_DATE, DT.DOC_RCVDATE, EMP.EMP_NAME, RK.RANK_NO, RK.RANK_NAME\r\n" + 
 					"FROM DOC_DETAIL DT, EMPLOYEE EMP, EMP_RANK RK\r\n" + 
 					"WHERE DT.DOC_NO=?\r\n" + 
 					"AND DT.EMP_NO = EMP.EMP_NO\r\n" + 
@@ -172,6 +172,44 @@ public class DocBoardDao {
 				dd.setEmp(emp);
 				list.add(dd);
 			}
+			return list;
+		}catch (SQLException e) {
+			e.getStackTrace();
+			throw new NotFoundException(e.getMessage());
+		} finally {
+			MyConnection.close(rs, pstmt, conn);
+		}
+	}
+
+	public List<DocBean> appCompletedBoardselect(String empno) throws NotFoundException {
+		List<DocBean> list = new ArrayList<>();
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = MyConnection.getConnection();
+			String query = "SELECT DOC.DOC_NO, DOC.DOC_STARTDATE, DT.DOCTYPE_SUBJECT, DOC.DOC_SUBJECT, EMP.EMP_NAME, DOC.EMP_NO\r\n" + 
+					"FROM DOC_DETAIL DD,(SELECT *\r\n" + 
+					"FROM DOCUMENTS\r\n" + 
+					"WHERE EMP_NO = ?) DOC, DOC_TYPE DT, EMPLOYEE EMP\r\n" + 
+					"WHERE DD.DOC_NO = DOC.DOC_NO\r\n" + 
+					"AND DOC.EMP_NO = EMP.EMP_NO\r\n" + 
+					"AND DT.DOCTYPE_NO = DOC.DOCTYPE_NO\r\n" + 
+					"AND DD.APPROVAL_STEP = DD.APPROVAL_TOTALSTEP\r\n" + 
+					"AND APPROVAL_RESULT NOT IN ('0','-1')";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, empno);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				DocBean doc = new DocBean();
+				doc.setDocno(rs.getString(1));
+			    doc.setDocdate(rs.getDate(2));
+			    doc.setDoctypename(rs.getString(3));
+			    doc.setDoctitle(rs.getString(4));
+			    doc.setDocappr(rs.getString(5));
+			    doc.setDocapprno(rs.getString(6));
+				list.add(doc);
+			}	
 			return list;
 		}catch (SQLException e) {
 			e.getStackTrace();

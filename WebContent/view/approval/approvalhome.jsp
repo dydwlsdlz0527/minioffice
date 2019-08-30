@@ -48,7 +48,12 @@ pageEncoding="UTF-8"%> <%response.setHeader("Cache-Control", "no-cache");%>
 	color: black;
 	padding: 5px;
 }
-
+#btcollapse2{
+	border-color: rgba(0, 0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
+	color: black;
+	padding: 5px;
+}
 a, a:hover {
 	color: inherit;
 	text-decoration: none;
@@ -78,6 +83,24 @@ h1 {
 <script>
 	$(function() {
 		
+		$('#btcollapse').click(function() {
+			var dropImg = $('#btcollapse i');
+			if (dropImg.html() == 'expand_more') {
+				dropImg.html('expand_less');
+			} else {
+				dropImg.html('expand_more');
+			}
+		});
+		
+		$('#btcollapse2').click(function() {
+			var dropImg2 = $('#btcollapse2 i');
+			if (dropImg2.html() == 'expand_more') {
+				dropImg2.html('expand_less');
+			} else {
+				dropImg2.html('expand_more');
+			}
+		});
+
 		var viewBoard = function(){
 			$.ajax({
 				url : '${contextPath}/approvalWaitBoard',
@@ -91,15 +114,6 @@ h1 {
 		}
 		viewBoard();
 		
-		$('#btcollapse').click(function() {
-			var dropImg = $('#btcollapse i');
-			if (dropImg.html() == 'expand_more') {
-				dropImg.html('expand_less');
-			} else {
-				dropImg.html('expand_more');
-			}
-		});
-
 		var $btnewDoc = $('#btnewDoc');
 		$btnewDoc.click(function() {
 			$.ajax({
@@ -111,7 +125,8 @@ h1 {
 				}
 			});
 		});
-		var loadWaitBoard = function(data){
+		
+		var loadBoard = function(data){
 			$(".body_content").empty();
 			$(".body_content").html(data);
 		}
@@ -130,14 +145,16 @@ h1 {
 		var $asideArr1 = $("#collapseArea li.approval a");
 		$asideArr1.click(function(){
 			var url = $(this).attr('href');
-			switch(url){
-			case '${contextPath}/approvalWaitBoard':
-				loadView(url,loadWaitBoard);
-				break;
-			}
+			loadView(url,loadBoard);		
 			return false;
 		});
 
+		var $asideArr2 = $("#collapseArea2 li.approval a");
+		$asideArr2.click(function(){
+			var url2 = $(this).attr('href');
+			loadView(url2,loadBoard);
+			return false;
+		});
 	});
 </script>
 </head>

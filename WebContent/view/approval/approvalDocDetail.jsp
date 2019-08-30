@@ -417,8 +417,7 @@ ul.reply li span {
 </header>
 <div>
 	<div class="tool_bar">
-		<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#appModal" id="doappr">결재하기</button>
-		<button class="btn btn-danger btn-sm">반려하기</button>		
+		<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#appModal" id="doappr">결재하기</button>	
 	</div>
 	<div class="wrap_container">
 		<%-- 기안 문서 --%>
@@ -492,9 +491,7 @@ ul.reply li span {
 												</c:choose>
 											</div>
 											<div class="sign_date_wrap">
-												
-												<fmt:parseDate value="${ap.getApproval_date()}" var="dateFmt2" pattern="yyyy-mm-ddhh:mi:ss"></fmt:parseDate>
-												<span class="sign_date"><fmt:formatDate value="${dateFmt2}" pattern="yy/MM/dd"/></span>
+												<span class="sign_date">${ap.getApproval_date()}</span>
 											</div>
 										</div>
 										</div>
@@ -571,29 +568,44 @@ ul.reply li span {
 			</ul>
 			<div class="doc-meta-container reply_wrap" role="tabpanel" id="AppComent">
 				<ul class="reply" id="apprflow">
-					<li>
-						<span class="photo">
-							<a>
-								<img alt="초상화" src="${contextPath}/images/profile/2001081.jpg">
-							</a>
-						</span>
-						<div class="msg_wrap">
-							<div class="info">
-								<a>
-									<span class="name">한성준 부장</span>
-								</a>
-									<span class="department">경영지원본부</span>
-								<div class="doc">
-									<span class="status">기안 상신</span>
-									<span class="part">|</span>
-									<span class="date">2018-03-05(월) 15:41</span>
+					<c:if test="${!empty aplist}">
+						<c:forEach var="ap2" items="${aplist}">
+							<li>
+								<span class="photo">
+									<a>
+										<img alt="초상화" src="${contextPath}/images/profile/${ap2.getEmp().getEmp_no()}.jpg">
+									</a>
+								</span>
+								<div class="msg_wrap">
+									<div class="info">
+										<a>
+											<span class="name">${ap2.getEmp().getEmp_name()} ${ap2.getEmp().getRank().getRank_name()}</span>
+										</a>
+											<span class="department">경영지원본부</span>
+										<div class="doc">
+											<c:choose>
+												<c:when test="${ap2.getApproval_result() eq '0'}">
+													<span class="status">기안 대기</span>
+												</c:when>
+												<c:when test="${ap2.getApproval_result()=='1'}">
+													<span class="status">기안 상신</span>
+												</c:when>
+												<c:otherwise>
+													<span class="status">기안 예정</span>
+												</c:otherwise>
+											</c:choose>
+											<span class="part">|</span>
+											<span class="date">2018-03-05(월) 15:41</span>
+										</div>
+									</div>
+									<div class="coment">
+										<span>다시 작성하세요.</span>
+									</div>
 								</div>
-							</div>
-							<div class="coment">
-								<span>다시 작성하세요.</span>
-							</div>
-						</div>
-					</li>
+							</li>
+						</c:forEach>
+					</c:if>
+					
 					<li>
 						<span class="photo">
 							<a>
@@ -609,7 +621,8 @@ ul.reply li span {
 								<div class="doc">
 									<span class="status">기안 상신</span>
 									<span class="part">|</span>
-									<span class="date">2018-03-08(월) 16:41</span>
+									<%-- 2018-03-08(월) 16:41 --%>
+									<span class="date">${ap.getApproval_date()}</span>
 								</div>
 							</div>
 							<div class="coment">

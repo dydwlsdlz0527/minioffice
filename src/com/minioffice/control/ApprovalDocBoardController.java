@@ -52,5 +52,12 @@ public class ApprovalDocBoardController {
 		request.setAttribute("dd", dd);
 		return "/view/approval/approvalDocDetail.jsp";
 	}
+	
+	public String myDocCompleted(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NotFoundException{
+		String empno = request.getParameter("empno");
+		List<DocBean> dblist = docboardservice.appCompletedboardList(empno);
+		request.setAttribute("dblist", dblist);
+		return "/view/approval/apprCompletedBoard.jsp";
+	}
 
 }

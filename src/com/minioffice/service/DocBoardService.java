@@ -98,4 +98,14 @@ public class DocBoardService {
 		}
 		
 	}
+
+	public List<DocBean> appCompletedboardList(String empno) {
+		try {
+			List<DocBean> list = dao.appCompletedBoardselect(empno);
+			return list;
+		}catch(NotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
