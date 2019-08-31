@@ -145,17 +145,19 @@ public class DocBoardDao {
 		PreparedStatement pstmt = null;
 		try {
 			conn = MyConnection.getConnection();
-			String query = "SELECT DT.DOC_NO, DT.EMP_NO, DT.APPROVAL_STEP, DT.APPROVAL_TOTALSTEP, DT.APPROVAL_COMENT, DT.APPROVAL_RESULT, TO_CHAR(DT.APPROVAL_DATE,'yy/MM/dd') APPROVAL_DATE, DT.DOC_RCVDATE, EMP.EMP_NAME, RK.RANK_NO, RK.RANK_NAME\r\n" + 
-					"FROM DOC_DETAIL DT, EMPLOYEE EMP, EMP_RANK RK\r\n" + 
+			String query = "SELECT DT.DOC_NO, DT.EMP_NO, DT.APPROVAL_STEP, DT.APPROVAL_TOTALSTEP, DT.APPROVAL_COMENT, DT.APPROVAL_RESULT, DT.APPROVAL_DATE, DT.DOC_RCVDATE, EMP.EMP_NAME, RK.RANK_NO, RK.RANK_NAME, DEPT.DEPT_NAME\r\n" + 
+					"FROM DOC_DETAIL DT, EMPLOYEE EMP, EMP_RANK RK, DEPARTMENT DEPT\r\n" + 
 					"WHERE DT.DOC_NO=?\r\n" + 
 					"AND DT.EMP_NO = EMP.EMP_NO\r\n" + 
-					"AND EMP.RANK_NO = RK.RANK_NO";
+					"AND EMP.RANK_NO = RK.RANK_NO\r\n" + 
+					"AND EMP.DEPT_NO = DEPT.DEPT_NO";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, docno);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				DocDetail dd = new DocDetail();
 				Employee emp = new Employee();
+				Department dept = new Department();
 				Rank rk = new Rank();
 				dd.setDoc_no(rs.getString("DOC_NO"));
 				emp.setEmp_no(rs.getString("EMP_NO"));
@@ -168,7 +170,9 @@ public class DocBoardDao {
 				emp.setEmp_name(rs.getString("EMP_NAME"));
 				rk.setRank_no(rs.getString("RANK_NO").charAt(0));
 				rk.setRank_name(rs.getString("RANK_NAME"));
+				dept.setDept_name(rs.getString("DEPT_NAME"));
 				emp.setRank(rk);
+				emp.setDept(dept);
 				dd.setEmp(emp);
 				list.add(dd);
 			}
@@ -197,6 +201,82 @@ public class DocBoardDao {
 					"AND DT.DOCTYPE_NO = DOC.DOCTYPE_NO\r\n" + 
 					"AND DD.APPROVAL_STEP = DD.APPROVAL_TOTALSTEP\r\n" + 
 					"AND APPROVAL_RESULT NOT IN ('0','-1')";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, empno);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				DocBean doc = new DocBean();
+				doc.setDocno(rs.getString(1));
+			    doc.setDocdate(rs.getDate(2));
+			    doc.setDoctypename(rs.getString(3));
+			    doc.setDoctitle(rs.getString(4));
+			    doc.setDocappr(rs.getString(5));
+			    doc.setDocapprno(rs.getString(6));
+				list.add(doc);
+			}	
+			return list;
+		}catch (SQLException e) {
+			e.getStackTrace();
+			throw new NotFoundException(e.getMessage());
+		} finally {
+			MyConnection.close(rs, pstmt, conn);
+		}
+	}
+
+	public List<DocBean> appCancledBoardselect(String empno) throws NotFoundException {
+		List<DocBean> list = new ArrayList<>();
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = MyConnection.getConnection();
+			String query = "SELECT DOC.DOC_NO, DOC.DOC_STARTDATE, DT.DOCTYPE_SUBJECT, DOC.DOC_SUBJECT, EMP.EMP_NAME, DOC.EMP_NO\r\n" + 
+					"FROM DOC_DETAIL DD,(SELECT *\r\n" + 
+					"FROM DOCUMENTS \r\n" + 
+					"WHERE EMP_NO = ?) DOC, DOC_TYPE DT, EMPLOYEE EMP \r\n" + 
+					"WHERE DD.DOC_NO = DOC.DOC_NO\r\n" + 
+					"AND DOC.EMP_NO = EMP.EMP_NO \r\n" + 
+					"AND DT.DOCTYPE_NO = DOC.DOCTYPE_NO \r\n" + 
+					"AND DD.APPROVAL_STEP = DD.APPROVAL_TOTALSTEP \r\n" + 
+					"AND APPROVAL_RESULT IN ('-1')";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, empno);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				DocBean doc = new DocBean();
+				doc.setDocno(rs.getString(1));
+			    doc.setDocdate(rs.getDate(2));
+			    doc.setDoctypename(rs.getString(3));
+			    doc.setDoctitle(rs.getString(4));
+			    doc.setDocappr(rs.getString(5));
+			    doc.setDocapprno(rs.getString(6));
+				list.add(doc);
+			}	
+			return list;
+		}catch (SQLException e) {
+			e.getStackTrace();
+			throw new NotFoundException(e.getMessage());
+		} finally {
+			MyConnection.close(rs, pstmt, conn);
+		}
+	}
+
+	public List<DocBean> appMyAllBoardselect(String empno) throws NotFoundException {
+		List<DocBean> list = new ArrayList<>();
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = MyConnection.getConnection();
+			String query = "SELECT DOC.DOC_NO, DOC.DOC_STARTDATE, DT.DOCTYPE_SUBJECT, DOC.DOC_SUBJECT, EMP.EMP_NAME, DOC.EMP_NO\r\n" + 
+					"FROM DOC_DETAIL DD,(SELECT *\r\n" + 
+					"FROM DOCUMENTS \r\n" + 
+					"WHERE EMP_NO = ?) DOC, DOC_TYPE DT, EMPLOYEE EMP \r\n" + 
+					"WHERE DD.DOC_NO = DOC.DOC_NO\r\n" + 
+					"AND DOC.EMP_NO = EMP.EMP_NO \r\n" + 
+					"AND DT.DOCTYPE_NO = DOC.DOCTYPE_NO \r\n" + 
+					"AND DD.APPROVAL_STEP = DD.APPROVAL_TOTALSTEP \r\n" + 
+					"AND APPROVAL_RESULT IN ('-1')";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, empno);
 			rs = pstmt.executeQuery();

@@ -32,7 +32,7 @@
 </section>
 <section class="apprSide">
 <h1 class="approval_title">
-		<i class="fas fa-file-export"></i><a href="#" class="txt">개인문서함</a>
+		<i class="fas fa-file-export"></i><a href="${contextPath}/approvalmyAllBoard" class="txt">개인 문서함</a>
 		<button id="btcollapse2" class="btn btn-primary" type="button"
 			data-toggle="collapse" data-target="#collapseArea"
 			aria-expanded="false" aria-controls="#collapseArea">

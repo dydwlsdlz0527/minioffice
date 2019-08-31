@@ -231,7 +231,7 @@ public class ApprovalDAO {
 		try {
 			conn = MyConnection.getConnection();
 			String selectSQL = "UPDATE DOC_DETAIL\r\n" + 
-					"SET APPROVAL_RESULT = ? , APPROVAL_COMENT = ?, APPROVAL_DATE = TO_DATE(SYSDATE,'yy/MM/dd')\r\n" + 
+					"SET APPROVAL_RESULT = ? , APPROVAL_COMENT = ?, APPROVAL_DATE = SYSDATE\r\n" + 
 					"WHERE DOC_NO = ? AND EMP_NO = ?";
 			pstmt = conn.prepareStatement(selectSQL);
 			pstmt.setString(1, appresult);

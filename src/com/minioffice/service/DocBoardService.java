@@ -92,7 +92,6 @@ public class DocBoardService {
 			List<DocDetail> list = dao.SelectDocApprList(docno);
 			return list;
 		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -102,6 +101,26 @@ public class DocBoardService {
 	public List<DocBean> appCompletedboardList(String empno) {
 		try {
 			List<DocBean> list = dao.appCompletedBoardselect(empno);
+			return list;
+		}catch(NotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<DocBean> appCancledboardList(String empno) {
+		try {
+			List<DocBean> list = dao.appCancledBoardselect(empno);
+			return list;
+		}catch(NotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<DocBean> appMyAllboardList(String empno) {
+		try {
+			List<DocBean> list = dao.appMyAllBoardselect(empno);
 			return list;
 		}catch(NotFoundException e) {
 			e.printStackTrace();

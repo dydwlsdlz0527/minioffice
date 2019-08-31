@@ -404,7 +404,8 @@ ul.reply li span {
 			data : 'docno=' +'${doc.getDoc_no()}'+"&apprno="+'${userno}'
 			        +'&appresult='+$("#apprselect").val()+'&apprcoment='+$("#apprcomenttxt").val(),
 			success : function(data){
-				console.log(data);
+				var $appwaitview2= $("#collapseArea>ul a[href='${contextPath}/approvalWaitBoard']");
+				$appwaitview2.trigger('click');
 			}
 		});
 	});
@@ -417,7 +418,17 @@ ul.reply li span {
 </header>
 <div>
 	<div class="tool_bar">
-		<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#appModal" id="doappr">결재하기</button>	
+		<c:set var="appchkLoop" value="true"/>
+		<c:forEach var="appChkList" items="${requestScope.dd}" varStatus="status">
+		<c:if test="${chkLoop}">
+			<c:if test="${userno eq appChkList.getEmp().getEmp_no()}">
+				<c:if test="${status.count eq 1} or ${appChkList[status.count-1].getApproval_result() != '0'}">
+				<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#appModal" id="doappr">결재하기</button>	
+				<c:set var="appchkLoop" value="false"/>
+				</c:if>
+			</c:if>
+		</c:if>
+		</c:forEach>
 	</div>
 	<div class="wrap_container">
 		<%-- 기안 문서 --%>
@@ -491,7 +502,8 @@ ul.reply li span {
 												</c:choose>
 											</div>
 											<div class="sign_date_wrap">
-												<span class="sign_date">${ap.getApproval_date()}</span>
+												<fmt:parseDate value="${ap.getApproval_date()}" var="apprlistdate1" pattern="yyyy-MM-dd HH:mm:ss"/>
+												<span class="date"><fmt:formatDate value="${apprlistdate1}" pattern="yy/MM/dd"/></span>
 											</div>
 										</div>
 										</div>
@@ -577,59 +589,58 @@ ul.reply li span {
 									</a>
 								</span>
 								<div class="msg_wrap">
-									<div class="info">
+									<div class="info" style="width:267px;">
 										<a>
 											<span class="name">${ap2.getEmp().getEmp_name()} ${ap2.getEmp().getRank().getRank_name()}</span>
 										</a>
-											<span class="department">경영지원본부</span>
+											<span class="department">${ap2.getEmp().getDept().getDept_name()}</span>
 										<div class="doc">
 											<c:choose>
-												<c:when test="${ap2.getApproval_result() eq '0'}">
-													<span class="status">기안 대기</span>
+												<c:when test="${ap2.getApproval_result()=='0'}">
+													<c:set var="chkLoop" value="true"/>
+													<c:forEach var="diffList" items="${requestScope.dd}">
+														<c:if test="${chkLoop}">
+															<c:choose>
+																<c:when test="${ap2.getApproval_step()-1 eq diffList.getApproval_step()}">
+																	<c:choose>
+																	<c:when test="${diffList.getApproval_result() eq '0'}">
+																		<span class="status">기안 예정</span>
+																		<c:set var="chkLoop" value="false"/>
+																	</c:when>
+																	<c:otherwise>
+																		<span class="status">기안 대기</span>
+																		<c:set var="chkLoop" value="false"/>
+																	</c:otherwise>
+																	</c:choose>
+																</c:when>
+																<c:otherwise>
+																	<span class="status">기안 대기</span>
+																	<c:set var="chkLoop" value="false"/>
+																</c:otherwise>
+															</c:choose>
+														</c:if>
+													</c:forEach>
 												</c:when>
-												<c:when test="${ap2.getApproval_result()=='1'}">
-													<span class="status">기안 상신</span>
+												<c:when test="${ap2.getApproval_result()=='2'}">
+													<span class="status">기안중</span>
 												</c:when>
 												<c:otherwise>
-													<span class="status">기안 예정</span>
+													<span class="status">기안 상신</span>
 												</c:otherwise>
 											</c:choose>
 											<span class="part">|</span>
-											<span class="date">2018-03-05(월) 15:41</span>
+											<%-- 2018-03-08(월) 16:41 --%>
+											<fmt:parseDate value="${ap2.getApproval_date()}" var="apprlistdate" pattern="yyyy-MM-dd HH:mm:ss"/>
+											<span class="date"><fmt:formatDate value="${apprlistdate}" type="both" dateStyle="medium" timeStyle="medium"/></span>
 										</div>
 									</div>
 									<div class="coment">
-										<span>다시 작성하세요.</span>
+										<span>${ap2.getApproval_coment()}</span>
 									</div>
 								</div>
 							</li>
 						</c:forEach>
 					</c:if>
-					
-					<li>
-						<span class="photo">
-							<a>
-								<img alt="초상화" src="${contextPath}/images/profile/2019039.jpg">
-							</a>
-						</span>
-						<div class="msg_wrap">
-							<div class="info">
-								<a>
-									<span class="name">마동석 사원</span>
-								</a>
-									<span class="department">인사팀</span>
-								<div class="doc">
-									<span class="status">기안 상신</span>
-									<span class="part">|</span>
-									<%-- 2018-03-08(월) 16:41 --%>
-									<span class="date">${ap.getApproval_date()}</span>
-								</div>
-							</div>
-							<div class="coment">
-								<span>좋아요.</span>
-							</div>
-						</div>
-					</li>
 				</ul>
 			</div>
 		</section>
@@ -637,5 +648,5 @@ ul.reply li span {
 </div>
 <%-- Doc Modal --%>
 <div class="Modal fade" tabindex="-1" data-target=".body_content" role="dialog" id="docModal" data-backdrop="false"></div>
-<%@include file="appModalView.jsp" %>
+<%@include file="appModalView.jsp"%>
 </div>

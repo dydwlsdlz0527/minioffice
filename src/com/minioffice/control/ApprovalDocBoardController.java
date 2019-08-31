@@ -59,5 +59,19 @@ public class ApprovalDocBoardController {
 		request.setAttribute("dblist", dblist);
 		return "/view/approval/apprCompletedBoard.jsp";
 	}
+	
+	public String myDocCancle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NotFoundException{
+		String empno = request.getParameter("empno");
+		List<DocBean> dblist = docboardservice.appCancledboardList(empno);
+		request.setAttribute("dblist", dblist);
+		return "/view/approval/apprCancleBoard.jsp";
+	}
+	
+	public String approvalmyAllBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NotFoundException{
+		String empno = request.getParameter("empno");
+		List<DocBean> dblist = docboardservice.appMyAllboardList(empno);
+		request.setAttribute("dblist", dblist);
+		return "/view/approval/myapprDocAllBoard.jsp";
+	}
 
 }
