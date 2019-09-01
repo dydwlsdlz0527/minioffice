@@ -165,6 +165,19 @@ ul.pagination-sm a {
 			}
 		});
 	});
+	
+	var $win = $(window);
+	var $doc = $(document);
+	
+	$win.scroll(function(){
+		if($doc.height()-$win.height() == $win.scrollTop()){
+			 var tr = $('<tr />').append($('<th />')).appendTo($("#spreadsheet"));
+			 var n_cols = $('#spreadsheet tr:first-child th').length;
+	            for (var i = 0; i < n_cols; ++i)
+	                tr.append($('<td />'));
+		}
+		
+	});
 </script>
 <header class="content_top">
 	<h2 style="font-size: x-large;">기안 문서함</h2>
@@ -192,7 +205,7 @@ ul.pagination-sm a {
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="Completedboard1">
 					<!-- 전체 결재 대기 문서 테이블  -->
-					<table class="table table-hover table-condensed">
+					<table class="table table-hover table-condensed" id="spreadsheet">
 						<tr>
 							<th id="header_checkbox" class="sorting_disabled" style="width:4%;">
 								<input type="checkbox" id="checkedAllDeptDoc" name="checkedAllDeptDoc">
@@ -200,13 +213,13 @@ ul.pagination-sm a {
 							<th id="header_drafted_at" class="date first sorting" style="width: 11%;">
 								<span class="title_sort">기안일</span>
 							</th>
-							<th id="header_form_name" class="doc sorting" style="width: 11%;">
+							<th id="header_form_name" class="doc sorting" style="width: 14%;">
 								<span class="title_sort">결재양식</span>
 							</th>
 							<th id="header_emergency" class="doc_emergency sorting_desc" style="width: 6%;">
 								<span class="title_sort">긴급</span>
 							</th>
-							<th id="header_title" class="subject sorting" style="width: 54%;">
+							<th id="header_title" class="subject sorting" style="width: 51%;">
 								<span class="title_sort">제목</span>
 							</th>
 							<th id="header_attach" class="attach sorting_disabled" style="width: 6%;">
@@ -224,7 +237,7 @@ ul.pagination-sm a {
 								<td colspan="7">
 									<p class="data_null">
 										<span><i class="far fa-save fa-3x"></i></span>
-										<span class="txt">결재 완료된 문서가 없습니다.</span>
+										<span class="txt">기안 문서가 없습니다.</span>
 									</p>
 								</td>
 								</tr>
@@ -238,7 +251,7 @@ ul.pagination-sm a {
 									<td></td>
 									<td>${b.getDoctitle()}</td>
 									<td></td>
-									<td>${b.getDocappr()}</td>
+									<td>${b.getDocstate()}</td>
 								</tr>
 								</c:forEach>
 							</c:otherwise>

@@ -45,7 +45,6 @@ public class ApprovalDocBoardController {
 	
 	public String boardDocDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NotFoundException{
 		String docno = request.getParameter("docno");
-		String empno = request.getParameter("empno");
 		Document doc = docboardservice.boarddocdetail(docno);
 		List<DocDetail> dd = docboardservice.boarddocdetailList(docno);
 		request.setAttribute("doc", doc);
@@ -73,5 +72,10 @@ public class ApprovalDocBoardController {
 		request.setAttribute("dblist", dblist);
 		return "/view/approval/myapprDocAllBoard.jsp";
 	}
-
+	public String approvalExpectedBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NotFoundException{
+		String empno = request.getParameter("empno");
+		List<DocBean> dblist = docboardservice.appExceptedboardList(empno);
+		request.setAttribute("dblist", dblist);
+		return "/view/approval/myExceptedBoard.jsp";
+	}
 }

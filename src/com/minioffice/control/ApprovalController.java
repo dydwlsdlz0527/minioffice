@@ -64,7 +64,6 @@ public class ApprovalController {
 		String appresult = request.getParameter("appresult");
 		String apprcoment = request.getParameter("apprcoment");
 		String str = approvalservice.docapprresult(docno,apprno,appresult,apprcoment);
-		System.out.println("str="+str);
 		request.setAttribute("result", str);
 		return "/jsonresult";
 	}

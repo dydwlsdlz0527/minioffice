@@ -200,13 +200,13 @@ ul.pagination-sm a {
 							<th id="header_drafted_at" class="date first sorting" style="width: 11%;">
 								<span class="title_sort">기안일</span>
 							</th>
-							<th id="header_form_name" class="doc sorting" style="width: 11%;">
+							<th id="header_form_name" class="doc sorting" style="width: 14%;">
 								<span class="title_sort">결재양식</span>
 							</th>
 							<th id="header_emergency" class="doc_emergency sorting_desc" style="width: 6%;">
 								<span class="title_sort">긴급</span>
 							</th>
-							<th id="header_title" class="subject sorting" style="width: 54%;">
+							<th id="header_title" class="subject sorting" style="width: 51%;">
 								<span class="title_sort">제목</span>
 							</th>
 							<th id="header_attach" class="attach sorting_disabled" style="width: 6%;">

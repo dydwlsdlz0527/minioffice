@@ -298,6 +298,7 @@ div.sign_type_new {
 		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);
 		$.ajaxSettings.traditional = true;
 		var smcontent = $("#smartEditor").val();
+		
 		$.ajax({
 			url : '${contextPath}/documentComplete',
 			method : 'post',

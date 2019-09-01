@@ -74,7 +74,6 @@ public class DocService {
 			String[] applicantArr) {
 		String str = "";
 		try {
-			
 			 String pathtxt = "C:/docfile/"+docno+".txt";
 			 Path path = Paths.get(pathtxt);
 			 Files.createDirectories(path.getParent());
@@ -88,7 +87,6 @@ public class DocService {
 			 dao.InsertDoc(doctypeno, docno, docempno, docempdept, docsubject, pathtxt);
 			 int size = applicantArr.length;
 			 for(int i=0;i<size;i++) {
-				System.out.println(applicantArr[i]);
 				dao.InsertDocDetail(docno,applicantArr[i],i+1,size);
 			 }
 			 JSONObject jsonObject = new JSONObject();

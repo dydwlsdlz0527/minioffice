@@ -404,12 +404,13 @@ ul.reply li span {
 			data : 'docno=' +'${doc.getDoc_no()}'+"&apprno="+'${userno}'
 			        +'&appresult='+$("#apprselect").val()+'&apprcoment='+$("#apprcomenttxt").val(),
 			success : function(data){
+				alert("현재 기안서를 "+"\'"+$("#apprselect").children("option:selected").text()+"\'"+" 하였습니다.");
 				var $appwaitview2= $("#collapseArea>ul a[href='${contextPath}/approvalWaitBoard']");
 				$appwaitview2.trigger('click');
 			}
 		});
 	});
-	
+
 </script>
 <c:set var="doc" value="${requestScope.doc}"></c:set>
 <div class="doccontents">
@@ -418,16 +419,31 @@ ul.reply li span {
 </header>
 <div>
 	<div class="tool_bar">
-		<c:set var="appchkLoop" value="true"/>
-		<c:forEach var="appChkList" items="${requestScope.dd}" varStatus="status">
-		<c:if test="${chkLoop}">
-			<c:if test="${userno eq appChkList.getEmp().getEmp_no()}">
-				<c:if test="${status.count eq 1} or ${appChkList[status.count-1].getApproval_result() != '0'}">
-				<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#appModal" id="doappr">결재하기</button>	
-				<c:set var="appchkLoop" value="false"/>
+		<c:set var="appchkLoop" value="false"/>
+		<c:forEach var="appChkList" items="${requestScope.dd}" >
+			<c:if test="${userno == appChkList.getEmp().getEmp_no()}">
+				<c:set var="appchkloop2" value="false"/>
+				<c:if test="${!appchkLoop}">
+				<c:forEach var="otherapp" items="${requestScope.dd}" varStatus="statusapp">
+					<c:if test="${!appchkloop2}">
+					<c:choose>
+					<c:when test="${appChkList.getApproval_step()-49==0}">
+							<c:set var="appchkLoop" value="true"/>
+							<c:set var="appchkloop2" value="true"/>
+							<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#appModal" id="doappr">결재하기</button>
+					</c:when>
+					<c:when test="${appChkList.getApproval_step()-49 == otherapp.getApproval_step()-48}">
+							<c:if test="${otherapp.getApproval_result() ne '0'}">
+							<c:set var="appchkLoop" value="true"/>
+							<c:set var="appchkLoop2" value="true"/>
+							<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#appModal" id="doappr">결재하기</button>
+							</c:if>
+					</c:when>
+					</c:choose>
+					</c:if>
+				</c:forEach>
 				</c:if>
 			</c:if>
-		</c:if>
 		</c:forEach>
 	</div>
 	<div class="wrap_container">
@@ -598,24 +614,23 @@ ul.reply li span {
 											<c:choose>
 												<c:when test="${ap2.getApproval_result()=='0'}">
 													<c:set var="chkLoop" value="true"/>
-													<c:forEach var="diffList" items="${requestScope.dd}">
+													<c:forEach var="diffList" items="${requestScope.dd}" varStatus="status">
+														<c:set var="chkLoop2" value="true"/>
+														<c:set var="num" value="48"/>
 														<c:if test="${chkLoop}">
 															<c:choose>
-																<c:when test="${ap2.getApproval_step()-1 eq diffList.getApproval_step()}">
-																	<c:choose>
-																	<c:when test="${diffList.getApproval_result() eq '0'}">
-																		<span class="status">기안 예정</span>
-																		<c:set var="chkLoop" value="false"/>
-																	</c:when>
-																	<c:otherwise>
+																<c:when test="${ap2.getApproval_step()-num == diffList.getApproval_step()-48}">
+																	<c:if test="${diffList.getApproval_result() eq '0'}">
 																		<span class="status">기안 대기</span>
+																		<c:set var="num" value="${num+1}"/>
 																		<c:set var="chkLoop" value="false"/>
-																	</c:otherwise>
-																	</c:choose>
+																		<c:set var="chkLoop2" value="false"/>
+																	</c:if>
 																</c:when>
 																<c:otherwise>
-																	<span class="status">기안 대기</span>
+																	<span class="status">기안 예정</span>		
 																	<c:set var="chkLoop" value="false"/>
+																	<c:set var="chkLoop2" value="false"/>
 																</c:otherwise>
 															</c:choose>
 														</c:if>

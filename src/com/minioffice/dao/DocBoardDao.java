@@ -1,10 +1,12 @@
 package com.minioffice.dao;
 
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,7 +152,8 @@ public class DocBoardDao {
 					"WHERE DT.DOC_NO=?\r\n" + 
 					"AND DT.EMP_NO = EMP.EMP_NO\r\n" + 
 					"AND EMP.RANK_NO = RK.RANK_NO\r\n" + 
-					"AND EMP.DEPT_NO = DEPT.DEPT_NO";
+					"AND EMP.DEPT_NO = DEPT.DEPT_NO\r\n" + 
+					"ORDER BY APPROVAL_STEP ASC";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, docno);
 			rs = pstmt.executeQuery();
@@ -200,7 +203,8 @@ public class DocBoardDao {
 					"AND DOC.EMP_NO = EMP.EMP_NO\r\n" + 
 					"AND DT.DOCTYPE_NO = DOC.DOCTYPE_NO\r\n" + 
 					"AND DD.APPROVAL_STEP = DD.APPROVAL_TOTALSTEP\r\n" + 
-					"AND APPROVAL_RESULT NOT IN ('0','-1')";
+					"AND APPROVAL_RESULT NOT IN ('0','-1')\r\n" +
+					"ORDER BY DOC.DOC_STARTDATE DESC";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, empno);
 			rs = pstmt.executeQuery();
@@ -232,13 +236,13 @@ public class DocBoardDao {
 			conn = MyConnection.getConnection();
 			String query = "SELECT DOC.DOC_NO, DOC.DOC_STARTDATE, DT.DOCTYPE_SUBJECT, DOC.DOC_SUBJECT, EMP.EMP_NAME, DOC.EMP_NO\r\n" + 
 					"FROM DOC_DETAIL DD,(SELECT *\r\n" + 
-					"FROM DOCUMENTS \r\n" + 
+					"FROM DOCUMENTS\r\n" + 
 					"WHERE EMP_NO = ?) DOC, DOC_TYPE DT, EMPLOYEE EMP \r\n" + 
 					"WHERE DD.DOC_NO = DOC.DOC_NO\r\n" + 
 					"AND DOC.EMP_NO = EMP.EMP_NO \r\n" + 
 					"AND DT.DOCTYPE_NO = DOC.DOCTYPE_NO \r\n" + 
-					"AND DD.APPROVAL_STEP = DD.APPROVAL_TOTALSTEP \r\n" + 
-					"AND APPROVAL_RESULT IN ('-1')";
+					"AND DD.APPROVAL_RESULT IN ('-1')\r\n" + 
+					"ORDER BY DOC.DOC_STARTDATE DESC";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, empno);
 			rs = pstmt.executeQuery();
@@ -268,15 +272,81 @@ public class DocBoardDao {
 		PreparedStatement pstmt = null;
 		try {
 			conn = MyConnection.getConnection();
-			String query = "SELECT DOC.DOC_NO, DOC.DOC_STARTDATE, DT.DOCTYPE_SUBJECT, DOC.DOC_SUBJECT, EMP.EMP_NAME, DOC.EMP_NO\r\n" + 
+			String query = "SELECT DOC.DOC_NO, DOC.DOC_STARTDATE, DT.DOCTYPE_SUBJECT, DOC.DOC_SUBJECT, EMP.EMP_NAME, DOC.EMP_NO, DOC.DOC_STATE \r\n" + 
 					"FROM DOC_DETAIL DD,(SELECT *\r\n" + 
 					"FROM DOCUMENTS \r\n" + 
 					"WHERE EMP_NO = ?) DOC, DOC_TYPE DT, EMPLOYEE EMP \r\n" + 
 					"WHERE DD.DOC_NO = DOC.DOC_NO\r\n" + 
-					"AND DOC.EMP_NO = EMP.EMP_NO \r\n" + 
-					"AND DT.DOCTYPE_NO = DOC.DOCTYPE_NO \r\n" + 
-					"AND DD.APPROVAL_STEP = DD.APPROVAL_TOTALSTEP \r\n" + 
-					"AND APPROVAL_RESULT IN ('-1')";
+					"AND DOC.EMP_NO = EMP.EMP_NO\r\n" + 
+					"AND DT.DOCTYPE_NO = DOC.DOCTYPE_NO\r\n" + 
+					"AND DD.APPROVAL_STEP = DD.APPROVAL_TOTALSTEP\r\n" + 
+					"ORDER BY DOC_STARTDATE DESC";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, empno);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				DocBean doc = new DocBean();
+				doc.setDocno(rs.getString(1));
+			    doc.setDocdate(rs.getDate(2));
+			    doc.setDoctypename(rs.getString(3));
+			    doc.setDoctitle(rs.getString(4));
+			    doc.setDocappr(rs.getString(5));
+			    doc.setDocapprno(rs.getString(6));
+			    doc.setDocstate(rs.getString(7));
+				list.add(doc);
+			}	
+			return list;
+		}catch (SQLException e) {
+			e.getStackTrace();
+			throw new NotFoundException(e.getMessage());
+		} finally {
+			MyConnection.close(rs, pstmt, conn);
+		}
+	}
+
+	public void updateDocState(String docno) throws NotFoundException {
+		Connection conn = null;
+		CallableStatement cstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = MyConnection.getConnection();
+			cstmt = conn.prepareCall("{call docstate(?)}");
+			cstmt.setString(1, docno);
+			cstmt.registerOutParameter(1, Types.VARCHAR);
+			boolean flag = cstmt.execute();
+		}catch(SQLException e) {
+			e.getStackTrace();
+			throw new NotFoundException(e.getMessage());
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(cstmt!=null) cstmt.close();
+				if(conn!=null) conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public List<DocBean> appExceptedBoardselect(String empno) throws NotFoundException {
+		List<DocBean> list = new ArrayList<>();
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = MyConnection.getConnection();
+			String query = "SELECT DOC.DOC_NO, DOC.DOC_STARTDATE, DT.DOCTYPE_SUBJECT, DOC.DOC_SUBJECT, EMP.EMP_NAME, DOC.EMP_NO\r\n" + 
+					"FROM DOCUMENTS DOC,(SELECT D1.DOC_NO\r\n" + 
+					"FROM DOC_DETAIL D1, DOC_DETAIL D2\r\n" + 
+					"WHERE D1.EMP_NO = ?\r\n" + 
+					"AND D1.DOC_NO = D2.DOC_NO\r\n" + 
+					"AND D1.APPROVAL_STEP-1=D2.APPROVAL_STEP\r\n" + 
+					"AND D2.APPROVAL_RESULT IN ('0')) DD, EMPLOYEE EMP, DOC_TYPE DT\r\n" + 
+					"WHERE DOC.DOC_NO = DD.DOC_NO\r\n" + 
+					"AND DOC.EMP_NO = EMP.EMP_NO\r\n" + 
+					"AND DT.DOCTYPE_NO = DOC.DOCTYPE_NO\r\n" + 
+					"ORDER BY DOC.DOC_STARTDATE DESC";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, empno);
 			rs = pstmt.executeQuery();
@@ -298,6 +368,23 @@ public class DocBoardDao {
 			MyConnection.close(rs, pstmt, conn);
 		}
 	}
+}
+//		Connection conn = null;
+//		ResultSet rs = null;
+//		PreparedStatement pstmt = null;
+//		try {
+//			conn = MyConnection.getConnection();
+//			String query = "EXECUTE docstate(?)";
+//			pstmt = conn.prepareStatement(query);
+//			pstmt.setString(1, docno);
+//			rs = pstmt.executeQuery();
+//		}catch (SQLException e) {
+//			e.getStackTrace();
+//			throw new NotFoundException(e.getMessage());
+//		} finally {
+//			MyConnection.close(rs, pstmt, conn);
+//		}
+
 	
 //	public Document documentDetail(String empno) throws NotFoundException {
 //		Connection conn = null;
@@ -346,6 +433,3 @@ public class DocBoardDao {
 //		}
 //	}
 
-	
-
-}

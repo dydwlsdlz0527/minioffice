@@ -26,13 +26,13 @@
 					<a href="#" class="txt">참조/열람 대기 문서</a></li>
 			<li class="approval">
 			 	<i class="fas fa-hourglass-half"></i>
-			 	<a href="#" class="txt">결재 예정 문서</a></li>
+			 	<a href="${contextPath}/approvalExpectedBoard" class="txt">결재 예정 문서</a></li>
 		</ul>
 	</div>
 </section>
 <section class="apprSide">
 <h1 class="approval_title">
-		<i class="fas fa-file-export"></i><a href="${contextPath}/approvalmyAllBoard" class="txt">개인 문서함</a>
+		<i class="fas fa-file-export"></i><a href="#" class="txt">개인 문서함</a>
 		<button id="btcollapse2" class="btn btn-primary" type="button"
 			data-toggle="collapse" data-target="#collapseArea"
 			aria-expanded="false" aria-controls="#collapseArea">
@@ -43,7 +43,7 @@
 		<ul class="approval_list">
 			<li class="approval">
 				<i class="fas fa-clock"></i>
-				<a id="myappdoc" href="${contextPath}/approvalWaitBoard" class="txt">기안 문서함</a>
+				<a id="myappdoc" href="${contextPath}/approvalmyAllBoard" class="txt">기안 문서함</a>
 			</li>
 			<li class="approval">
 				<i class="fas fa-edit"></i>
