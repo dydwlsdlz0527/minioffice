@@ -1,6 +1,8 @@
 package com.minioffice.control;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +16,6 @@ import org.json.simple.parser.ParseException;
 import com.minioffice.exception.NotFoundException;
 import com.minioffice.service.PunctualityService;
 import com.minioffice.vo.Employee;
-import com.minioffice.vo.PageBean;
 import com.minioffice.vo.Punctuality;
 
 public class PunctualityController {
@@ -82,22 +83,22 @@ public class PunctualityController {
 	}
 	
 	public String work_list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String currentPage = request.getParameter("currentPage");
-		int intCurrentPage = 1;
-		if(currentPage != null) {
-			intCurrentPage = Integer.parseInt(currentPage);
-		}
-		try {
-			PageBean<Punctuality> p = service.work_list(intCurrentPage);	
-			request.setAttribute("pb", p);
-			request.setAttribute("status", 1);
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-			request.setAttribute("status", -1);
-		}
+		String emp_no = request.getParameter("emp_no");
+		//String result = service.work_list(emp_no);
 		
-		String path = "/result.jsp";
-		return path;
+		//request.setAttribute("result", result);
+		//String path = "/result.jsp";
+		System.out.println("in work_list(): 1");
+		try {
+			List<Map<String,String>>result = service.work_list(emp_no);
+			request.setAttribute("result", result);
+			System.out.println("in work_list(): 2");
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String path = "/view/punctuality/punctuality_work_list_result.jsp";
+		return path;	
 	}
 	
 	public String work_type(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

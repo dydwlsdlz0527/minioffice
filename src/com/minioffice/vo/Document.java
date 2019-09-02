@@ -10,8 +10,8 @@ public class Document {
 	private String doc_subject;
 	private String doc_content;
 	private String doc_state;
-	private Date doc_modifiydate;
-	private Date doc_startdate;
+	private String doc_modifiydate;
+	private String doc_startdate;
 	private String doc_path;
 	private Department dept;
 	
@@ -21,7 +21,7 @@ public class Document {
 	}
 
 	public Document(String doc_no, Employee emp, DocType doctype, String doc_subject, String doc_content,
-			String doc_state, Date doc_modifiydate, Date doc_startdate, String doc_path, Department dept) {
+			String doc_state, String doc_modifiydate, String doc_startdate, String doc_path, Department dept) {
 		super();
 		this.doc_no = doc_no;
 		this.emp = emp;
@@ -83,19 +83,19 @@ public class Document {
 		this.doc_state = doc_state;
 	}
 
-	public Date getDoc_modifiydate() {
+	public String getDoc_modifiydate() {
 		return doc_modifiydate;
 	}
 
-	public void setDoc_modifiydate(Date doc_modifiydate) {
+	public void setDoc_modifiydate(String doc_modifiydate) {
 		this.doc_modifiydate = doc_modifiydate;
 	}
 
-	public Date getDoc_startdate() {
+	public String getDoc_startdate() {
 		return doc_startdate;
 	}
 
-	public void setDoc_startdate(Date doc_startdate) {
+	public void setDoc_startdate(String doc_startdate) {
 		this.doc_startdate = doc_startdate;
 	}
 

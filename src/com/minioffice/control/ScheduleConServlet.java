@@ -2,13 +2,26 @@ package com.minioffice.control;
 
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.json.simple.parser.JSONParser;
+
+import com.minioffice.exception.NotFoundException;
 import com.minioffice.service.ScheduleService;
 import com.minioffice.vo.PSchedule;
 
@@ -35,14 +48,13 @@ public class ScheduleConServlet extends HttpServlet {
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
 		String schedule_subject= request.getParameter("schedule_subject"); 
 		String schedule_start= request.getParameter("schedule_start"); 
 		String schedule_end= request.getParameter("schedule_end");
 		String schedule_content= request.getParameter("schedule_content");
 		String schedule_place=request.getParameter("schedule_place");
 		String schedule_type = request.getParameter("schedule_type");
-		
+		String emp_no = request.getParameter("emp_no");
 		
 		System.out.println("=== schedule con Post ===");
 		System.out.println(schedule_subject);
@@ -51,6 +63,7 @@ public class ScheduleConServlet extends HttpServlet {
 		System.out.println(schedule_end);
 		System.out.println(schedule_content);
 		System.out.println(schedule_type);
+		System.out.println(emp_no);
 		
 		
 		PSchedule s = new PSchedule();
@@ -61,7 +74,9 @@ public class ScheduleConServlet extends HttpServlet {
 		s.setSchedule_content(schedule_content);
 		s.setSchedule_place(schedule_place);
 		s.setSchedule_type(schedule_type);
+		s.setEmp_no(emp_no);
 		
+		System.out.println(s.getEmp_no());
 		System.out.println(s.getSchedule_subject());
 		System.out.println(s.getSchedule_start());
 		System.out.println(s.getSchedule_end());
@@ -71,6 +86,7 @@ public class ScheduleConServlet extends HttpServlet {
 		
 		
 		String result = service.scheduleinsert(s);
+		
 		request.setAttribute("result", result);
 		System.out.println("scs - result : " + result);
 		
@@ -101,9 +117,7 @@ public class ScheduleConServlet extends HttpServlet {
 //		String path = "/result.jsp";
 //		System.out.println("scs - path : " + path);
 //		RequestDispatcher rd = request.getRequestDispatcher(path);			
-//		rd.forward(request, response);
-		
-		
-	}
+//		rd.forward(request, response);		
+	}	
 
 }

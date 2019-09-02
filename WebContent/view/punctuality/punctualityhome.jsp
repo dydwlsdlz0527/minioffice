@@ -48,6 +48,35 @@ ul {
 	font-size: 24px;
 	margin:0;
 }
+
+div.pageGroup{ /*페이지 그룹 */
+    text-align: center !important;
+}
+div.pageGroup>ul{ 
+    text-align: center !important;
+    display:inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 2px;
+}
+div.pageGroup>ul>li{
+    display: inline;
+}
+
+.body_content {
+	text-align: center;
+}
+
+.body_side .side_title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.side_title h1{
+	font-size: inherit;
+	margin: 0; 
+}
 </style> 
 <script>
   function printClock() {
@@ -65,9 +94,9 @@ ul {
 	    	currentHours = addZeros(currentHours - 12,2);
 	    }
 
-	    if(currentSeconds >= 50){// 50초 이상일 때 색을 변환해 준다.
+	    /* if(currentSeconds >= 50){// 50초 이상일 때 색을 변환해 준다.
 	       currentSeconds = '<span style="color:#de1951;">'+currentSeconds+'</span>'
-	    }
+	    } */
 	    clock.innerHTML = currentHours+":"+currentMinute+":"+currentSeconds +" <span style='font-size:30px;'>"+ amPm+"</span>"; //날짜를 출력해 줌
 	    
 	    setTimeout("printClock()",1000);         // 1초마다 printClock() 함수 호출
@@ -95,10 +124,6 @@ $(function(){
 		$("#work_start").prop("disabled", false);
 	});
 
-	$("#myButtons1").click(function(){
-	    alert('AJAX로 처리하고 정상 응답이면.. hide 해 준다.');
-			$('#myModal').modal('hide');
-	});
 	
 	$("#work_start").click(function(){
 		$.ajax({
@@ -110,10 +135,11 @@ $(function(){
 				var msg = jsonObj.emp_no + "번 출근";
 				if(jsonObj.status == 1) {
 					msg += "성공";
-					alert(msg);
+					//alert(msg);
+					window.location.reload();
 				} else {
 					msg += "실패";
-					alert(msg);
+					//alert(msg);
 				}
 			}
 		});
@@ -130,10 +156,11 @@ $(function(){
 				var msg = jsonObj.emp_no + "번 퇴근";
 				if(jsonObj.status == 1) {
 					msg += "성공";
-					alert(msg);
+					//alert(msg);
+					window.location.reload();
 				} else {
 					msg += "실패";
-					alert(msg);
+					//alert(msg);
 				}
 			}
 		});
@@ -152,17 +179,59 @@ $(function(){
 				var msg = jsonObj.emp_no + "번 상태등록";
 				if(jsonObj.status == 1) {
 					msg += "성공";
-					alert(msg);
+					//alert(msg);
 					$("#myModal").modal("hide");
+					window.location.reload();
 				} else {
 					msg += "실패";
-					alert(msg);
+					//alert(msg);
 				}
 			}
 		});
+		return false;
 	});
-});
 	
+	var $aArr = $("body > div > header > div:nth-child(2) > nav > ul > li.menu-item.active > a > span");	
+    $aArr.click(function(){
+    	$.ajax({
+    		url: "${contextPath}/work_list",
+    		data:'emp_no='+<%=session.getAttribute("emp_no")%>,
+    		success:function(data){
+				$("#punc>table>tr:not(:first-child)").remove();
+				$("#punc>table").append(data);
+				//
+				//alert(data);
+    		}    		
+    	});//end ajax  
+    	return false;
+    });//end click
+    
+    $("body > div > header > div:nth-child(2) > nav > ul > li.menu-item.active > a > span").trigger("click");
+});
+
+function popupOpen(obj, content){
+	//var con = document.querySelector(".con");
+	//console.log($(obj).next("div"));
+	if($(obj).next("div").length == 1){
+		//alert("1");
+		popupClose($(obj).next("div"));
+	}else{
+		$("<div class='con' onclick='popupClose(this)'; >"+content+"</div>").appendTo($(obj).parent());
+		//alert("2");
+		
+	}
+	
+	//$("<button class='con' onclick='popupClose(con);'>닫기</button>").appendTo($(obj).parent());
+	//alert($(obj).parent().html());
+	return false;
+};	
+
+function popupClose(obj){
+	//alert("popupClose...");
+	$(obj).remove();
+	return false;
+};
+
 
 </script>
 </head>
@@ -288,30 +357,38 @@ $(function(){
       <!-- body_content는 너만의 영역. 알아서 화면 내보내기-->
       <div class="body_content">
         <!-- 아래부터 작성하면됨 -->
-      	 너가 꾸밀 영역 
-      	 <div><%=session.getAttribute("emp_no") %></div>
-      	 <div>
-      	 	<table>
+      	 <h1>근태 현황</h1>
+      	 <div id="punc">
+      	 	<table  class="table">
       	 		<colgroup>
-      	 		<col width="30%">
-      	 		<col width="30%">
-      	 		<col width="30%">
-      	 		<col width="30%">
+      	 		<col width="20%">
+      	 		<col width="15%">
+      	 		<col width="15%">
+      	 		<col width="15%">
+      	 		<col width="70%">
       	 		</colgroup>
+      	 		<thead>
       	 		<tr>
-      	 			<th>일자</th>
-      	 			<th>날짜</th>
-      	 			<th>타입</th>
+      	 		    <th>날짜</th>
+      	 			<th>출근시간</th>
+      	 			<th>퇴근시간</th>
+      	 			<th>근무시간</th>
       	 			<th>내용</th>
       	 		</tr>
-      	 		<tr>
-      	 			<td>19/08/21</td>
-      	 			<td>08:50</td>
-      	 			<td>출근</td>
-      	 			<td>정상</td>
-      	 		</tr>
+      	 		</thead>
+      	 		<tbody>
+      	 		
+      	 		</tbody>
       	 	</table>
       	 </div>
+      	 <%--<div class="pageGroup">
+      	 	<ul>
+      	 		<li><span>1</span></li>
+      	 		<li><span>2</span></li>
+      	 		<li><span>3</span></li>
+      	 		<li><span>4</span></li>
+      	 	</ul>
+      	 </div> --%>
       	 <%-- <div>${sessionScope.emp_no}</div> --%>
       	<!--  -->
       </div>

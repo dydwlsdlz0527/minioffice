@@ -5,9 +5,9 @@ import java.util.Date;
 public class PSchedule {
 	
 	private String schedule_no;
-	private Employee emp;
-	private String schedule_start;
-	private String schedule_end;
+	private String emp;						// employee --> String
+	private String schedule_start;			// date --> String
+	private String schedule_end;			// date --> String
 	private String schedule_content;
 	private String schedule_place;
 	private String schedule_subject;
@@ -18,7 +18,7 @@ public class PSchedule {
 		super();
 	}
 
-	public PSchedule(String schedule_no, Employee emp, String schedule_start, String schedule_end, String schedule_content,
+	public PSchedule(String schedule_no, String emp, String schedule_start, String schedule_end, String schedule_content,
 			String schedule_place, String schedule_subject, String schedule_type) {
 		super();
 		this.schedule_no = schedule_no;
@@ -39,11 +39,11 @@ public class PSchedule {
 		this.schedule_no = schedule_no;
 	}
 
-	public Employee getemp() {
+	public String getEmp_no() {
 		return emp;
 	}
 
-	public void setemp(Employee emp) {
+	public void setEmp_no(String emp) {
 		this.emp = emp;
 	}
 

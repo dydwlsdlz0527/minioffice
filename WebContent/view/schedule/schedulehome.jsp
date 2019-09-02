@@ -35,6 +35,8 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 	document.addEventListener('DOMContentLoaded', function() {
 		var calendarEl = document.getElementById('calendar');
 
+		var emp_no = ${sessionScope.emp_no};
+
 		var calendar = new FullCalendar.Calendar(calendarEl, {
 			plugins : [ 'interaction', 'dayGrid', 'timeGrid', 'googleCalendar' ], // an array of strings!
 			// locale: 'ko',
@@ -55,7 +57,6 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 			googleCalendarApiKey : "AIzaSyARBfuXNjBGq3KsEO4RaKQzHXz60-fR3qA",      
 			
 				// Google API KEY
-
 	            // 예제소스에 적힌 구글캘린더 API 키는 FullCalendar 예제에 있는 API키를 그대로 사용한 것이다.
 
 	        eventSources : [
@@ -65,19 +66,24 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 	                    className : "koHolidays",
 	                    color : "#FF0000",
 	                    textColor : "#FFFFFF",
-	                    
-	                    
-	                    
-	                }  ,
+	             
+	                },
+	                
 	                {
-	    				url : '${contextPath}/scheduleservice', // url로 일정 받음
-	    				//color: 'red',				// 일정 색상 지정
-	    				
+	    				url : '${contextPath}/scheduleservicegetEmpSchedule', //  get 방식으로 데이터 요청 함, url로 일정 받음
+	    				method: 'POST',
+	    				extraParams: {
+	    					emp_no: emp_no
+	    			    
+	    			},
+    				//color: 'red',				// 일정 색상 지정
 	    				error : function() {
 	    					$('#script-warning').show();
 	    				},
 	    				
-	    			/* 	success : function(data) {
+	    				
+	    				 /*
+	    				success : function(data) {
 	    					
 	    					
 	    					$.each(data, function(idx, val) {
@@ -95,10 +101,10 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 	    					
 	    				}  */
 	    				
-	                }
+	                } 
 
 	                ],
-	                
+	               
 		 /* 	events : {
 				url : '${pageContext.request.contextPath}/scheduleservice', // url로 일정 받음
 				//color: 'red',				// 일정 색상 지정
@@ -112,9 +118,18 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 			select : function(arg) { // 범위 선택
 				console.log('select callback', arg.startStr, arg.endStr,
 						arg.resource ? arg.resource.id : '(no resource)');
+			//alert(arg.startStr);
+			
+			var endStr = arg.endStr.split('-');
+			//alert(endStr[2]-01);
+			//alert(arg.endStr);
+			
+			
+			var str = endStr[0]+'-'+endStr[1]+'-'+endStr[2];
+			//alert(str);
+			
 				addSchedule2(arg.startStr, arg.endStr); // 일정 추가
 				
-				alert("select");
 
 			},
 
@@ -123,19 +138,20 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 				//console.log("setdate = " + setDate(info.event.start));
 				var start = setDate(info.event.start);
 				var end = setDate(info.event.end);
-				var groupId = info.event.groupId;
+				var id = info.event.id;
 				
-				switch(groupId)
+				switch(id)
 				{
-				case "1": groupId="개인일정"; break;
-				case "2": groupId="부서일정"; break;
-				case "3": groupId="전체일정"; break;
+				case "1": var group="개인일정"; break;
+				case "2": var group="부서일정"; break;
+				case "3": var group="회사일정"; break;
 				}
 				
-				var title_place_content = info.event.title.split(" - ");
-				var title = title_place_content[0];
-				var content = title_place_content[1]; 
-				var place = title_place_content[2];
+				var no_title_place_content = info.event.title.split(" - ");
+				var schedule_no = no_title_place_content[0];
+				var title = no_title_place_content[1];
+				var place = no_title_place_content[2]; 
+				var content = no_title_place_content[3];
 				
 				/* alert('ID: ' + info.event.id);
 				alert('Event: ' + info.event.title);
@@ -144,7 +160,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 				alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
 				alert('View: ' + info.view.type); */
 
-				showClickEvent(info.event.id, info.event.title, start, end, groupId, content, place); // b팝업으로 일정 내용을 보여줌
+				showClickEvent(id, schedule_no, title, start, end, group, content, place); // b팝업으로 일정 내용을 보여줌
 				// change the border color just for fun
 				info.el.style.borderColor = 'red'; // 눌러본 이벤트 바깥 색상 지정
 			}
@@ -160,37 +176,108 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 		   alert("dateclick");
 		 }
 		 */
+
+		 
 		});
 
 		calendar.render();
+
+	
 		
 		function setDate(date)					// 날짜 포멧 설정
 		{
-			var str = calendar.formatDate(date, {
-			    
-			    year: 'numeric',
-			    month: '2-digit',
-			    day: '2-digit'
-			    
-			  }
+			var str_year = calendar.formatDate(date, {   year: 'numeric' });
+			var str_month =calendar.formatDate(date, {   month: '2-digit'});
+			var str_day = calendar.formatDate(date, {    day: '2-digit'  });
 			
-			);
-			
-			console.log(str);
+			var str = str_year+"-"+str_month+"-"+str_day;
 	
 			return str;
 		}
+		
+		$('#test').click(function(){
+			
+			calendar.addEventSource( '${contextPath}/scheduleservice' );
+		
+		});
+		
+	/* 	
+		$('#test').click(function(){
+			
+			calendar.refetchEvents();
+			alert("ddd");
+		}); */
+		
+		
+		$("input[name='cc']").click(function(){			// 체크박스 눌러서 일정 추가하기
+
+			var num = $(this).val();
+			switch(num)
+			{
+			case "1":
+				
+				if($(this).prop("checked"))
+					{
+						//alert("num1 : " + num +" // checked : " + $(this).prop("checked"));
+						calendar.addEventSource( '${contextPath}/scheduleservicegetEmpSchedule' );
+						
+					}
+				else
+					{
+						// 삭제문
+					
+						var dd = calendar.getEventSources();
+						console.log(calendar.getEventSourceById('0'));
+						console.log(dd);
+					}
+				
+				
+				break;
+				
+			case "2":
+				
+				if($(this).prop("checked"))
+					{
+						calendar.addEventSource( '${contextPath}/scheduleserviceDept' );
+						//alert("num2 : " + num +" // checked : " + $(this).prop("checked"));
+					}
+				else
+					{
+						// 삭제문
+		
+					}
+				break;
+				
+			case "3":
+				
+				if($(this).prop("checked"))
+					{
+						calendar.addEventSource( '${contextPath}/scheduleserviceCom' );
+						//alert("num3 : " + num +" // checked : " + $(this).prop("checked"));
+					}
+				else
+					{
+						// 삭제문
+					
+					}
+				
+				break;
+			}
+		});
+		
 
 	});
+	
+	
 
 	function addSchedule(calendar) { // 일정관리 눌럿을때 일정 삽입구문
 
-		alert("일정관리 눌림");
+		//alert("일정관리 눌림");
 		var htmlContents = "";
 
 		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 명칭</div><div style='width:60%; float:right'><input type='text' id='schedule_subject' value='' > </div></div>";
 		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 장소</div><div style='width:60%; float:right'><input type='text' id='schedule_place' value='' > </div></div>";
-		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 구분</div><div style='width:60%; float:right'><select name='schedule_type'><option value =''>선택</option><option value ='1'>개인일정</option><option value ='2'>부서일정</option><option value ='3'>전체일정</option></select></div></div>";
+		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 구분</div><div style='width:60%; float:right'><select name='schedule_type'><option value =''>선택</option><option value ='1'>개인일정</option><option value ='2'>부서일정</option><option value ='3'>회사일정</option></select></div></div>";
 		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>시작 날짜</div><div style='width:60%; float:right'><input type='text' id='schedule_start' value='' > </div></div>";
 		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>마침 날짜</div><div style='width:60%; float:right'><input type='text' id='schedule_end' value='' > </div></div>";
 		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 내용</div><div style='width:60%; float:right'><input type='text' id='schedule_content' style='height:200px value='' > </div></div>";
@@ -201,12 +288,12 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 
 	function addSchedule2(startStr, endStr) { // 일정관리 기간을 눌럿을때 일정 삽입구문
 
-		alert("일정관리 눌림");
+		//alert("일정관리 눌림");
 		var htmlContents = "";
 
 		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 명칭</div><div style='width:60%; float:right'><input type='text' id='schedule_subject' value='' > </div></div>";
 		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 장소</div><div style='width:60%; float:right'><input type='text' id='schedule_place' value='' > </div></div>";
-		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 구분</div><div style='width:60%; float:right'><select name='schedule_type'><option value =''>선택</option><option value ='1'>개인일정</option><option value ='2'>부서일정</option><option value ='3'>전체일정</option></select></div></div>";
+		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 구분</div><div style='width:60%; float:right'><select name='schedule_type'><option value =''>선택</option><option value ='1'>개인일정</option><option value ='2'>부서일정</option><option value ='3'>회사일정</option></select></div></div>";
 		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>시작 날짜</div><div style='width:60%; float:right'><input type='text' id='schedule_start' value= " + startStr + "> </div></div>";
 		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>마침 날짜</div><div style='width:60%; float:right'><input type='text' id='schedule_end' value= "+ endStr + "> </div></div>";
 		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 내용</div><div style='width:60%; float:right'><input type='text' id='schedule_content' style='height:200px value='' > </div></div>";
@@ -216,33 +303,29 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 		openPopup("일정 등록", htmlContents, 400);
 	}
 
-	function showClickEvent(id, title, start, end, groupId, content, place) { // 일정 이벤트 클릭시 일정확인
+	function showClickEvent(id, schedule_no, title, start, end, group, content, place) { // 일정 이벤트 클릭시 일정확인
 
-		alert("일정 확인");
 		var htmlContents = "";
 
-		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 번호</div><div style='width:60%; float:right'><input type='text' id='schedule_no' readonly='readonly' value= " + id + " ></div></div>";
-		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 명칭</div><div style='width:60%; float:right'><input type='text' id='schedule_subject' readonly='readonly' value= " + title + " ></div></div>";
-		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 장소</div><div style='width:60%; float:right'><input type='text' id='schedule_place' readonly='readonly' value= " + place + " > </div></div>";
-		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 구분</div><div style='width:60%; float:right'><input type='text' id='schedule_subject' readonly='readonly' value= " + groupId + " ></div></div>";
-		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>시작 날짜</div><div style='width:60%; float:right'><input type='text' id='schedule_start' readonly='readonly' value= " + start + "></div></div>";
-		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>마침 날짜</div><div style='width:60%; float:right'><input type='text' id='schedule_end' readonly='readonly' value= "+ end + "></div></div>";
-		htmlContents += "<div style = 'width:100%; height:120px'><div style='width:30%; float:left; padding-left:30px'>일정 내용</div><div style='width:60%; float:right'> <input type='text' id='schedule_content' style='height:100px' readonly='readonly' value="+ content +" > </div></div>";
-		htmlContents += "<div style = 'width:100%; height:120px'><div style='width:30%; float:left; padding-left:30px'>일정 내용</div><div style='width:60%; float:right'> <textarea rows='5' cols='30' readonly='readonly' style= 'resize:none'>" + content+" </textarea></div></div>";
+		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>id</div><div style='width:60%; float:right'> <textarea rows='1' cols='30' readonly='readonly' style= 'resize:none'>" + id+" </textarea></div></div>";
+		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>글 번호</div><div style='width:60%; float:right'> <textarea id='schedule_no' rows='1' cols='30' readonly='readonly' style= 'resize:none'>" + schedule_no+" </textarea></div></div>";
+		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 제목</div><div style='width:60%; float:right'> <textarea id='schedule_title' rows='1' cols='30' readonly='readonly' style= 'resize:none'>" + title+" </textarea></div></div>";
+		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 장소</div><div style='width:60%; float:right'> <textarea id='schedule_place' rows='1' cols='30' readonly='readonly' style= 'resize:none'>" + place+" </textarea></div></div>";
+		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 구분</div><div style='width:60%; float:right'> <textarea id='schedule_group' rows='1' cols='30' readonly='readonly' style= 'resize:none'>" + group+" </textarea></div></div>";
+		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 시작</div><div style='width:60%; float:right'> <textarea id='schedule_start' rows='1' cols='30' readonly='readonly' style= 'resize:none'>" + start+" </textarea></div></div>";
+		htmlContents += "<div style = 'width:100%; height:30px'><div style='width:30%; float:left; padding-left:30px'>일정 마감</div><div style='width:60%; float:right'> <textarea id='schedule_end' rows='1' cols='30' readonly='readonly' style= 'resize:none'>" + end+" </textarea></div></div>";
+		htmlContents += "<div style = 'width:100%; height:90px'><div style='width:30%; float:left; padding-left:30px'>일정 내용</div><div style='width:60%; float:right'> <textarea id='schedule_content' rows='4' cols='30' readonly='readonly' style= 'resize:none'>" + content+" </textarea></div></div>";
 		htmlContents += "<div style = 'width:100%; text-align:center; height:30px; margin-bottom:15px'><div><button onclick=javascript:closeMessage('winAlert')>확인</button>   <button onclick=javascript:deleteSchedule()>삭제</button> </div></div>";
 		
 		
-		
-		
-		
-		openPopup("일정 확인", htmlContents, 400); // 팝업창 열기
+		openPopup("일정 확인", htmlContents, 500); // 팝업창 열기
 	}
 
 	function openPopup(subject, contents, widths) { // 팝업창
 		$("#alert_subject").html(subject); // 팝업창 title
 		$("#alert_contents").html(contents); // 팝업창 html 내용
 		openMessage("winAlert", widths);
-		alert("openPopup");
+		//alert("openPopup");
 	}
 
 	function openMessage(IDS, widths) {
@@ -254,11 +337,13 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 		$('#' + IDS).bPopup().close();
 	}
 	
-	function deleteSchedule()
+	
+	function deleteSchedule(calendar)
 	{
+		
 		var schedule_no = $('#schedule_no').val();
-		//var schedule_ = $('#schedule_no').val();
-		alert(schedule_no);
+		
+		//alert("삭제?");
 		
 		$.ajax({
 			
@@ -291,12 +376,15 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 		});
 		
 		window.location.reload(); // 새로고침임
+		
+	
+		
 	}
 	
 	
 	
 
-	function saveSchedule() { // 일정 버튼 & 일정 클릭 시 데이터 저장
+	function saveSchedule(calendar) { // 일정 버튼 & 일정 클릭 시 데이터 저장
 
 		var schedule_subject = $('#schedule_subject').val(); // 제목
 		var schedule_place = $('#schedule_place').val(); // 장소
@@ -304,7 +392,9 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 		var schedule_start = $('#schedule_start').val(); // 시작 일정
 		var schedule_end = $('#schedule_end').val(); // 마감 일정
 		var schedule_content = $('#schedule_content').val(); // 일정 내용
-
+		var emp_no = ${sessionScope.emp_no};
+		
+		//alert(emp_no);
 		console.log(schedule_type);
 
 		//var calendar_title = $('#calendar_title').val();
@@ -348,8 +438,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 
 		}
 
-		alert(schedule_subject + " " + schedule_place + " " + schedule_start
-				+ " " + schedule_end + " " + schedule_content);
+	//	alert(schedule_subject + " " + schedule_place + " " + schedule_start+ " " + schedule_end + " " + schedule_content);
 
 		$.ajax({
 
@@ -360,7 +449,8 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 					'&schedule_type=' 	+ schedule_type + 
 					'&schedule_end=' 	+ schedule_end + 
 					'&schedule_content='+ schedule_content + 
-					'&schedule_place=' 	+ schedule_place,
+					'&schedule_place=' 	+ schedule_place +
+					'&emp_no=' +emp_no,
 
 			success : function(data) {
 				console.log("con_data : " + data);
@@ -372,9 +462,10 @@ uri="http://java.sun.com/jsp/jstl/core" %>
 
 				if (jsonObj.status == "1") {
 
+					alert("정상 저장되었습니다.");
 					closeMessage("winAlert");
-					//	alert("정상 저장되었습니다.");
-
+						
+					// $('calendar').reEvent();
 					//	$('#calendar').fullCalendar('refetchEvents'); // 새로고침임
 
 				} else {
@@ -488,8 +579,21 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         </section>
         
         <!--일정등록 아래부분 세션남겨둠. 필요할시 section 안에 리스트작성-->
-        <section>
-         
+        
+    
+ 		<section>
+ 		<div align="center">
+	    <input type="checkbox" id="c1" name="cc" value ="3"/>
+	    <label for="c1"><span></span>회사일정</label>
+	    <p>
+	    <input type="checkbox" id="c2" name="cc" value ="2"/>
+	    <label for="c2"><span></span>부서일정</label>
+	     <p>
+	    <!-- 
+	    <input type="checkbox" id="c3" name="cc" value ="1"/>
+	    <label for="c3"><span></span>개인일정</label>
+         -->
+        </div>
         </section>
         <!--  -->
         
@@ -500,11 +604,13 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         <!-- 아래부터 작성하면됨 -->
       	
       	
-   <!--   <div style="max-width: 900px; margin: 0 auto;">
+     <div style="max-width: 900px; margin: 0 auto;">
+		<!-- 
 		<div style="float: left; padding-left: 5px">
-			<button class ="fc-button-primary" onclick="javascript:showtable(3)" >전체</button>
+			<button id = "test" class ="fc-button-primary" >전체</button>
 		</div>
-		
+		 -->
+		 <!--
 		<div style="float: left; padding-left: 5px">
 			<button class ="fc-button-primary" onclick="javascript:showtable(2)" >부서</button>
 		</div>

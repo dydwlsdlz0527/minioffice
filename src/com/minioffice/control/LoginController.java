@@ -44,6 +44,7 @@ public class LoginController {
 				session.setAttribute("emp_name", jsonObj.get("emp_name"));
 				session.setAttribute("dept_name", jsonObj.get("dept_name"));
 				session.setAttribute("rank_name", jsonObj.get("rank_name"));
+				
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

@@ -5,7 +5,7 @@
 <%response.setHeader("Pragma", "No-cache");%>
 <%response.setDateHeader("Expires", 1L);%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,39 +27,31 @@ html, body {
 	margin: 0;
 	padding: 0;
 }
-
 .carousel, .carousel-item, .active {
 	height: 100%;
 }
-
 .carousel-inner {
 	height: 100%;
 }
-
 .carousel-caption {
 	z-index: 0;
 	top: 40%;
 }
-
 .carousel .carousel-item {
 	background-color: #777;
 }
-
 .carousel .carousel-inner .bg {
 	background-repeat: no-repeat;
 	background-size: cover;
 }
-
 .carousel .carousel-inner .bg1 {
 	background-image: url('${contextPath}/images/login/login1.jpeg');
 	background-position: center top;
 }
-
 .carousel .carousel-inner .bg2 {
 	background-image: url('${contextPath}/images/login/login4.jpg');
 	background-position: center center;
 }
-
 .carousel .carousel-inner .bg3 {
 	background-image: url('${contextPath}/images/login/login5.jpg');
 	background-position: center bottom;
@@ -68,7 +60,6 @@ html, body {
 	background-image: url('${contextPath}/images/login/login6.jpg');
 	background-position: center bottom;
 }
-
 /* modal start */
 /* Full-width input fields */
  input[type=text], input[type=password] {
@@ -89,11 +80,9 @@ button {
 	cursor: pointer;
 	width: 100%;
 }
-
 button:hover {
 	opacity: 0.8;
 }
-
 /* Extra styles for the cancel button */
 .cancelbtn {
 	width: auto;
@@ -106,16 +95,13 @@ button:hover {
 	margin: 24px 0 12px 0;
 	position: relative;
 }
-
 img.avatar {
 	width: 60%;
 }
-
 #id01>.modal-content>div.container {
 	padding: 16px;
 	width: 100%;
 }
-
 span.psw {
 	float: right;
 	padding-top: 16px;
@@ -151,7 +137,6 @@ span.psw {
 	font-size: 35px;
 	font-weight: bold;
 }
-
 .close:hover, .close:focus {
 	color: red;
 	cursor: pointer;
@@ -161,26 +146,21 @@ span.psw {
 	-webkit-animation: animatezoom 0.6s;
 	animation: animatezoom 0.6s
 }
-
 @
 -webkit-keyframes animatezoom {
 	from {-webkit-transform: scale(0)
 }
-
 to {
 	-webkit-transform: scale(1)
 }
-
 }
 @
 keyframes animatezoom {
 	from {transform: scale(0)
 }
-
 to {
 	transform: scale(1)
 }
-
 }
 @media screen and (max-width: 300px) {
 	span.psw {
@@ -292,7 +272,7 @@ $(function() {
 	<form class="modal-content animate" action="/action_page.php">
 		<div class="imgcontainer">
 			<span class="close" title="Close Modal">&times;</span>
-			<img src="" alt="Avatar" class="avatar">
+			<img src="${contextPath}/images/login/mainImg.png" alt="Avatar" class="avatar">
 		</div>
 		<div class="container">
 			<label for="uname"><b>아이디</b></label>
