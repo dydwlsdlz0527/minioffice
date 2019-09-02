@@ -20,7 +20,7 @@ select{
 }
 
 .addr_input2, .addr_input3{
-   width : 600px;
+   width : 100px;
 }
 .overlap {
   background-color: rgb(0, 125, 200); /* Green */
@@ -48,6 +48,9 @@ select{
   color: white;
 }
 
+
+
+
 input[type=submit]{
 display:none;
 }
@@ -65,9 +68,6 @@ form {
     margin-top: 0em;
 }
 
-.sign_img_rank{
-	
-}
 
 body {
     font-size: 12px;
@@ -124,18 +124,12 @@ table {
 }
 
 table.detail tr > td {
-    padding: 12px 0px 9px 10px;
+    padding: 12px 10px 9px 10px;
     border-bottom: 1px solid #e9e9e9;
-    text-align:left 
-}
-
-img_td{
-	height : 150px;
 }
 
 element.style {
     overflow: hidden;
-    	height : 150px;   
 }
 
 table.detail td span {
@@ -210,21 +204,8 @@ img {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
-  background-color: transparent;
-  cursor: pointer;
-}
-#sign_file {
-  position: absolute; z-index:1;  
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  bottom: 0px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-  background-color: transparent;
-  cursor: pointer;
+    background-color: transparent;
+    cursor: pointer;
 }
 .parea{
    height: 0px;
@@ -234,48 +215,6 @@ img {
     cursor: pointer;
 }
 
-div.content table.detail div.sign_type_new {
-    margin-bottom: 4px;
-}
-
-div.sign_type_new {
-    display: inline-block;
-    margin-right: -1px;
-    font-size: 12px;
-}
-
-.tb_sign_type1{
-	width : 30px;
-}
-
-div.content table.detail div.sign_type_new table.tb_sign_type1 tbody tr td {
-    border-top: 1px solid #666;
-    border-bottom: 1px solid #666;
-    border-left: 1px solid #666;
-    border-right: 1px solid #666;
-    padding : 0px;
-}
-.sign_member{
-width : 150px;
-height : 150px;
-}
-#brim{
-height : 0px;
-}
-
-wrap_name wrap_sign{
-height : 100px;
-}
-
-.sign_img_rank .last {
-	height : 20px;
-}
-.title{
-font-size : 30px;
-font-weight: bolder;
-}
-
-
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
            </script>
@@ -283,18 +222,6 @@ font-weight: bolder;
 <%--아이디--%>
 $(function(){
    var $idObj = $("input[name=id]");      
-   var $pw2Obj = $("input[name=id]");   
-   var $pwObj = $("input[name=pw]");
-   var $pw2Obj = $("input[name=pw2]");
-   var $nameObj = $("input[name=name]");      
-   var $rank_selectObj = $("input[name=rank_select]");      
-   var $dept_selectObj = $("input[name=dept_select]");      
-   var $hp_numObj = $("input[name=hp_num]");      
-   var $zipcode3Obj = $("input[name=zipcode3]");      
-   var $sign_pwObj = $("input[name=sign_pw]");      
-   var $admin_inputObj = $("input[name=admin_input]");      
-   var $imgFileObj = $("input[name=img_filechk]");
-   var $signFileObj = $("input[name=sign_filechk]");
    var $submitObj=$("input[type=submit]");
    var $idmsgObj=$("#idMsg");
    var $pwmsgObj=$("#pwMsg");
@@ -305,6 +232,7 @@ $(function(){
    
    
    
+   console.log($emailObj.text());
    $idObj.focus(function(){
       $submitObj.hide();
    });
@@ -391,17 +319,15 @@ $overlapObj.click(function(){
             reader.readAsDataURL(input.files[0]);
       }
    }
-   $("#sign_file").change(function(){ //alert(this.value); //선택한 이미지 경로 표시 
+   $("#sign_file"). change(function(){ //alert(this.value); //선택한 이미지 경로 표시 
       signReadURL(this);
 });
 
    
- 
+   var $pwObj = $("input[name=pw]");
+   var $pw2Obj = $("input[name=pw2]");
    
     $("#userCreateForm").submit(function(){
-    	//var formData = new FormData();
-    	//formData.append("img_filechk",$img_filechk[0].files[0]);
-    	//formData.append("sign_filechk",$sign_filechk[1].files[0]);
         $.ajax({
            url: '${contextPath}/save',
            method: 'post',
@@ -415,8 +341,7 @@ $overlapObj.click(function(){
               var jsonObj = JSON.parse(data);
               if(jsonObj.status == 1){ //가입성공
                  alert("가입성공");
-                  location.href='${contextPath}/view/admin/adminhome.jsp'; //'${contextPath}/jq/layout.jsp';
-                  console.log("plz")
+                  location.href='${contextPath}/view/Employee/employee.jsp'; //'${contextPath}/jq/layout.jsp';
               }else{
                  alert("가입실패");
               }
@@ -424,53 +349,6 @@ $overlapObj.click(function(){
         });
        return false;
     });
-    
-    
-    
-    /* var $imgFile = $("input[name=img_file]");
-    var $signFile = $("input[name=sign_file]");
-    
-    //이미지파일 등록
-    $imgFile.change(function(){
-    	var formData = new FormData();
-    	formData.append("img_file",$imgFile[0].files[0])
-        $.ajax({
-           url: '${contextPath}/fileupload',
-           method: 'post',
-           processData : false ,
-           contentType : false ,
-           data: formData ,
-           success:function(data){
-              var jsonObj = JSON.parse(data);
-              if(jsonObj.status == 1){ //가입성공
-                 alert("업데이트성공!");
-                  //location.href='${contextPath}/view/Employee/employee.jsp'; //'${contextPath}/jq/layout.jsp';
-              }else{
-                 alert("업데이트실패");
-              }
-           }
-        });
-       return false;
-    });
-    //사인파일 등록
-    $signFile.change(function(){
-        $.ajax({
-           url: '${contextPath}/fileupload',
-           method: 'post',
-           data: file,
-           success:function(data){
-              var jsonObj = JSON.parse(data);
-              if(jsonObj.status == 1){ //가입성공
-                 alert("업데이트성공!");
-                  //location.href='${contextPath}/view/Employee/employee.jsp'; //'${contextPath}/jq/layout.jsp';
-              }else{
-                 alert("업데이트실패");
-              }
-           }
-        });
-       return false;
-    }); */
-    
 });
 
 </script>
@@ -496,16 +374,16 @@ $overlapObj.click(function(){
                      </colgroup>
                         <tr>
                            <th><span class="img_title">사진</span></th>
-                           <td class="img_td"><span class="img_profile">
+                           <td><span class="img_profile">
                                  <span class="btn_img_upload"> <span
                                     class="btn_img_file" style="text-align: center;"> <span
                                        class="button_text"> <label for="img_file" class="buttonText"
                                           style="font-size: 12px">사진올리기 </label>
-                                    </span> <input type="file" name="img_filechk" id="img_file" title="파일첨부" multiple
+                                    </span> <input type="file" name="img_file" id="img_file" title="파일첨부" multiple
                                        accept="undefined"></span>
                               </span><img src='${contextPath}/images/Employee/icon-2426371_960_720.jpg' width="100px" height="100px"
                                     id="img">
-                           </span><br><br> <div class="parea">※ 사진은 150×150사이즈로 자동 적용됩니다.</div><br></td>
+                           </span> <div class="parea">※ 사진은 150×150사이즈로 자동 적용됩니다.</div><br></td>
                         </tr>
                         
                         
@@ -599,7 +477,7 @@ $overlapObj.click(function(){
                                     class="rank_asterisk">*</ins>직급</span></th>
                            <td><select id="rank_select" name="rank_select">
                                  <option value="1">이사</option>
-                                 <option value="2">사장</option>
+                                 <option value="2">사정</option>
                                  <option value="3">전무</option>
                                  <option value="4">부장</option>
                                  <option value="5">차장</option>
@@ -653,9 +531,9 @@ $overlapObj.click(function(){
                            <td><input class="addr_input2" type="text" readonly
                               name="zipcode2"></td>
                         </tr> -->
-                      
-                           <td><input class="addr_input3" name= "zipcode3" type="text" placeholder="주소 입력"></td>
-                        
+                        <tr>
+                           <td><input class="addr_input3" name= "zipcode3" type="text"></td>
+                        </tr>
 
                         <!-- 서명이미지 -->
                         <tr>
@@ -664,40 +542,33 @@ $overlapObj.click(function(){
                                  <table class="tb_img_sign">
                                     <tr>
                                        <td>
-                                       <div class="sign_type1 sign_type_new">
-                                            <table class="tb_sign_type1">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <table class="sign_member">
-                                                                <tbody>
-                                                                    <tr><td class = sign_img_rank"><span class="sign_rank">직위</span></td></tr>
-                                                                    <tr>
-                                                                        <td class="wrap_name wrap_sign">
-                                                                            <span class="sign_stamp stamp_approved"><img src="${contextPath}/images/Employee/stamp_approved.png" id="approval_sign_img"></span>
-                                                                            <span class="sign_name">이름</span><tr id = "brim"></tr>
-                                                                      </td>
-                                                                    </tr>
-                                                                    <tr><td class="last"><span class="sign_date">결재일</span></td></tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                          <br>
+                                          <table class="sign_rank">
+                                             <tbody>
+                                                <tr>
+                                                   <td><span class="sign_rank">직위</span></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="img_name"><span class="sign_stamp"></span>
+                                                      <span class="sign_name">이름</span></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="last"><span class="sign_date">결재일</span>
+                                                   </td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
                                        </td>
                                     </tr>
                                  </table>
                               </div> <span class="btn_sign_img"> <span
                                  class="btn_sign_img_file" style="text-align: center;">
-                                    <span class="button_text"> <label for="sign_file" class="buttonText"
-                                          style="font-size: 12px">사진올리기 </label>
-                                  <input type="file" name="sign_filechk" id="sign_file" title="서명파일첨부" multiple
-                                    accept="undefined"></span>
+                                    <span class="button_text"> <span class="buttonText"
+                                       style="font-size: 12px">사진올리기 </span>
+                                 </span> <input type="file" name="sign_file" id="sign_file" title="서명파일첨부" multiple
+                                    accept="undefined">
                               </span>
-                           </span> </td>
+                           </span> <img src='${contextPath}/images/Employee/stamp_approved.png'
+                              width="50px" height="50px" id="sign_img"></td>
                         </tr>
 
 
@@ -726,6 +597,39 @@ $overlapObj.click(function(){
                            
 
                         </tr>
+               
+
+                        <!-- 
+                        
+      <br> <br> <input type="text" readonly name="addr1"><br>
+      읽기전용 readonly
+      <br> <input type="text" name="addr2"><br> <br>
+      <br> <input type="hidden" name="buildingno"><br> <br>
+
+      <div>
+         <input type="reset" value="취소" id="cancel">&emsp;&emsp; 
+         <input type="submit" value="가입완료" id="sub">
+      </div>
+
+
+   우편번호 검색용 div
+
+   <div id="divSearchZip"
+      style="display:none;width: 300px; height: 400px; position: absolute; top: 200px; left: 100px; background-color: gray;">
+
+
+ 
+         <div>
+            <input type="text" placeholder="도로명 +건물번호" name="search1">
+            <button>검색</button>
+         
+         </div>
+
+         결과가 나타는 부분 -->
+
+
+
+
                      </table>
                   </div>
                </div>
@@ -735,7 +639,7 @@ $overlapObj.click(function(){
             
 <!-- 액션버튼 -->
                <div class="action_button">
-                  <input type="submit" class="save_btn" value="저장" > 
+                  <input type="submit" class="save_btn" value="저장"> 
                   <input type="button" class="cancel_btn" value="취소">
                </div>
                </form>

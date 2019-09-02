@@ -6,8 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.codec.binary.Base64;
-
 import com.minioffice.service.EmployeeService;
 import com.minioffice.vo.Department;
 import com.minioffice.vo.Employee;
@@ -38,7 +36,16 @@ public class EmployeeController {
 	
 		//계정 등록
 		public String save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+//			System.out.println("들어옴?");
+//			String directory = request.getSession().getServletContext().getRealPath("/upload/");
+//	   		int maxSize = 1024 * 1024 * 100;
+//	   		String encoding = "UTF-8";
+//	   		
+//	   		MultipartRequest multipartRequest
+//	   		= new MultipartRequest(request, directory, maxSize, encoding,
+//	   				new DefaultFileRenamePolicy());
+//	   		String imgFile = multipartRequest.getOriginalFileName("img_filechk");	
+//	   		String signFile = multipartRequest.getOriginalFileName("sign_filechk");
 		String id = request.getParameter("id");
 		String pw = request.getParameter("pw2");
 		String name = request.getParameter("name");
@@ -48,21 +55,18 @@ public class EmployeeController {
 		//String zipcode1 = request.getParameter("zipcode1");
 		//String zipcode2 = request.getParameter("zipcode2");
 		String zipcode3 = request.getParameter("zipcode3");
-		byte[] imgFile = Base64.decodeBase64("img_file");
-		byte[] signFile = Base64.decodeBase64("sign_file");
 		String signPw = request.getParameter("sign_pw");
 		String admin = request.getParameter("admin_input");
-		//System.out.println(//id+"@mini.com:"+pw+":"+name+":"+rank+":"+dept+":"+phone+":"+zipcode3+":"+
-				//imgFile+":"+signFile+":"+signPw+":"+admin);
-				
+		System.out.println(id+"||"+pw+"||"+name+"||"+rank+"||"+dept+"||"+phone+"||"+zipcode3+"||"+signPw+"||"+admin);		
+		
 		Employee e = new Employee();
+		//e.setEmp_img(imgFile);
+		//e.setEmp_sign(signFile);	
 		e.setEmp_id(id+"@mini.com");
 		e.setEmp_pw(pw);
 		e.setEmp_name(name);
 		e.setEmp_phone(phone);
 		e.setEmp_addr(zipcode3);
-		e.setEmp_img(imgFile);
-		e.setEmp_sign(signFile);
 		e.setEmp_signpw(signPw);
 		e.setEmp_admin(admin.charAt(0));
 		Rank r = new Rank();
@@ -73,11 +77,10 @@ public class EmployeeController {
 		e.setDept(d);
 		
 		
-		
 		String str = service.save(e);		
 		request.setAttribute("result", str);
 		String path = "/result.jsp";
 		return path;
 	}
-
+		
 }

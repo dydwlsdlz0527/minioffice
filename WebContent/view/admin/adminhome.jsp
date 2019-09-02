@@ -14,6 +14,42 @@ uri="http://java.sun.com/jsp/jstl/core" %>
   <title>admin.jsp</title>
   <!-- home 화면에 필요한 icon과 스타일 불러오기 -->
   <script src="https://kit.fontawesome.com/6ea03f5ac0.js"></script>
+  <script>
+  var loadEmpList = function(data){
+	  $("section").empty();
+	  $("section").html();
+  }
+  
+  var loadInfoMenu = function(u, callback){
+	  $.ajax({
+		  url : u,
+		  method: 'get',
+		  success : function(data){
+			  callback(data);
+		  }
+	  });
+	  return false;
+  };
+  
+  $(function(){	
+		var $menuArr = $("header>nav>ul>li>a");
+		$menuArr.click(function(){		
+		  var url = $(this).attr('href');
+		  switch(url){
+		  case '${pageContext.request.contextPath}/employeeList':
+			  loadMenu(url, loadBoardList);
+			  break;
+		  case '${pageContext.request.contextPath}/jq/display.html':
+			  loadMenu(url, function(data){
+				$("section").empty();
+				$("section").html(data);
+			  });
+		  }
+		  return false; //기본이벤트핸들러 막기, //이벤트전달 중지
+		});
+	});
+  
+  </script>
   <link rel="stylesheet" href="${contextPath}/css/styles.css" />
   <!-- -->
 </head>
@@ -73,20 +109,20 @@ uri="http://java.sun.com/jsp/jstl/core" %>
           <ul>
           	<li class="info">
               <i class="fas fa-users"></i>
-          	  <a href="#">계정 목록</a>
+          	  <a href="${pageContext.request.contextPath}/employeeList">계정 목록</a>
           	</li>
           	<li class="info">
           	  <i class="fas fa-user-plus"></i>
-          	  <a href="#">계정 추가</a>
+          	  <a href="${pageContext.request.contextPath}/view/Employee/employee.jsp">계정 추가</a>
           	</li>
           </ul>
         </nav>        
-      </div>
+      </div> 
       <!--left body_side finish-->
       <!-- body_content는 너만의 영역. 알아서 화면 내보내기-->
       <div class="body_content">
         <!-- 아래부터 작성하면됨 -->
-      	 너가 꾸밀 영역
+      	<jsp:include page="/view/Employee/employee.jsp"/>
       	<!--  -->
       </div>
     </div>

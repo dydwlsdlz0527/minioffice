@@ -40,12 +40,29 @@ public class EmployeeService {
 		} catch (AddException e) {
 			e.printStackTrace();
 		}
-		//String str = "{\"status\":" + status +"}";
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("status", status);
 		String str = jsonObj.toString();
 		return str;
 	}
+	
+	
+//	public String fileupload(Employee p) {
+//		int status = -1; //업데이트실패
+//		try {
+//			dao.fileupload(p);
+//			status = 1;	//업데이트성공
+//		} catch (AddException e) {
+//			e.printStackTrace();
+//		}
+//		JSONObject jsonObj = new JSONObject();
+//		jsonObj.put("status", status);
+//		String str = jsonObj.toString();
+//		return str;
+//	}
+	
+	
+	
 
 	
 }
