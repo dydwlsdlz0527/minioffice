@@ -20,11 +20,7 @@ select{
 }
 
 .addr_input2, .addr_input3{
-<<<<<<< HEAD
    width : 600px;
-=======
-   width : 100px;
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
 }
 .overlap {
   background-color: rgb(0, 125, 200); /* Green */
@@ -52,12 +48,6 @@ select{
   color: white;
 }
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
 input[type=submit]{
 display:none;
 }
@@ -75,12 +65,9 @@ form {
     margin-top: 0em;
 }
 
-<<<<<<< HEAD
 .sign_img_rank{
 	
 }
-=======
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
 
 body {
     font-size: 12px;
@@ -97,8 +84,6 @@ div {
 
 .content{
 text-align: center;
-border: 1px solid #dddddd;
-
 }
 
 div.content_page {
@@ -111,6 +96,10 @@ div.container div.header h2 {
     top: 8px;
     font: bold 15px malgun gothic,dotum;
     color: #444;
+}
+
+.action_button{
+	
 }
 
 div.container div.header {
@@ -137,7 +126,6 @@ table {
 }
 
 table.detail tr > td {
-<<<<<<< HEAD
     padding: 12px 0px 9px 10px;
     border-bottom: 1px solid #e9e9e9;
     text-align:left 
@@ -145,18 +133,11 @@ table.detail tr > td {
 
 img_td{
 	height : 150px;
-=======
-    padding: 12px 10px 9px 10px;
-    border-bottom: 1px solid #e9e9e9;
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
 }
 
 element.style {
     overflow: hidden;
-<<<<<<< HEAD
     	height : 150px;   
-=======
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
 }
 
 table.detail td span {
@@ -231,7 +212,6 @@ img {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
-<<<<<<< HEAD
   background-color: transparent;
   cursor: pointer;
 }
@@ -247,10 +227,6 @@ img {
   border: 0;
   background-color: transparent;
   cursor: pointer;
-=======
-    background-color: transparent;
-    cursor: pointer;
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
 }
 .parea{
    height: 0px;
@@ -296,13 +272,10 @@ height : 100px;
 .sign_img_rank .last {
 	height : 20px;
 }
-<<<<<<< HEAD
 .title{
 font-size : 30px;
 font-weight: bolder;
 }
-=======
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
 
 
 </style>
@@ -444,11 +417,7 @@ $overlapObj.click(function(){
               var jsonObj = JSON.parse(data);
               if(jsonObj.status == 1){ //가입성공
                  alert("가입성공");
-<<<<<<< HEAD
                   location.href='${contextPath}/view/admin/adminhome.jsp'; //'${contextPath}/jq/layout.jsp';
-=======
-                  location.href='${contextPath}/view/Employee/employee.jsp'; //'${contextPath}/jq/layout.jsp';
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
                   console.log("plz")
               }else{
                  alert("가입실패");
@@ -529,11 +498,7 @@ $overlapObj.click(function(){
                      </colgroup>
                         <tr>
                            <th><span class="img_title">사진</span></th>
-<<<<<<< HEAD
                            <td class="img_td"><span class="img_profile">
-=======
-                           <td><span class="img_profile">
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
                                  <span class="btn_img_upload"> <span
                                     class="btn_img_file" style="text-align: center;"> <span
                                        class="button_text"> <label for="img_file" class="buttonText"
@@ -542,11 +507,7 @@ $overlapObj.click(function(){
                                        accept="undefined"></span>
                               </span><img src='${contextPath}/images/Employee/icon-2426371_960_720.jpg' width="100px" height="100px"
                                     id="img">
-<<<<<<< HEAD
                            </span><br><br> <div class="parea">※ 사진은 150×150사이즈로 자동 적용됩니다.</div><br></td>
-=======
-                           </span> <div class="parea">※ 사진은 150×150사이즈로 자동 적용됩니다.</div><br></td>
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
                         </tr>
                         
                         
@@ -694,15 +655,9 @@ $overlapObj.click(function(){
                            <td><input class="addr_input2" type="text" readonly
                               name="zipcode2"></td>
                         </tr> -->
-<<<<<<< HEAD
                       
                            <td><input class="addr_input3" name= "zipcode3" type="text" placeholder="주소 입력"></td>
                         
-=======
-                        <tr>
-                           <td><input class="addr_input3" name= "zipcode3" type="text"></td>
-                        </tr>
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
 
                         <!-- 서명이미지 -->
                         <tr>
@@ -739,17 +694,10 @@ $overlapObj.click(function(){
                                  </table>
                               </div> <span class="btn_sign_img"> <span
                                  class="btn_sign_img_file" style="text-align: center;">
-<<<<<<< HEAD
                                     <span class="button_text"> <label for="sign_file" class="buttonText"
                                           style="font-size: 12px">사진올리기 </label>
                                   <input type="file" name="sign_filechk" id="sign_file" title="서명파일첨부" multiple
                                     accept="undefined"></span>
-=======
-                                    <span class="button_text"> <span class="buttonText"
-                                       style="font-size: 12px">사진올리기 </span>
-                                 </span> <input type="file" name="sign_filechk" id="sign_file" title="서명파일첨부" multiple
-                                    accept="undefined">
->>>>>>> c1ae3b5c64fe4e8fe0ce7991d71a79d68d62f6e3
                               </span>
                            </span> </td>
                         </tr>

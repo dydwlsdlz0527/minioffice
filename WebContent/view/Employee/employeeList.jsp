@@ -31,7 +31,7 @@ element.style {
 #rank_select{
 	width : 100px;
 	height : 20px;
-	align: center;
+	text-align: center;
 }
 
 tableheader{
@@ -67,6 +67,10 @@ div.tool_bar {
     overflow: hidden;
     overflow-x: hidden;
     overflow-y: hidden;
+}
+
+.dataTables_paginate paging_full_numbers > span > a{
+	cursor: pointer;
 }
 
 </style>
@@ -145,37 +149,37 @@ if(status != 1){
          		<span class="title_sort">이름<ins class="ic"></ins><span class="selected"></span></span>
          	</th>
                            <th><select id="rank_select" name="rank_select">
-                                 <option value="0">::직급::</option>
-                                 <option value="1">이사</option>
-                                 <option value="2">사장</option>
-                                 <option value="3">전무</option>
-                                 <option value="4">부장</option>
-                                 <option value="5">차장</option>
-                                 <option value="6">과장</option>
-                                 <option value="7">대리</option>
-                                 <option value="8">주임</option>
-                                 <option value="9">사원</option>
+                                 <option value="0">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp::직급::</option>
+                                 <option value="1">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp이사</option>
+                                 <option value="2">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp사장</option>
+                                 <option value="3">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp전무</option>
+                                 <option value="4">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp부장</option>
+                                 <option value="5">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp차장</option>
+                                 <option value="6">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp과장</option>
+                                 <option value="7">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp대리</option>
+                                 <option value="8">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp주임</option>
+                                 <option value="9">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp사원</option>
                            </select></th>
          	<th class="email title sorting_asc" role="columnheader" tabindex="0" aria-controls="account_list" rowspan="1" colspan="1" style="width: 198px;" aria-label="
                                         이메일  : activate to sort column ascending">
             <span class="title_sort">이메일<ins class="ic"></ins><span class="selected"></span></span>
             </th>
             <th><select id="dept_select" name="dept_select">
-                                 <option value="0000">부서</option>
-                                 <option value="C001">영업본부</option>
-                                 <option value="C002">경영지원본부</option>
+                                 <option value="0000">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp::부서::</option>
+                                 <option value="C001">&nbsp&nbsp&nbsp&nbsp경영업본부</option>
+                                 <option value="C002">&nbsp&nbsp경영지원본부</option>
                                  <option value="C003">시스템운영본부</option>
-                                 <option value="C004">서비스본부</option>
-                                 <option value="D001">영업팀</option>
-                                 <option value="D002">마케팅팀</option>
-                                 <option value="D003">재경팀</option>
-                                 <option value="D004">총무팀</option>
-                                 <option value="D005">인사팀</option>
-                                 <option value="D006">보안팀</option>
-                                 <option value="D007">품질팀</option>
-                                 <option value="D008">자산운영팀</option>
-                                 <option value="D009">인터넷사업팀</option>
-                                 <option value="D010">커머스사업팀</option>
+                                 <option value="C004">&nbsp&nbsp&nbsp서비스본부</option>
+                                 <option value="D001">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp영업팀</option>
+                                 <option value="D002">&nbsp&nbsp&nbsp&nbsp&nbsp마케팅팀</option>
+                                 <option value="D003">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp재경팀</option>
+                                 <option value="D004">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp총무팀</option>
+                                 <option value="D005">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp인사팀</option>
+                                 <option value="D006">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp보안팀</option>
+                                 <option value="D007">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp품질팀</option>
+                                 <option value="D008">&nbsp&nbsp&nbsp자산운영팀</option>
+                                 <option value="D009">&nbsp&nbsp인터넷사업팀</option>
+                                 <option value="D010">&nbsp&nbsp커머스사업팀</option>
                            </select></th></tr>
                            <tr>
                            
