@@ -122,7 +122,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       <!-- body_content는 너만의 영역. 알아서 화면 내보내기-->
       <div class="body_content">
         <!-- 아래부터 작성하면됨 -->
-      	<jsp:include page="/view/Employee/employee.jsp"/>
+        
       	<!--  -->
       </div>
     </div>

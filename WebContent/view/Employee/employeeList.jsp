@@ -6,7 +6,9 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>    
 <%String contextPath = request.getContextPath();%>
-
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+  <!-- home 화면에 필요한 icon과 스타일 불러오기 -->
+  <script src="https://kit.fontawesome.com/6ea03f5ac0.js"></script>
 <style>
 table.emp_chart tr td {
     height: 50px;
@@ -48,7 +50,16 @@ select {
     border-radius: 5px;
 }
 
+.action_button{
+	align-content: center;
+}
 
+.save_btn{
+	align-content: center;
+}
+.cancel_btn{
+	align-content: center;
+}
 
 div.content_tb div.tool_bar {
     padding: 10px 5px;
@@ -71,6 +82,15 @@ div.tool_bar {
 
 .dataTables_paginate paging_full_numbers > span > a{
 	cursor: pointer;
+}
+
+#layoutTitle{
+	font-size : 30px;
+	font-weight: bolder;
+}
+
+.emp_board_content_top{
+	width : 700px;
 }
 
 </style>
@@ -114,11 +134,84 @@ $(function(){
         }
         return false;
      });
+    
+    
+    
+    
 });//end $(function(){
 
 </script> 
+  <link rel="stylesheet" href="${contextPath}/css/styles.css" />
 <body>
-<%
+  <div class="wrap">
+    <!-- header -->
+    <header class="header">
+      <div class="header_columns">
+        <i class="fab fa-modx"></i>
+        <h1 class="header-logo">Mini Office</h1>
+      </div>
+      <div class="header_columns">
+        <nav class="menu-container">
+          <ul class="header-menu">
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/home/home.jsp">
+                <span class="menu">홈</span>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/approval/approvalhome.jsp">
+                <span class="menu">전자결재</span>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/mail/mailhome.jsp">
+                <span class="menu">메일</span>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/board/boardhome.jsp">
+                <span class="menu">게시판</span>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/schedule/schedulehome.jsp">
+                <span class="menu">캘린더</span>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/punctuality/punctualityhome.jsp">
+                <span class="menu">근태관리</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="header_columns">
+        <jsp:include page="/view/myinfo.jsp"/>
+      </div>
+    </header>
+    <!-- header finish -->
+    <div class="body_wrap">
+      <!--left body_side -->
+      <div class="body_side">
+        <nav class="side_menu">
+          <ul>
+          	<li class="info">
+              <i class="fas fa-users"></i>
+          	  <a href="${pageContext.request.contextPath}/employeeList">계정 목록</a>
+          	</li>
+          	<li class="info">
+          	  <i class="fas fa-user-plus"></i>
+          	  <a href="${pageContext.request.contextPath}/view/Employee/employee.jsp">계정 추가</a>
+          	</li>
+          </ul>
+        </nav>        
+      </div> 
+      <!--left body_side finish-->
+      <!-- body_content는 너만의 영역. 알아서 화면 내보내기-->
+      <div class="body_content">
+        <!-- 아래부터 작성하면됨 -->
+        <%
 int status = (Integer)request.getAttribute("status");
 if(status != 1){
 %>게시물 목록이 없습니다 
@@ -127,9 +220,6 @@ if(status != 1){
 	int currentPage = pb.getCurrentPage();
 	int maxPage = pb.getMaxPage();
 	List<Employee> list = pb.getList(); %> 
-	
-	
-	
 	
  <header class="emp_board_content_top">
       <h1>
@@ -148,7 +238,7 @@ if(status != 1){
          	<th class="name title sorting_asc" role="columheader" tabindex="0" aria-controls="account_list" rowspan="1" colspan="1" style="width:213px;" aria-label= "이름:activate to sort column ascending">
          		<span class="title_sort">이름<ins class="ic"></ins><span class="selected"></span></span>
          	</th>
-                           <th><select id="rank_select" name="rank_select">
+                           <th class = "rank_select_title"><select id="rank_select" name="rank_select">
                                  <option value="0">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp::직급::</option>
                                  <option value="1">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp이사</option>
                                  <option value="2">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp사장</option>
@@ -217,5 +307,11 @@ if(status != 1){
    </div>
    
    </header>
+      	<!--  -->
+      </div>
+    </div>
+    <!-- body warp finish -->
+  </div>
+  <!-- warp finish -->
 </body>
 </html>
