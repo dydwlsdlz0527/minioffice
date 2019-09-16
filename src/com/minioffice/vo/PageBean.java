@@ -1,19 +1,19 @@
 package com.minioffice.vo;
 
 import java.util.List;
-
 public class PageBean<T> {
-	private int currentPage; 	// 현재페이지
-	private int cntPerPage;		// 페이지별 목록수
-	private List<T> list;		// 목록
-	private int totalCnt;		//총건수
-	private int maxPage;		// 최대페이지수
+	private int currentPage;//현재페이지
+	private int cntPerPage;//페이지별 목록수
+	private List<T> list;//목록
+	private int totalCnt;//총건수
+	private int maxPage;	//최대페이지수
 	private String url;
 	private int startPage;
 	private int endPage;
 	
 	public PageBean() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 	
 	public int getCurrentPage() {

@@ -24,7 +24,7 @@ $(function() {
       <a href="#" class="btn_noti"><i class="fas fa-bell"></i></a>
     </li>
     <li class="config">
-      <a href="${contextPath}/view/admin/adminhome.jsp" class="btn_config"><i class="fas fa-cog"></i></a>
+      <a href="${contextPath}/view/Employee/employee.jsp" class="btn_config"><i class="fas fa-cog"></i></a>
     </li>
     <li class="logout">
       <a href="${contextPath}/logout" class="btn_logout">
