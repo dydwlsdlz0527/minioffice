@@ -73,11 +73,10 @@ public class BoardController {
 	}
 	//부서게시판
 	public String deptBoardList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		System.out.println("부서게시판");
 		HttpSession session = request.getSession();
+		String dept_name = (String)session.getAttribute("dept_name");
 		String currentPage = request.getParameter("currentPage");
 		String board_type = request.getParameter("type");
-		System.out.println(board_type + "보드타입");
 		String emp_no = (String)session.getAttribute("emp_no");
 		int intCurrentPage = 1;
 		if(currentPage != null) {
@@ -85,7 +84,7 @@ public class BoardController {
 		}
 		PageBean<DeptBoard> pb;
 		try {
-			pb = service.deptboardList(intCurrentPage, board_type, emp_no);
+			pb = service.deptboardList(intCurrentPage, board_type, emp_no, dept_name);
 			request.setAttribute("pb", pb);
 			request.setAttribute("status", 1);
 		} catch (NotFoundException e) {
@@ -97,10 +96,10 @@ public class BoardController {
 		
 		switch(board_type) {
 		
-		case "a" :
+		case "c" :
 			path = "/js/board/deptnotice.jsp";
 			break;
-		case "b" :
+		case "d" :
 			path = "/js/board/deptboard.jsp";
 			break;
 		}
@@ -129,49 +128,23 @@ public class BoardController {
 	
 	//보드작성
 	public String boardWrite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		int index;
 		HttpSession session = request.getSession();
 		String emp_no = (String)session.getAttribute("emp_no");
 		String board_subject = request.getParameter("boardSubject");
 		String board_content = request.getParameter("boardContent");
 		String board_type = request.getParameter("type");
-		if(board_type == null) {
-			index = 1;
-		}else {
-			index = 0;
-		}
-		String fileName = null;
-		String orgFileName = null;
+		
 		String path = null;
 
-		//String uploadPath = request.getRealPath("upload");
-		if(index == 1) {
-		String uploadPath = "C:/Users/rwd34/git/minioffice/WebContent/upload";
-		try {
-		MultipartRequest multi = new MultipartRequest(request, uploadPath, 10*1024*1024, "UTF-8", new DefaultFileRenamePolicy());
-		fileName = multi.getFilesystemName("file");
-		orgFileName = multi.getOriginalFileName("file");
-		}catch (UnsupportedEncodingException e){
-			e.printStackTrace();
-		}catch (IllegalStateException e){
-			e.printStackTrace(); 
-		}catch (IOException e){
-			e.printStackTrace();
-			}
-		return null;
-
-		}else {
-		
-		  int result = service.boardWriteService(emp_no, board_type, board_subject,
-		  board_content);
-		  
-		  if(result == 1) { path = "/js/board/boardwriteclear.jsp"; 
-		  }else { 
+		int result = service.boardWriteService(emp_no, board_type, board_subject, board_content);
+		if(result == 1) { 
+			  path = "/js/board/boardwriteclear.jsp"; 
+		}else { 
 			  path = "/js/board/boardwritefail.jsp";
-			  }
+		}
 		 
 		return path;
-		}
+		
 	}
 	
 	

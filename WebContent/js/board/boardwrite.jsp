@@ -61,7 +61,7 @@ $(function(){
 	
 	
 
-	$main = $("#board_head_type_main");
+ 	$main = $("#board_head_type_main");
 	$sub = $("#board_head_type_sub");
 	
 	$main.change(function(){
@@ -77,13 +77,13 @@ $(function(){
 		break;
 		
 		case 'B' :
-		$sub.append('<option value="a" name="boardType">부서 공지</option>');
-		$sub.append('<option value="b" name="boardType">부서게시판</option>');
+		$sub.append('<option value="c" name="boardType">부서 공지</option>');
+		$sub.append('<option value="d" name="boardType">부서게시판</option>');
 		break;
 		
 		
 		}
-	});
+	}); 
 	//게시판 등록
 	/* var $writeButtonObj = $("#writeButton");*/
 	var $boardDataObj = $("#boardData");

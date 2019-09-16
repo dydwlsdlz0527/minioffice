@@ -15,12 +15,17 @@ public class BoardService {
 	
 	public int boardWriteService(String emp_no, String board_type, String board_subject, String board_content) {
 		int status = -1;
-		
-		int result = boarddao.boardwrite(emp_no, board_type, board_subject, board_content);
-		if(result == 1) {
-			status = 1;
+		if(board_type.equals("a")||board_type.equals("b")) {
+			int result = boarddao.boardwrite(emp_no, board_type, board_subject, board_content);
+			if(result == 1) {
+				status = 1;
+			}
+		}else if(board_type.equals("c")||board_type.equals("d")) {
+			int result = boarddao.detailboardwrite(emp_no, board_type, board_subject, board_content);
+			if(result == 1) {
+				status = 1;
+			}
 		}
-
 		return status;
 	}
 	
@@ -53,14 +58,14 @@ public class BoardService {
 		return pb;
 		}
 	
-	public com.minioffice.vo.PageBean<DeptBoard> deptboardList(int currentPage, String boardType, String emp_no)throws NotFoundException {
+	public com.minioffice.vo.PageBean<DeptBoard> deptboardList(int currentPage, String boardType, String emp_no, String dept_name)throws NotFoundException {
 		int cntPerPage = 15;	//페이지당 보여줄 목록
 		int startRow = 1+ (currentPage-1)*cntPerPage;	//첫 행
 		int endRow = currentPage*cntPerPage;			//마지막 행
 		int cntPerPageGroup = 3;						//홯면에 보여줄 페이지수
 		String type = boardType;
 		List<DeptBoard> list = null;
-		list = boarddao.deptboardlist(startRow,endRow, emp_no, type);
+		list = boarddao.deptboardlist(startRow,endRow, emp_no, type, dept_name);
 		int startPage;									//시작 페이지
 		int endPage;									//끝 페이지
 		int totalCnt = boarddao.count(type);
