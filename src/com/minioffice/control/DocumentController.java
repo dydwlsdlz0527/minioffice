@@ -2,6 +2,7 @@ package com.minioffice.control;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
@@ -64,6 +65,7 @@ public class DocumentController {
 		String str3 = str2.substring(1, str2.length()-1);
 		StringTokenizer st = new StringTokenizer(str3,",");
 		String[] array = new String[st.countTokens()];
+		
 		for(int i=0;i<array.length;i++) {
 			array[i] = st.nextToken();
 		}

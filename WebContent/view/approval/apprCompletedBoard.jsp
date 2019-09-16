@@ -153,48 +153,8 @@ ul.pagination-sm a {
 }
 </style>
 <script>
-	var $pagination = $("ul.pagination-sm>li");
-	$pagination.click(function(){
-		var pageNum = $(this).html();
-		var pageNum = ${pb.getStartPage()-1}
-		$.ajax({
-			url : '${contextPath}/approvalWaitBoard',
-			data : 'currentPage='+ pageNum + "&empno="+'${userno}',
-			success : function(data){
-				$(".body_content").empty();
-				$(".body_content").html(data);
-			}
-		});
-	});
-
-	var $prevBt = $("#prev");
-	$prevBt.click(function(){
-		var pageNum = ${pb.getStartPage()-1}
-		$.ajax({
-			url : '${contextPath}/approvalWaitBoard',
-			data : 'currentPage='+ pageNum + "&empno="+'${userno}',
-			success : function(data){
-				$(".body_content").empty();
-				$(".body_content").html(data);
-			}
-		});
-	});
-	
-	var $nextBt = $("#next");
-	$nextBt.click(function(){
-		var pageNum = ${pb.getEndPage()+1}
-		$.ajax({
-			url : '${contextPath}/approvalWaitBoard',
-			data : 'currentPage='+ pageNum + "&empno="+'${userno}',
-			success : function(data){
-				$(".body_content").empty();
-				$(".body_content").html(data);
-			}
-		});
-	}); 
-	
-	var $DocdetailTr = $(".DocdetailTr");
-	$DocdetailTr.click(function(){
+	var $CDocdetailTr = $(".CDocdetailTr");
+	$CDocdetailTr.click(function(){
 		var docno = $(this).children(1).children(1).val();
 		$.ajax({
 			url : '${contextPath}/appWaitBoardDetail',
@@ -205,10 +165,9 @@ ul.pagination-sm a {
 			}
 		});
 	});
-
 </script>
 <header class="content_top">
-	<h2 style="font-size: x-large;">결재 대기 문서</h2>
+	<h2 style="font-size: x-large;">결재 완료함</h2>
 	<section class="combine_search">
 		<div class="c_search_wrap">
 			<select class="search_op" id="searchType">
@@ -224,26 +183,14 @@ ul.pagination-sm a {
 </header>
 <div class="content_page">
 	<div class="dataTables_wrapper">
-		<div class="tool_bar">
-			<div class="critical">
-				<a id="bulkComplete" class="btn_tool" data-role="button"> <span
-					class="txt">일괄 결재</span>
-				</a>
-			</div>
-		</div>
+		<div style="height:40px;"></div>
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="active"><a
-				class="nav-link active" role="tab" aria-controls="#waitboard1"
+				class="nav-link active" role="tab" aria-controls="#Completedboard1"
 				data-toggle="tab" href="#Applicant">전체</a></li>
-			<li role="presentation"><a class="nav-link" role="tab"
-				aria-controls="Referrer" data-toggle="tab" href="#waitboard2">대기</a>
-			</li>
-			<li role="presentation"><a class="nav-link" role="tab"
-				aria-controls="Receiver" data-toggle="tab" href="#waitboard3">보류</a>
-			</li>
 		</ul>
 		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="waitboard1">
+			<div role="tabpanel" class="tab-pane active" id="Completedboard1">
 					<!-- 전체 결재 대기 문서 테이블  -->
 					<table class="table table-hover table-condensed">
 						<tr>
@@ -270,26 +217,21 @@ ul.pagination-sm a {
 							</th>
 						</tr>
 						
-						<c:set var="pb" value="${requestScope.pb}"></c:set>
-						<c:set var="currentPage" value="${pb.currentPage}"></c:set>
-						<c:set var="maxPage" value="${pb.maxPage}"/>
-						<c:set var="startPage" value="${pb.startPage}"/>
-						<c:set var="endPage" value="${pb.endPage}"/>
-						<c:set var="cntPageGroup" value="${pb.cntPageGroup}"/>
+						<c:set var="dblist" value="${requestScope.dblist}"></c:set>
 						<c:choose>
-							<c:when test="${empty pb.list}">
+							<c:when test="${empty dblist}">
 								<tr>
 								<td colspan="7">
 									<p class="data_null">
 										<span><i class="far fa-save fa-3x"></i></span>
-										<span class="txt">결재할 문서가 없습니다.</span>
+										<span class="txt">결재 완료된 문서가 없습니다.</span>
 									</p>
 								</td>
 								</tr>
 							</c:when>
 							<c:otherwise>
-								<c:forEach var="b" items="${pb.list}">
-								<tr class = "DocdetailTr">
+								<c:forEach var="b" items="${dblist}">
+								<tr class = "CDocdetailTr">
 									<td><input type="checkbox" name="dno" value="${b.getDocno()}"></td>
 									<td>${b.getDocdate()}</td>
 									<td>${b.getDoctypename()}</td>
@@ -302,29 +244,6 @@ ul.pagination-sm a {
 							</c:otherwise>
 						</c:choose>
 					</table>
-						<div class="text-center">
-						<ul class="pagination-sm">
-							<%-- <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a></li> --%>
-							<c:if test="${currentPage>cntPageGroup}">
-								<li class="page-item"><a class="page-link" id="prev" href="javascript:void(0);"><i class="fas fa-angle-left"></i></a></li>
-							</c:if>
-							<c:forEach begin="${startPage}" end="${endPage}" varStatus="status">
-								<li class="page-item"><a class="page-link" href="javascript:void(0);">${status.current}</a></li>
-							</c:forEach>
-							<c:if test="${endPage!=maxPage}">
-								<li class="page-item"><a class="page-link" id="next" href="javascript:void(0);"><i class="fas fa-angle-right"></i></a></li>
-							</c:if>
-							<!-- <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a></li> -->
-						</ul>
-						</div>
-				<div role="tabpanel" class="tab-pane" id="waitboard2">
-					<div></div>
-					<div></div>
-				</div>
-				<div role="tabpanel" class="tab-pane" id="waitboard3">
-					<div></div>
-					<div></div>
-				</div>
 			</div>
 		</div>
 	</div>

@@ -107,5 +107,17 @@ public class ApprovalService {
 			return str;
 		}
 	}
+
+	public String docapprresult(String docno, String apprno, String appresult, String apprcoment) {
+		String str = "1";
+		try {
+			dao.UpdateApprResult(docno,apprno,appresult,apprcoment);
+			return str;
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+			str = "-1";
+			return str;
+		}
+	}
 	
 }

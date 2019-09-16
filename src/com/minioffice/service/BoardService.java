@@ -33,7 +33,7 @@ public class BoardService {
 		int cntPerPage = 15;	//페이지당 보여줄 목록
 		int startRow = 1+ (currentPage-1)*cntPerPage;	//첫 행
 		int endRow = currentPage*cntPerPage;			//마지막 행
-		int cntPerPageGroup = 3;						//홯면에 보여줄 페이지수
+		int cntPerPageGroup = 3;						//화면에 보여줄 페이지수
 		String type = boardType;
 		List<Board> list = null;
 		list = boarddao.boardlist(startRow,endRow, type);

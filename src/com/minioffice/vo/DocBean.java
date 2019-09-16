@@ -10,13 +10,14 @@ public class DocBean {
 	private String docappr;
 	private String docapprno;
 	private String docno;
+	private String docstate;
 	
 	public DocBean() {
 		super();
 	}
 
-	public DocBean(Date docdate, String doctypename, String doctitle, String docappr, String docapprno,
-			String docno) {
+	public DocBean(Date docdate, String doctypename, String doctitle, String docappr, String docapprno, String docno,
+			String docstate) {
 		super();
 		this.docdate = docdate;
 		this.doctypename = doctypename;
@@ -24,6 +25,7 @@ public class DocBean {
 		this.docappr = docappr;
 		this.docapprno = docapprno;
 		this.docno = docno;
+		this.docstate = docstate;
 	}
 
 	public Date getDocdate() {
@@ -74,6 +76,12 @@ public class DocBean {
 		this.docno = docno;
 	}
 
-	
+	public String getDocstate() {
+		return docstate;
+	}
 
+	public void setDocstate(String docstate) {
+		this.docstate = docstate;
+	}
+	
 }

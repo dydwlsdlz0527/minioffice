@@ -7,7 +7,7 @@ public class DocDetail {
 	private char approval_step;
 	private char approval_totalstep;
 	private String approval_coment;
-	private char approval_result;
+	private String approval_result;
 	private String approval_date;
 	private String doc_rcvdate;
 	
@@ -16,7 +16,7 @@ public class DocDetail {
 	}
 
 	public DocDetail(String doc_no, Employee emp, char approval_step, char approval_totalstep, String approval_coment,
-			char approval_result, String approval_date, String doc_rcvdate) {
+			String approval_result, String approval_date, String doc_rcvdate) {
 		super();
 		this.doc_no = doc_no;
 		this.emp = emp;
@@ -68,11 +68,11 @@ public class DocDetail {
 		this.approval_coment = approval_coment;
 	}
 
-	public char getApproval_result() {
+	public String getApproval_result() {
 		return approval_result;
 	}
 
-	public void setApproval_result(char approval_result) {
+	public void setApproval_result(String approval_result) {
 		this.approval_result = approval_result;
 	}
 

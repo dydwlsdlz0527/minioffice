@@ -54,21 +54,6 @@ public class DocBoardService {
 		try {
 			Document doc = dao.SelectDocAppr(docno);
 			String filePath = doc.getDoc_content();
-//			Path path = Paths.get(filePath);
-//			FileChannel fileChannel = FileChannel.open(path, StandardOpenOption.READ);
-//			ByteBuffer byteBuffer = ByteBuffer.allocate(100);
-//			Charset charset = Charset.defaultCharset();
-//			String data = "";
-//			int byteCount;
-//			while(true) {
-//				byteCount = fileChannel.read(byteBuffer);
-//				if(byteCount==-1) break;
-//				byteBuffer.flip();
-//				data += charset.decode(byteBuffer).toString();
-//				byteBuffer.clear();
-//			}
-//			fileChannel.close();
-//			doc.setDoc_content(data);
 			File file = new File(filePath);
 			FileReader filereader = new FileReader(file);
 			BufferedReader bufReader = new BufferedReader(filereader);
@@ -92,10 +77,52 @@ public class DocBoardService {
 			List<DocDetail> list = dao.SelectDocApprList(docno);
 			return list;
 		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 		
+	}
+
+	public List<DocBean> appCompletedboardList(String empno) {
+		try {
+			List<DocBean> list = dao.appCompletedBoardselect(empno);
+			return list;
+		}catch(NotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<DocBean> appCancledboardList(String empno) {
+		try {
+			List<DocBean> list = dao.appCancledBoardselect(empno);
+			return list;
+		}catch(NotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<DocBean> appMyAllboardList(String empno) {
+		try {
+			List<DocBean> list = dao.appMyAllBoardselect(empno);
+			for(int i=0;i<list.size();i++) {
+				dao.updateDocState(list.get(i).getDocno());
+			}
+			return list;
+		}catch(NotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<DocBean> appExceptedboardList(String empno) {
+		try {
+			List<DocBean> list = dao.appExceptedBoardselect(empno);
+			return list;
+		}catch(NotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

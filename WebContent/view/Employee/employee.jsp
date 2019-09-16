@@ -1,11 +1,15 @@
-<%@page contentType="text/html;charset=UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%> <%response.setHeader("Cache-Control", "no-cache");%>
+<%response.addHeader("Cache-Control", "no-store");%>
+<%response.setHeader("Pragma", "No-cache");%>
+<%response.setDateHeader("Expires", 1L);%> <%@taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
+  <meta charset="UTF-8" />
+  <style>
 ins{
    text-decoration: none;
 }
@@ -20,7 +24,7 @@ select{
 }
 
 .addr_input2, .addr_input3{
-   width : 100px;
+   width : 600px;
 }
 .overlap {
   background-color: rgb(0, 125, 200); /* Green */
@@ -40,16 +44,14 @@ select{
 .over1 {
   background-color: white; 
   color: black; 
-  border: 2px solid rgb(0, 125, 200);
+  border-radius: 5px;
+  border : solid rgb(0, 125, 200);;
 }
 
 .over1:hover {
   background-color: rgb(0, 125, 200);
   color: white;
 }
-
-
-
 
 input[type=submit]{
 display:none;
@@ -68,6 +70,11 @@ form {
     margin-top: 0em;
 }
 
+.sign_img_rank{
+	
+}
+
+.div_img
 
 body {
     font-size: 12px;
@@ -84,8 +91,6 @@ div {
 
 .content{
 text-align: center;
-border: 1px solid #dddddd;
-
 }
 
 div.content_page {
@@ -98,6 +103,10 @@ div.container div.header h2 {
     top: 8px;
     font: bold 15px malgun gothic,dotum;
     color: #444;
+}
+
+.action_button{
+	padding : 10px 320px;
 }
 
 div.container div.header {
@@ -124,12 +133,18 @@ table {
 }
 
 table.detail tr > td {
-    padding: 12px 10px 9px 10px;
+    padding: 12px 0px 9px 10px;
     border-bottom: 1px solid #e9e9e9;
+    text-align:left 
+}
+
+img_td{
+	height : 150px;
 }
 
 element.style {
     overflow: hidden;
+    	height : 150px;   
 }
 
 table.detail td span {
@@ -204,8 +219,21 @@ img {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
-    background-color: transparent;
-    cursor: pointer;
+  background-color: transparent;
+  cursor: pointer;
+}
+#sign_file {
+  position: absolute; z-index:1;  
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  bottom: 0px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
 }
 .parea{
    height: 0px;
@@ -225,17 +253,18 @@ div.sign_type_new {
     font-size: 12px;
 }
 
-.tb_sign_type1{
-	width : 30px;
-}
 
 div.content table.detail div.sign_type_new table.tb_sign_type1 tbody tr td {
     border-top: 1px solid #666;
     border-bottom: 1px solid #666;
     border-left: 1px solid #666;
-    border-right: 1px solid #666;
-    padding : 0px;
-}
+    border-right: 1px solid #666;	
+	text-align: center;
+	}
+
+
+
+
 .sign_member{
 width : 150px;
 height : 150px;
@@ -244,19 +273,108 @@ height : 150px;
 height : 0px;
 }
 
-wrap_name wrap_sign{
-height : 100px;
-}
 
 .sign_img_rank .last {
 	height : 20px;
 }
+.title{
+font-size : 30px;
+font-weight: bolder;
+}
+.cancel_btn{
+  background-color: MediumSeaGreen; /* Blue */
+  border-radius: 5px solid MediumSeaGreen;
+  color: white;
+  padding: 2px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.can1 {
+  background-color: white; 
+  color: black; 
+  border-radius: 5px;
+  border : solid MediumSeaGreen;
+}
+
+.can1:hover {
+  background-color: MediumSeaGreen;
+  color: white;
+}
+
+.save_btn{
+  background-color: MediumSeaGreen; /* Blue */
+  border-radius: 5px solid MediumSeaGreen;
+  color: white;
+  padding: 2px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.save1 {
+  background-color: white; 
+  color: black; 
+  border-radius: 5px;
+  border : solid MediumSeaGreen;
+}
+
+.save1:hover {
+  background-color: MediumSeaGreen;
+  color: white;
+}
+
+td.sign_top{
+	align-content : center;
+}
+
+.btnText{
+  background-color: rgb(0, 125, 200); /* Blue */
+  border-radius: 5px solid MediumSeaGreen;
+  color: white;
+  padding: 2px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.btnText {
+  background-color: white; 
+  color: black; 
+  border-radius: 5px;
+  border : solid rgb(0, 125, 200);
+}
+
+.btnText:hover {
+  background-color: rgb(0, 125, 200);
+  color: white;
+}
+
 
 
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
-           </script>
-<script>
+  <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <title>admin.jsp</title>
+  <!-- home 화면에 필요한 icon과 스타일 불러오기 -->
+  <script src="https://kit.fontawesome.com/6ea03f5ac0.js"></script>
+  <script>
 <%--아이디--%>
 $(function(){
    var $idObj = $("input[name=id]");      
@@ -277,8 +395,6 @@ $(function(){
    var $pwmsgObj=$("#pwMsg");
    var $savebtnObj=$(".save_btn");
    var $emailObj =$("#email");
-   
-   
    
    
    
@@ -363,7 +479,7 @@ $overlapObj.click(function(){
       if (input.files && input.files[0]) {
             var reader = new FileReader(); //파일을 읽기 위한 FileReader객체 생성
             reader.onload = function (e) {
-               $('#sign_img').attr('src', e.target.result);
+               $('#approval_sign_img').attr('src', e.target.result);
              }      
             reader.readAsDataURL(input.files[0]);
       }
@@ -451,9 +567,79 @@ $overlapObj.click(function(){
 });
 
 </script>
+  <link rel="stylesheet" href="${contextPath}/css/styles.css" />
+  <!-- -->
 </head>
 <body>
-   <header class="emp_content_top">
+  <div class="wrap">
+    <!-- header -->
+    <header class="header">
+      <div class="header_columns">
+        <i class="fab fa-modx"></i>
+        <h1 class="header-logo">Mini Office</h1>
+      </div>
+      <div class="header_columns">
+        <nav class="menu-container">
+          <ul class="header-menu">
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/home/home.jsp">
+                <span class="menu">홈</span>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/approval/approvalhome.jsp">
+                <span class="menu">전자결재</span>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/mail/mailhome.jsp">
+                <span class="menu">메일</span>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/board/boardhome.jsp">
+                <span class="menu">게시판</span>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/schedule/schedulehome.jsp">
+                <span class="menu">캘린더</span>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="${contextPath}/view/punctuality/punctualityhome.jsp">
+                <span class="menu">근태관리</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="header_columns">
+        <jsp:include page="/view/myinfo.jsp"/>
+      </div>
+    </header>
+    <!-- header finish -->
+    <div class="body_wrap">
+      <!--left body_side -->
+      <div class="body_side">
+        <nav class="side_menu">
+          <ul>
+          	<li class="info">
+              <i class="fas fa-users"></i>
+          	  <a href="${pageContext.request.contextPath}/employeeList">계정 목록</a>
+          	</li>
+          	<li class="info">
+          	  <i class="fas fa-user-plus"></i>
+          	  <a href="${pageContext.request.contextPath}/view/Employee/employee.jsp">계정 추가</a>
+          	</li>
+          </ul>
+        </nav>        
+      </div> 
+      <!--left body_side finish-->
+      <!-- body_content는 너만의 영역. 알아서 화면 내보내기-->
+      <div class="body_content">
+        <!-- 아래부터 작성하면됨 -->
+      	<header class="emp_content_top">
       <h1>
          <span class="title" id="layoutTitle">계정 목록 > 계정 추가</span>
       </h1>
@@ -473,7 +659,7 @@ $overlapObj.click(function(){
                      </colgroup>
                         <tr>
                            <th><span class="img_title">사진</span></th>
-                           <td><span class="img_profile">
+                           <td class="img_td"><span class="img_profile">
                                  <span class="btn_img_upload"> <span
                                     class="btn_img_file" style="text-align: center;"> <span
                                        class="button_text"> <label for="img_file" class="buttonText"
@@ -482,7 +668,7 @@ $overlapObj.click(function(){
                                        accept="undefined"></span>
                               </span><img src='${contextPath}/images/Employee/icon-2426371_960_720.jpg' width="100px" height="100px"
                                     id="img">
-                           </span> <div class="parea">※ 사진은 150×150사이즈로 자동 적용됩니다.</div><br></td>
+                           </span><br><br> <div class="parea">※ 사진은 150×150사이즈로 자동 적용됩니다.</div><br></td>
                         </tr>
                         
                         
@@ -630,32 +816,35 @@ $overlapObj.click(function(){
                            <td><input class="addr_input2" type="text" readonly
                               name="zipcode2"></td>
                         </tr> -->
-                        <tr>
-                           <td><input class="addr_input3" name= "zipcode3" type="text"></td>
-                        </tr>
+                      
+                           <td><input class="addr_input3" name= "zipcode3" type="text" placeholder="주소 입력         ex) 서울시 서초구"></td>
+                        
 
                         <!-- 서명이미지 -->
                         <tr>
-                           <th><span class="img_sign_title">서명이미지</span></th>
-                           <td><div class="img_sign">
+                           <th style = "text-align: center"><span class="img_sign_title">서명이미지</span></th>
+                           <td class = "delete_bor"><div class="img_sign">
                                  <table class="tb_img_sign">
                                     <tr>
-                                       <td>
+                                       <td style = "border-bottom: none">
                                        <div class="sign_type1 sign_type_new">
                                             <table class="tb_sign_type1">
                                                 <tbody>
                                                     <tr>
-                                                        <td>
+                                                        <td	class = "padding_td" 	
+                                                        style = "padding-top : 0px;
+																 padding-left : 0px;
+																 padding-bottom : 0px;">
                                                             <table class="sign_member">
                                                                 <tbody>
-                                                                    <tr><td class = sign_img_rank"><span class="sign_rank">직위</span></td></tr>
-                                                                    <tr>
-                                                                        <td class="wrap_name wrap_sign">
+                                                                    <tr><td class = sign_img_rank" style = "padding-left : 0px;"><span class="sign_rank">직위</span></td></tr>
+                                                                    <tr	class="sign_top">
+                                                                        <td class="wrap_name wrap_sign" style = "padding-left : 0px;">
                                                                             <span class="sign_stamp stamp_approved"><img src="${contextPath}/images/Employee/stamp_approved.png" id="approval_sign_img"></span>
-                                                                            <span class="sign_name">이름</span><tr id = "brim"></tr>
+                                                                           <br><br> <span class="sign_name">이름</span><tr id = "brim"></tr>
                                                                       </td>
                                                                     </tr>
-                                                                    <tr><td class="last"><span class="sign_date">결재일</span></td></tr>
+                                                                    <tr><td class="last" style = "padding-left : 0px;"><span class="sign_date" >결재일</span></td></tr>
                                                                 </tbody>
                                                             </table>
                                                         </td>
@@ -667,12 +856,12 @@ $overlapObj.click(function(){
                                        </td>
                                     </tr>
                                  </table>
-                              </div> <span class="btn_sign_img"> <span
+                              </div> <span class="btn_sign_img bsi" > <span
                                  class="btn_sign_img_file" style="text-align: center;">
-                                    <span class="button_text"> <span class="buttonText"
-                                       style="font-size: 12px">사진올리기 </span>
-                                 </span> <input type="file" name="sign_filechk" id="sign_file" title="서명파일첨부" multiple
-                                    accept="undefined">
+                                    <span class="button_text"> <label for="sign_file" class="buttonText btnText"
+                                          style="font-size: 12px">사진올리기 </label>
+                                  <input type="file" name="sign_filechk" id="sign_file" title="서명파일첨부" multiple
+                                    accept="undefined"></span>
                               </span>
                            </span> </td>
                         </tr>
@@ -710,15 +899,21 @@ $overlapObj.click(function(){
                
                
             
-<!-- 액션버튼 -->
+		<!-- 액션버튼 -->
                <div class="action_button">
-                  <input type="submit" class="save_btn" value="저장" > 
-                  <input type="button" class="cancel_btn" value="취소">
+                  <input type="submit" class="save_btn save1" value="저장" > 
+                  <input type="button" class="cancel_btn can1" value="취소">
                </div>
                </form>
          </div>
 
       </div>
    </header>
+      	<!--  -->
+      </div>
+    </div>
+    <!-- body warp finish -->
+  </div>
+  <!-- warp finish -->
 </body>
 </html>

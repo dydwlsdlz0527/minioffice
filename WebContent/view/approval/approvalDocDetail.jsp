@@ -4,6 +4,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix ="fn" uri = "http://java.sun.com/jsp/jstl/functions"%>
+<c:set var="userno" value="${sessionScope.emp_no}"/>
 <style>
 #left_table tr>td:nth-child(1){
 	background: rgb(221, 221, 221);
@@ -175,7 +176,7 @@ button{
     border-width: medium 1px 1px;
     border-style: none solid solid;
     border-color: currentColor black black;
-    padding: 5px;
+    padding: 10px;
     height: 350px;
     text-align: left;
     color: rgb(0, 0, 0);
@@ -272,11 +273,144 @@ div.sign_type_new {
 	padding-bottom: 5px;
     border-bottom: 1px solid;
 }
+#detailContents{
+	height: auto;
+    width: 100%;
+}
+@media (max-width: 1419px)
+section.aside_wrapper {
+    border-top: 1px solid #ccc!important;
+    margin: 30px 0;
+}
+.article_reply div.reply_wrap ul.reply {
+    margin: 0;
+    border: 0;
+}
+ul.reply {
+    border: 1px solid #d6d6d6;
+    border-radius: 5px;
+    width: 100%;
+    padding: 2px;
+}
 
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+.article_reply div.reply_wrap ul.reply>li {
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+.article_reply div.reply_wrap ul.reply>li {
+    margin: 0px 0;
+    padding: 10px 10px 10px 20px;
+    border-bottom: 1px solid #f3f3f3;
+}
+ul.reply>li {
+    position: relative;
+    margin: 5px 0 10px;
+    overflow: hidden;
+    border: 1px solid lightgray;
+    margin-bottom: 1px;
+}
+ul.reply li div.msg_wrap {
+    position: relative;
+    margin-left: 40px;
+    min-height: 32px;
+}
+ul.reply li div.msg_wrap div.info span.department, .reply_create div.msg_wrap div.info span.department {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #999;
+}
+ul.reply li span.name {
+    margin-bottom: 2px;
+}
+ul.reply li span.name, .reply_create span.name {
+    font-weight: bold;
+}
+ul.reply li span {
+    display: inline-block;
+}
+span {
+    vertical-align: baseline;
+}
+.article_reply div.reply_wrap ul.reply>li {
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+div.reply_wrap ul.reply li span.date, div.reply_wrap .reply_create span.date {
+    display: inline;
+    color: #999;
+}
+ul.reply li div.msg_wrap div.info .doc .status {
+    color: #999;
+}
+span.part {
+    color: #d7d7d7;
+    margin: 0 2px;
+}
+ul.reply li span.photo {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 32px!important;
+    height: 32px!important;
+}
+.article_reply div.reply_wrap ul.reply>li span.photo {
+    left: 20px;
+}
+ul.reply li span.photo img, .reply_create span.photo img {
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+}
+a {
+    text-decoration: none;
+}
+ul, ul li {
+    padding: 0;
+    list-type: none;
+}
+ul.reply li span {
+    display: inline-block;
+}
+.msg_wrap{
+	display: flex;
+    float: left;
+}
+.coment{
+	height: 50px;
+    border-left: 1px solid lightgray;
+    align-items: center;
+    display: flex;
+    padding-left: 5px;
+}
 }
 </style>
 <script>
-	$("#docContents").append("${doc.getDoc_content()}");
+	$("#detailContents").append("${doc.getDoc_content()}");
+	
+	$("#DoapprOk").click(function(){
+		$.ajax({
+			url : '${contextPath}/DocApprResult',
+			method : 'post',
+			data : 'docno=' +'${doc.getDoc_no()}'+"&apprno="+'${userno}'
+			        +'&appresult='+$("#apprselect").val()+'&apprcoment='+$("#apprcomenttxt").val(),
+			success : function(data){
+				alert("현재 기안서를 "+"\'"+$("#apprselect").children("option:selected").text()+"\'"+" 하였습니다.");
+				var $appwaitview2= $("#collapseArea>ul a[href='${contextPath}/approvalWaitBoard']");
+				$appwaitview2.trigger('click');
+			}
+		});
+	});
+
 </script>
 <c:set var="doc" value="${requestScope.doc}"></c:set>
 <div class="doccontents">
@@ -285,8 +419,32 @@ div.sign_type_new {
 </header>
 <div>
 	<div class="tool_bar">
-		<button class="btn btn-success btn-sm">결재하기</button>
-		<button class="btn btn-danger btn-sm">반려하기</button>		
+		<c:set var="appchkLoop" value="false"/>
+		<c:forEach var="appChkList" items="${requestScope.dd}" >
+			<c:if test="${userno == appChkList.getEmp().getEmp_no()}">
+				<c:set var="appchkloop2" value="false"/>
+				<c:if test="${!appchkLoop}">
+				<c:forEach var="otherapp" items="${requestScope.dd}" varStatus="statusapp">
+					<c:if test="${!appchkloop2}">
+					<c:choose>
+					<c:when test="${appChkList.getApproval_step()-49==0}">
+							<c:set var="appchkLoop" value="true"/>
+							<c:set var="appchkloop2" value="true"/>
+							<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#appModal" id="doappr">결재하기</button>
+					</c:when>
+					<c:when test="${appChkList.getApproval_step()-49 == otherapp.getApproval_step()-48}">
+							<c:if test="${otherapp.getApproval_result() ne '0'}">
+							<c:set var="appchkLoop" value="true"/>
+							<c:set var="appchkLoop2" value="true"/>
+							<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#appModal" id="doappr">결재하기</button>
+							</c:if>
+					</c:when>
+					</c:choose>
+					</c:if>
+				</c:forEach>
+				</c:if>
+			</c:if>
+		</c:forEach>
 	</div>
 	<div class="wrap_container">
 		<%-- 기안 문서 --%>
@@ -345,13 +503,13 @@ div.sign_type_new {
 											<div class="sign_name_wrap">
 												<span class="sign_appstep" style="display:none;">${ap.getApproval_step()}</span>
 												<c:choose>
-													<c:when test="${ap.getApproval_result() eq '0'.charAt(0)}">
+													<c:when test="${ap.getApproval_result() eq '0'}">
 														
 													</c:when>
-													<c:when test="${ap.getApproval_result()=='1'.charAt(0)}">
+													<c:when test="${ap.getApproval_result()=='1'}">
 														<img src="${contextPath}/images/approval/appOk.png" title="승인">
 													</c:when>
-													<c:when test="${ap.getApproval_result()=='2'.charAt(0)}">
+													<c:when test="${ap.getApproval_result()=='2'}">
 														<img src="${contextPath}/images/approval/appWait.png" title="대기">
 													</c:when>
 													<c:otherwise>
@@ -360,7 +518,8 @@ div.sign_type_new {
 												</c:choose>
 											</div>
 											<div class="sign_date_wrap">
-												<span class="sign_date">${ap.getApproval_date()}</span>
+												<fmt:parseDate value="${ap.getApproval_date()}" var="apprlistdate1" pattern="yyyy-MM-dd HH:mm:ss"/>
+												<span class="date"><fmt:formatDate value="${apprlistdate1}" pattern="yy/MM/dd"/></span>
 											</div>
 										</div>
 										</div>
@@ -415,42 +574,94 @@ div.sign_type_new {
 						</tr>
 						<tr>
 							<td colspan="4" id="setd">
-								<div id="docContents"></div>
+								<div id="detailContents"></div>
 
 							</td>
 						</tr>
 					</table>
 					</form>
-					<div style="height:20px;"></div>
-					<div id="editView">
-					<form>
-						<table>
-							<tr id="attachPart">
-								<th><span class="title">첨부파일</span></th>
-								<td>
-									<span class="wrap_btn wrap_file_upload">
-										<span class="btn_file_form fileinput-button">
-											<span class="button text">
-												<span class="buttonText">파일 첨부</span>
-											</span>
-											<input type="file" name="file" title="파일 첨부" multiple accept="undefined" class="edit">
-										</span>
-									</span>
-									<div class="wrap_attach">
-										<ul class="file_wrap" id="filewWrap" >
-										
-										</ul>
+			</div>
+		</section>
+		<section class="aside_wrapper article_reply">
+			<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active"><a
+						class="nav-link active" role="tab" aria-controls="Applicant"
+						data-toggle="tab" href="#AppComent">코멘트</a></li>
+					<li role="presentation"><a class="nav-link" role="tab"
+						aria-controls="Referrer" data-toggle="tab" href="#Referrer">문서정보</a>
+					</li>
+					<li role="presentation"><a class="nav-link" role="tab"
+						aria-controls="Receiver" data-toggle="tab" href="#Receiver">열람기록</a>
+					</li>
+			</ul>
+			<div class="doc-meta-container reply_wrap" role="tabpanel" id="AppComent">
+				<ul class="reply" id="apprflow">
+					<c:if test="${!empty aplist}">
+						<c:forEach var="ap2" items="${aplist}">
+							<li>
+								<span class="photo">
+									<a>
+										<img alt="초상화" src="${contextPath}/images/profile/${ap2.getEmp().getEmp_no()}.jpg">
+									</a>
+								</span>
+								<div class="msg_wrap">
+									<div class="info" style="width:267px;">
+										<a>
+											<span class="name">${ap2.getEmp().getEmp_name()} ${ap2.getEmp().getRank().getRank_name()}</span>
+										</a>
+											<span class="department">${ap2.getEmp().getDept().getDept_name()}</span>
+										<div class="doc">
+											<c:choose>
+												<c:when test="${ap2.getApproval_result()=='0'}">
+													<c:set var="chkLoop" value="true"/>
+													<c:forEach var="diffList" items="${requestScope.dd}" varStatus="status">
+														<c:set var="chkLoop2" value="true"/>
+														<c:set var="num" value="48"/>
+														<c:if test="${chkLoop}">
+															<c:choose>
+																<c:when test="${ap2.getApproval_step()-num == diffList.getApproval_step()-48}">
+																	<c:if test="${diffList.getApproval_result() eq '0'}">
+																		<span class="status">기안 대기</span>
+																		<c:set var="num" value="${num+1}"/>
+																		<c:set var="chkLoop" value="false"/>
+																		<c:set var="chkLoop2" value="false"/>
+																	</c:if>
+																</c:when>
+																<c:otherwise>
+																	<span class="status">기안 예정</span>		
+																	<c:set var="chkLoop" value="false"/>
+																	<c:set var="chkLoop2" value="false"/>
+																</c:otherwise>
+															</c:choose>
+														</c:if>
+													</c:forEach>
+												</c:when>
+												<c:when test="${ap2.getApproval_result()=='2'}">
+													<span class="status">기안중</span>
+												</c:when>
+												<c:otherwise>
+													<span class="status">기안 상신</span>
+												</c:otherwise>
+											</c:choose>
+											<span class="part">|</span>
+											<%-- 2018-03-08(월) 16:41 --%>
+											<fmt:parseDate value="${ap2.getApproval_date()}" var="apprlistdate" pattern="yyyy-MM-dd HH:mm:ss"/>
+											<span class="date"><fmt:formatDate value="${apprlistdate}" type="both" dateStyle="medium" timeStyle="medium"/></span>
+										</div>
 									</div>
-								</td>
-							</tr>
-						</table>
-					</form>
-					</div>
+									<div class="coment">
+										<span>${ap2.getApproval_coment()}</span>
+									</div>
+								</div>
+							</li>
+						</c:forEach>
+					</c:if>
+				</ul>
 			</div>
 		</section>
 	</div>
 </div>
 <%-- Doc Modal --%>
 <div class="Modal fade" tabindex="-1" data-target=".body_content" role="dialog" id="docModal" data-backdrop="false"></div>
-	
+<%@include file="appModalView.jsp"%>
 </div>
