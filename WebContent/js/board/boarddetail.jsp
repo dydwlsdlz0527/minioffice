@@ -8,19 +8,7 @@ width:100%;
 height:600px;
 border-style:solid;
 }
-.board_name{
-display: inline;
-margin-left: 1000px;
-}
-.comment_profile2{
-    width: 90px;
-    height: 100px;
-    border: 1px solid;
-    position: relative;
-    display: inline-block;
-}
-.comment_profile{
-}
+
 .comment_window{
 	position: relative;
     display: inline-block;
@@ -28,6 +16,24 @@ margin-left: 1000px;
 .board_link_font{
 font-size: 20px;
 font-weight: bold;
+}
+.table_head{
+width:200px;
+height:50px;
+vertical-align: middle;
+background-color: #dee7ec;
+border-bottom : 1px solid;
+border-color: #d7d7d7;
+}
+.table_body{
+width:435px;
+vertical-align: middle;
+border-bottom : 1px solid;
+border-color: #d7d7d7;
+padding-left: 20px;
+}
+.comment_write{
+display: flex;
 }
 </style>
 <script>
@@ -66,30 +72,43 @@ font-weight: bold;
 <form id="comment_write">
 <div class="detailboard"><!--전체 틀-->
   <c:set var="d" value="${requestScope.Boarddetail }"></c:set>
-    <div><!-- 상단 버튼 div -->
-      <button>새글쓰기</button>
-      <div class="board_name">
-        <a class="board_link board_link_font" href="#"></a>
+  <c:set var="e" value="${d }"></c:set>
+    <!-- 상단 버튼 div -->
+    
+<%--         <a class="board_link board_link_font" href="#"></a>
         <span>></span>
-        <span class="board_link_font">${d.board_no }</span>
+        <span class="board_link_font">${d.board_no }</span> --%>
         <input type="hidden" name="type" value="${d.board_type }">
         <input type="hidden" name="no" value="${d.board_no }">
         <input type="hidden" name="comment_token" value="1">
-      </div>
-    </div>
-    <hr>
+		<input type="hidden" name="emp_no" value="${sessionScope.emp_no }">
+
     <div><!-- 메인 상단 -->
-      <span>${d.board_subject}</span>
-      <br>
-      <span>${d.emp.emp_no }</span> 
-      <br>
-      <span>${d.board_date }</span>
+    <table>
+      <tr>
+        <th class="table_head">글번호</th>
+        <td class="table_body">${d.board_no }</td>
+        <th class="table_head">조회수</th>
+        <td class="table_body">${d.board_cnt }</td>
+      </tr>
+      <tr>
+        <th class="table_head">작성자</th>
+        <td class="table_body">${d.emp.emp_name }</td>
+        <th class="table_head">작성시간</th>
+        <td class="table_body">${d.board_date }</td>
+      </tr>
+      <tr>
+      <th class="table_head">제목</th>
+      <td class="table_body" colspan="3">${d.board_subject }</td>
+      </tr>
+    </table>
+    <div style="min-height: 200px; width:1000px">
+    <br><br>
+    <span>${d.board_content }</span>
+    <br><br>
     </div>
-    <br>
-    <br>
-    <div><!-- 메인 하단 -->
-      <p>${d.board_content }</p>
     </div>
+
     <hr>
     
     <!-- 게시판 상세보기를 누르면
@@ -100,35 +119,30 @@ font-weight: bold;
     	상세보기 페이지에서 타입에 대한 데이터값을 가지고있어야 한다.-->
       <div><!-- 댓글목록 -->
     <c:forEach var = "b" items="${requestScope.comment}">
-      <div>
-      	<div class="comment_profile2"><!-- 프로필 -->
-	      <img src="${pageContext.request.contextPath }/images/profile/${sessionScope.emp_no}.jpg" style="width:80px; height:80px"><br>
-	      <span>${sessionScope.emp_name }</span>
-	      <span style="color:silver;">${sessionScope.rank_name }</span>
-        </div>
-        <div class="comment_window">
+      <div style="display:flex;">
+      	<div style="display:inline;"><!-- 프로필 -->
+	      <img src="${pageContext.request.contextPath }/images/profile/${b.emp.emp_no}.jpg" style="width:60px; height:60px"><br>
+	      <span style="font-size: 10px;">${b.emp.emp_name }</span>
+	      <span style="color:silver;font-size: 10px">${b.emp.rank.rank_name}</span>
+	    </div>
+        <div class="comment_window" style="padding-left:10px;padding-top:10px">
           <span>${b.comment_content }</span>
         </div>
       </div>  
-<%--    <td style="width:50px">${b.comment_no}</td>
-        <td style="width:300px">${b.board_no }</td>
-        <td style="width:100px">${b.parent_comment_no }</td>
-        <td style="width:100px">${b.comment_content }</td>
-        <td style="width:50px">${b.comment_date }</td> --%>
       <hr>
     </c:forEach>
       </div>
-      <div><!-- 댓글쓰기 -->
+      <div class="comment_write"><!-- 댓글쓰기 -->
         <div class="comment_profile"><!-- 프로필 -->
-	      <img src="${pageContext.request.contextPath }/images/profile/${sessionScope.emp_no}.jpg" style="width:80px; height:80px"><br>
-	      <span>${sessionScope.emp_name }</span>
+	      <img src="${pageContext.request.contextPath }/images/profile/${sessionScope.emp_no}.jpg" style="width:50px; height:50px"><br>
+<%-- 	      <span>${sessionScope.emp_name }</span>
 	      <input type="hidden" name="emp_no" value="${sessionScope.emp_no }">
-	      <span style="color:silver;">${sessionScope.rank_name }</span>
+	      <span style="color:silver;">${sessionScope.rank_name }</span> --%>
         </div>
         <div class="comment_window">
-          <textarea name="comment" rows="6" cols="158"></textarea>
+          <textarea name="comment" rows="3" cols="156"></textarea>
         </div>
-        <button id="comment_button" style="margin-left: 1170px;" >댓글 작성</button>
+        <button id="comment_button" >댓글 작성</button>
       </div>
   </div>
 </form>

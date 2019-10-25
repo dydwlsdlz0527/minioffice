@@ -76,9 +76,10 @@ padding-left: 30px;
 <script>
 	$(function(){
 		
-		$(".board_info").hide();
 		
-		var $write_bt = $("#bt")
+		
+		
+ 		var $write_bt = $("#bt")
 		$write_bt.click(function(){
 		
 			$.ajax({
@@ -89,10 +90,9 @@ padding-left: 30px;
 					$(".body_content").empty();
 					$(".body_content").html(data);
 					$(".body_head-column>span:first-child").html("게시판글쓰기");
-					$(".board_info").hide();
 				}
 			}); 
-		});
+		}); 
 
 		var $allnotice = $("#allnotice");
 		$allnotice.click(function(){
@@ -104,11 +104,10 @@ padding-left: 30px;
 					$(".body_content").empty();
 					$(".body_content").html(data);
 					$(".body_head-column>span:first-child").html("전사공지");
-					$(".board_info").show();
 				}
 			});
 			
-		});
+		}); 
 		
 		var $freeboard = $("#freeboard");
 		$freeboard.click(function(){
@@ -120,7 +119,6 @@ padding-left: 30px;
 					$(".body_content").empty();
 					$(".body_content").html(data);
 					$(".body_head-column>span:first-child").html("전사게시판");
-					$(".board_info").show();
 				}
 			});
 			
@@ -131,12 +129,11 @@ padding-left: 30px;
 			$.ajax({
 				url:'${contextPath}/deptboard',
 				method:'GET',
-				data:'type=a&currentPage=1',
+				data:'type=c&currentPage=1',
 				success:function(data){
 					$(".body_content").empty();
 					$(".body_content").html(data);
 					$(".body_head-column>span:first-child").html("부서공지");
-					$(".board_info").show();
 				}
 			});
 			
@@ -147,12 +144,11 @@ padding-left: 30px;
 			$.ajax({
 				url:'${contextPath}/deptboard',
 				method:'GET',
-				data:'type=b&currentPage=1',
+				data:'type=d&currentPage=1',
 				success:function(data){
 					$(".body_content").empty();
 					$(".body_content").html(data);
 					$(".body_head-column>span:first-child").html("부서게시판");
-					$(".board_info").show();
 				}
 			});
 			
@@ -276,15 +272,16 @@ padding-left: 30px;
           	<span class="search_button mouse"></span>
           </div>
         </div>
-        <div class="board_info">	<!-- 게시판 간편정보 -->
-          <ul class = "board_info_ul">
-            <li class="li_style">게시판주소</li>
-            <li class="li_style">운영자</li>
-            <li class="li_style">전사공지게시판</li>
-          </ul>
-        </div>
         <div class="body_content">
         <!-- 아래부터 작성하면됨 -->	
+          <div id="home_notice">
+          <!-- 최신공지글 --><!-- 넘기면 부서공지 -->
+          
+          </div>
+          
+          <div id="home_board">
+          <!-- 최신전사--><!-- 넘기면 부서게시글 -->
+          </div>
       	 
       	<!--  -->
         </div>

@@ -14,6 +14,7 @@ import com.minioffice.vo.Comment;
 import com.minioffice.vo.Department;
 import com.minioffice.vo.DeptBoard;
 import com.minioffice.vo.Employee;
+import com.minioffice.vo.Rank;
 import com.minioffice.exception.NotFoundException;
 
 
@@ -30,13 +31,14 @@ public class BoardDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, password);
-			String sql = "select board.*, employee.emp_name\r\n" + 
-					"from( select rownum rn, board.*\r\n" + 
-					"from board\r\n" + 
-					"where board_type = ?\r\n" + 
-					"order by board_no desc) board, employee\r\n" + 
-					"where (rn between ? and ?)\r\n" + 
-					"and board.emp_no = employee.emp_no";
+			String sql ="select b.*, e.emp_name\n" + 
+					"from (select rownum rn, a.*\n" + 
+					"from (select board.*\n" + 
+					"from board \n" + 
+					"where board_type=?\n" + 
+					"order by board_no desc) a) b join employee e on b.emp_no = e.emp_no\n" + 
+					"where rn between ? and ?\n" + 
+					"order by board_no desc";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, type);
 			pstmt.setInt(2, startRow);
@@ -86,7 +88,7 @@ public class BoardDAO {
 		}
 		return list;
 	}
-	public List<DeptBoard> deptboardlist(int startRow, int endRow, String emp_no, String type){
+	public List<DeptBoard> deptboardlist(int startRow, int endRow, String emp_no, String type, String dept_name){
 		ResultSet rs = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -97,37 +99,44 @@ public class BoardDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, password);
-			String sql = "select deptboard.*, e.dept_no\r\n" + 
-					"from (select rownum rn, dept_board.*\r\n" + 
-					"from dept_board\r\n" + 
-					"where dept_board_type = ?\r\n" + 
-					"order by dept_board_no desc) deptboard, employee e\r\n" + 
-					"where (rn between ? and ?)\r\n" + 
-					"and deptboard.emp_no = e.emp_no\r\n" + 
-					"and e.emp_no = ?";
+			/**
+			 * 부서별 게시판을 조회하기 위해서 필요한 요소 : 게시판 유형, 부서부모번호, 사원번호
+			 * 부서번호를 알기위해 필요한 요소 : 사원번호
+			 * 부서게기판 테이블과 사원 테이블을 조인해서 사원번호를 조건으로 게시판리스트 추출
+			 */
+			String sql = "select dept.*\n" + 
+					"from(select rownum rn, dept_board.*, dept.dept_parentno, dept.dept_name\n" + 
+					"from dept_board join employee emp on dept_board.emp_no = emp.emp_no join department dept on emp.dept_no = dept.dept_no\n" + 
+					"where dept.dept_parentno = (select dept_parentno from department where dept_name = ?) \n" + 
+					"and dept_board_type = ?) dept\n" + 
+					"where (rn between ? and ?)";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, type);
-			pstmt.setInt(2, startRow);
-			pstmt.setInt(3, endRow);
-			pstmt.setString(4, emp_no);
+			pstmt.setString(1, dept_name);
+			pstmt.setString(2, type);
+			pstmt.setInt(3, startRow);
+			pstmt.setInt(4, endRow);
+			/**
+			 * dept_board_no`
+			 * dept_board_subject`
+			 * dept_board_content`
+			 * dept_board_date`
+			 * dept_board_cnt`
+			 * dept_board_type`
+			 * emp.emp_no`
+			 */
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				int dept_board_no = rs.getInt("dept_board_no");
 				Employee employee = new Employee();
-				Department department = new Department();
 				String emp_no2 = rs.getString("emp_no");
-				employee.setEmp_name(emp_no2);
-				String dept_no = rs.getString("dept_board_no");
-				department.setDept_no(dept_no);
-				employee.setDept(department);
+				employee.setEmp_no(emp_no2);
 				String dept_board_subject = rs.getString("dept_board_subject");
 				String dept_board_content = rs.getString("dept_board_content");
 				Date dept_board_date = rs.getDate("dept_board_date");
 				int dept_board_cnt = rs.getInt("dept_board_cnt");
 				String board_type_s = rs.getString("dept_board_type");
 				char dept_board_type = board_type_s.charAt(0);
-				
 				DeptBoard deptboard = new DeptBoard(dept_board_no, dept_board_subject, dept_board_content, dept_board_date, dept_board_cnt, employee, dept_board_type);
 				list.add(deptboard);
 			}	
@@ -299,7 +308,9 @@ public class BoardDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, password);
-			String sql = "select * from board where board_no = ?";
+			String sql = "select board.*, e.emp_name\n" + 
+					"from board join employee e on board.emp_no = e.emp_no\n" + 
+					"where board_no = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, board_No);
 			rs = pstmt.executeQuery();
@@ -308,6 +319,8 @@ public class BoardDAO {
 			Employee employee = new Employee();
 			String emp_no = rs.getString("emp_no");
 			employee.setEmp_no(emp_no);
+			String emp_name = rs.getString("emp_name");
+			employee.setEmp_name(emp_name);
 			String board_subject = rs.getString("board_subject");
 			String board_content = rs.getString("board_content");
 			Date board_date = rs.getDate("board_date");
@@ -345,7 +358,7 @@ public class BoardDAO {
 		}
 		return board;
 	}
-	
+	//부서별보드디테일
 	public DeptBoard deptboarddetail(String no) {
 		DeptBoard deptboard = null;
 		int board_No = Integer.parseInt(no);
@@ -459,6 +472,61 @@ public class BoardDAO {
 		}
 		return respon;
 	}
+	public int detailboardwrite(String empno, String type, String sub, String con) {
+		String emp_no = empno;
+		String board_type = type;
+		String board_subject = sub;
+		String board_content = con;
+		
+		int respon = 0;
+		ResultSet rs = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "miniuser";
+		String password = "1234";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection(url, user, password);
+			String sql = "insert into dept_board values(seq_dept_board.nextval, ?, ?, sysdate, 0, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, board_subject);
+			pstmt.setString(2, board_content);
+			pstmt.setString(3, emp_no);
+			pstmt.setString(4, board_type);
+
+			rs = pstmt.executeQuery();
+
+			respon = 1;
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return respon;
+	}
 	//전사게시판 댓글가져오기
 	public List<Comment> comment(String no) {
 		
@@ -473,7 +541,10 @@ public class BoardDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, password);
-			String sql = "select* from Komment where board_no = ?";
+			String sql = "select komment.*, emp.emp_name, rank.rank_name\n" + 
+					"from komment join employee emp on komment.emp_no = emp.emp_no\n" + 
+					"            join emp_rank rank on emp.rank_no = rank.rank_no\n" + 
+					"where komment.board_no = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, no);
 			rs = pstmt.executeQuery();
@@ -484,8 +555,17 @@ public class BoardDAO {
 				int parent_comment_no = rs.getInt("parent_comment_no");
 				String comment_content = rs.getString("comment_content");
 				Date comment_date = rs.getDate("comment_date");
+				Employee employee = new Employee();
+				Rank rank = new Rank();
+				String emp_no = rs.getString("emp_no");
+				employee.setEmp_no(emp_no);
+				String emp_name = rs.getString("emp_name");
+				employee.setEmp_name(emp_name);
+				String rank_name = rs.getString("rank_name");
+				rank.setRank_name(rank_name);
+				employee.setRank(rank);
 				
-				Comment comment = new Comment(comment_no, board_no, parent_comment_no, comment_content, comment_date);
+				Comment comment = new Comment(comment_no, board_no, parent_comment_no, comment_content, comment_date, employee);
 				
 				list.add(comment);
 			}
@@ -545,8 +625,8 @@ public class BoardDAO {
 					int parent_comment_no = rs.getInt("parent_comment2_no");
 					String comment_content = rs.getString("comment2_content");
 					Date comment_date = rs.getDate("comment2_date");
-					
-					Comment comment = new Comment(comment_no, board_no, parent_comment_no, comment_content, comment_date);
+					Employee employee = new Employee();
+					Comment comment = new Comment(comment_no, board_no, parent_comment_no, comment_content, comment_date, employee);
 					
 					list.add(comment);
 				}
