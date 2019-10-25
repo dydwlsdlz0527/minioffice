@@ -93,50 +93,112 @@ div.tool_bar {
 	width : 700px;
 }
 
+div.pageGroup{ /*페이지 그룹 */
+    text-align: center !important;
+}
+div.pageGroup>ul{ 
+    text-align: center !important;
+    display:inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 2px;
+}
+div.pageGroup>ul>li{
+	
+    display: inline;
+}
+.prev_bt .next_bt{
+  background-color: white; 
+  color: black; 
+  border-radius: 5px;
+  border : solid rgb(0, 125, 200);;
+}
+.prev_bt .next_bt:hover {
+  background-color: rgb(0, 125, 200);
+  color: white;
+}
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <script>
+
+
 $(function(){
-    var $spanArr = $("div.pageGroup > span");
-    $spanArr.click(function(){
-    	var pageNum = $(this).html(); //1,2,3,4,5
+    var $spanArr = $("div.pageGroup > ul> li> a");
+    $spanArr.on("click", function(){
+    	/* alert($spanArr); */
+    	var pageNum = $(this).attr("href");//1,2,3,4,5
+    	
+    	/* alert(pageNum); */
     	$.ajax({
     		url: "<%=contextPath%>/employeeList",
-    		data:'currentPage='+pageNum,
+    		data:'currentPage='+ pageNum,
     		success:function(data){
-    		    $("section").empty();
-    		    $("section").html(data);    		
+    			/* alert(data); */
+    		    $("body").empty().html(data);  		
     		}    		
-    	});//end ajax    	
+    	});//end ajax
+    	return false;
     });//end click
     
-    var $rankSelect = $("input[name=rank_select]");
-    $rankSelect.on("change", function(){
-        switch($rankSelect.val()){
-        case '0':
-           $rankName.text();
-           break;
-        case '1':
-        	$rankName.text();
-           break;
-        case '2':
-           $zhcnNameObj.show();
-           break;
-        case '3':
-           $viNameObj.show();
-           break;
-        case '4':
-           $enNameObj.hide();
-           $jpNameObj.hide();
-           $zhcnNameObj.hide();
-           $viNameObj.hide();
-        }
-        return false;
-     });
+    var $rankSelect = $("select[name=rank_select]");
     
     
+    $rankSelect.on('change',function(){
+    	if(this.value != ""){
+    		var optVal = $(this).find(":selected").val();
+        	$.ajax({
+        		url: "<%=contextPath%>/RankSelect",
+        		data: 'RankSelect='+optVal,
+        		success:function(data){
+        			$("body").empty().html(data);
+        		}    		
+        	});
+    	}
+    });
+    	
+        var $deptSelect = $("select[name=dept_select]");
+        
+        
+        $deptSelect.on('change',function(){
+        	if(this.value != ""){
+        		var optVal = $(this).find(":selected").val();
+        		console.log(optVal);
+            	$.ajax({
+            		
+            		url: "<%=contextPath%>/DeptSelect",
+            		data: 'DeptSelect='+optVal,
+            		success:function(data){
+            			
+            			$("body").empty().html(data);
+            		}    		
+            	});
+        	}
+    	
+        });
+<%--     	console.log($rankSelect.val());
+    	$.ajax({
+    		url: "<%=contextPath%>/RankSelect",
+    		data: 'RankSelect='+$rankSelect.val(),
+    		success:function(data){
+    			$("section").empty().html(data);
+    		}    		
+    	});//end ajax    	
+    });//end click --%>
     
+    /* 	if (data.success){
+	   $("select[name=rank_select]").load("select[name=rank_select]");
+	    } */
+/*   $("#rank_select > option[value="+"<c:out value="${ param.rank_select }"/>"+"]").prop("selected","selected"); */
+/*  $('option:selected', 'select[name="rank_select"]').removeAttr('selected');
+   $('select[name="rank_select"]').find('option[value="rank_select"]').attr("selected",true); */
+ /*$("select[name=rank_select]").append("select[name=rank_select]");
+	  $("select[name=rank_select]").empty();
+	for(var count = 0; count < changeItem.size(); count++){                
+     var option = $("<option>"+changeItem[count]+"</option>");
+ 
+ } */
     
 });//end $(function(){
 
@@ -210,22 +272,15 @@ $(function(){
       <!--left body_side finish-->
       <!-- body_content는 너만의 영역. 알아서 화면 내보내기-->
       <div class="body_content">
+      
         <!-- 아래부터 작성하면됨 -->
-        <%
-int status = (Integer)request.getAttribute("status");
-if(status != 1){
-%>게시물 목록이 없습니다 
-<%}%>
-<%	PageBean pb = (PageBean)request.getAttribute("pb");
-	int currentPage = pb.getCurrentPage();
-	int maxPage = pb.getMaxPage();
-	List<Employee> list = pb.getList(); %> 
-	
+       
  <header class="emp_board_content_top">
       <h1>
          <span class="title" id="layoutTitle">계정 목록</span>
       </h1>
       <hr>
+      <section>
       <div id="dataTables_wrapper container">
          <div class="content_tb over_visi" role ="grid">
          <div id="account_list_wrapper">
@@ -235,11 +290,16 @@ if(status != 1){
          	<th class="emp_choice" role="columheader" rowspan="1" colspan="1" aria-label>
          		<input type="checkbox" id="checkedAll">
          	</th>
+         	 
+	
          	<th class="name title sorting_asc" role="columheader" tabindex="0" aria-controls="account_list" rowspan="1" colspan="1" style="width:213px;" aria-label= "이름:activate to sort column ascending">
          		<span class="title_sort">이름<ins class="ic"></ins><span class="selected"></span></span>
          	</th>
-                           <th class = "rank_select_title"><select id="rank_select" name="rank_select">
-                                 <option value="0">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp::직급::</option>
+                           <th class = "rank_select_title">
+                           <select id="rank_select" name="rank_select">
+                                 <option value="">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp::직급::</option>
+                                 <option value="" disabled >&nbsp--------------------</option>
+                                 <option value="0">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp전체</option>
                                  <option value="1">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp이사</option>
                                  <option value="2">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp사장</option>
                                  <option value="3">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp전무</option>
@@ -249,14 +309,17 @@ if(status != 1){
                                  <option value="7">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp대리</option>
                                  <option value="8">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp주임</option>
                                  <option value="9">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp사원</option>
-                           </select></th>
+                           </select>
+                           </th>
          	<th class="email title sorting_asc" role="columnheader" tabindex="0" aria-controls="account_list" rowspan="1" colspan="1" style="width: 198px;" aria-label="
                                         이메일  : activate to sort column ascending">
             <span class="title_sort">이메일<ins class="ic"></ins><span class="selected"></span></span>
             </th>
             <th><select id="dept_select" name="dept_select">
-                                 <option value="0000">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp::부서::</option>
-                                 <option value="C001">&nbsp&nbsp&nbsp&nbsp경영업본부</option>
+                                 <option value="">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp::부서::</option>
+                                 <option value="" disabled >&nbsp--------------------</option>
+                                 <option value="0000">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp전체</option>
+                                 <option value="C001">&nbsp&nbsp&nbsp&nbsp&nbsp영업본부</option>
                                  <option value="C002">&nbsp&nbsp경영지원본부</option>
                                  <option value="C003">시스템운영본부</option>
                                  <option value="C004">&nbsp&nbsp&nbsp서비스본부</option>
@@ -272,18 +335,35 @@ if(status != 1){
                                  <option value="D010">&nbsp&nbsp커머스사업팀</option>
                            </select></th></tr>
                            <tr>
-                           
-                         <%for(Employee b: list){%> 
-<td> <input type="checkbox" id="check_one"></td>
-<td class="emp_name"><%=b.getEmp_name()%></td>
+<%--                           <%
+int status = (Integer)request.getAttribute("status");
+%> --%>
+<%-- <%if(status != 1){%> 
+내용이 존재 하지 않습니다.
+<%}%> --%>
 
-<td class="rank_name"><%=b.getRank().getRank_name()%></td>
 
-<td class="emp_id"><%=b.getEmp_id()%></td>
+<%	PageBean pb = (PageBean)request.getAttribute("pb");
+	if(pb == null){%>
+	<td colspan="5">존재하지 않습니다.</td>
+	<%}
+	else{
+	int currentPage = pb.getCurrentPage();
+	int maxPage = pb.getMaxPage();
+	List<Employee> list = pb.getList(); %> 
+	
+	<%for(Employee b: list){%> 
+	<td> <input type="checkbox" id="check_one"></td>
+	<td class="emp_name"><%=b.getEmp_name()%></td>
+	<td class="rank_name"><%=b.getRank().getRank_name()%></td>
+	<td class="emp_id"><%=b.getEmp_id()%></td>
+	<td class="dept_name"><%=b.getDept().getDept_name()%></td></tr>
+	<%
+	}
+}%>
+<tr></tr>
 
-<td class="dept_name"><%=b.getDept().getDept_name()%></td><tr></tr>
 
-<%}//end for %>
          </thead>
          <tbody>
 			<tr>
@@ -293,7 +373,38 @@ if(status != 1){
          </div>
          </div>
  	     </div>
- 	     <div class="tool_bar"> <div class="critical custom_bottom"></div>
+ 	     </section>
+<div class="pageGroup">
+ <ul>
+ <c:set var="startPage" value="${pb.startPage}"/>
+ <c:set var="endPage" value="${pb.endPage}"/>
+ <c:if test="${startPage > 1}">
+   <li><a href="${startPage-1}"><span class="Prev_Bt">PREV...</span></a></li>
+ </c:if> 
+ 
+ <c:forEach var="i" begin="${startPage}"  end="${endPage}" >
+    <c:choose>
+      <c:when test="${i == currentPage}">
+      <li><span>${i}</span></li>
+      </c:when>
+      <c:when test="${i == 0}">
+        <li><span>1</span></li>
+      </c:when>
+      <c:otherwise>
+        <li><a href="${i}"><span>${i}</span></a></li>
+      </c:otherwise>
+    </c:choose>
+ </c:forEach>
+ 
+ <c:if test="${endPage < pb.maxPage}">
+ <li><a href="${endPage+1}"><span class="Next_Bt">...NEXT</span></a></li>
+ </c:if> 
+ </ul>
+</div>
+ 	     
+ 	     
+ 	     
+ 	     <!-- <div class="tool_bar"> <div class="critical custom_bottom"></div>
  	     <div class="dataTables_length">
  	     <div class="dataTables_paginate paging_full_numbers" id="account_list_paginate">
  	     <a tabindex="0" class="first paginate_button" title="맨앞" id="account_list_first" data-bypass="true"></a>
@@ -304,9 +415,10 @@ if(status != 1){
  	     <a tabindex="0" class="paginate_active" data-bypass="true">4</a></span>
  	     <a tabindex="0" class="next paginate_button paginate_button_disabled" title="다음" id="account_list_next" data-bypass="true"></a>
  	     <a tabindex="0" class="last paginate_button paginate_button_disabled" title="맨뒤" id="account_list_last" data-bypass="true"></a></div></div>
-   </div>
+   </div> -->
    
    </header>
+ 
       	<!--  -->
       </div>
     </div>

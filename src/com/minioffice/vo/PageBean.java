@@ -2,6 +2,12 @@ package com.minioffice.vo;
 
 import java.util.List;
 public class PageBean<T> {
+	@Override
+	public String toString() {
+		return "PageBean [currentPage=" + currentPage + ", cntPerPage=" + cntPerPage + ", list=" + list + ", totalCnt="
+				+ totalCnt + ", maxPage=" + maxPage + ", url=" + url + ", startPage=" + startPage + ", endPage="
+				+ endPage + "]";
+	}
 	private int currentPage;//현재페이지
 	private int cntPerPage;//페이지별 목록수
 	private List<T> list;//목록

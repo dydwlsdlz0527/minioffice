@@ -378,7 +378,6 @@ td.sign_top{
 <%--아이디--%>
 $(function(){
    var $idObj = $("input[name=id]");      
-   var $pw2Obj = $("input[name=id]");   
    var $pwObj = $("input[name=pw]");
    var $pw2Obj = $("input[name=pw2]");
    var $nameObj = $("input[name=name]");      
